@@ -1,0 +1,23 @@
+{
+  "name": "長瀬サロン",
+  "address": "〒100-0004 東京都千代田区大手町1-1-1（仮住所）",
+  "phone": "03-1234-5678",
+  "email": "info@nagase-salon.com",
+  "businessHours": {
+    "月": { "open": "10:00", "close": "20:00" },
+    "火": { "open": "10:00", "close": "20:00" },
+    "水": { "open": "休業日", "close": "休業日" },
+    "木": { "open": "10:00", "close": "20:00" },
+    "金": { "open": "10:00", "close": "20:00" },
+    "土": { "open": "09:00", "close": "19:00" },
+    "日": { "open": "09:00", "close": "19:00" }
+  },
+  "closedDays": ["水曜日"],
+  "googleMapsUrl": "https://maps.google.com/",
+  "accessInfo": [
+    "JR東京駅から徒歩5分",
+    "地下鉄大手町駅A1出口から徒歩3分",
+    "丸の内線大手町駅直結"
+  ],
+  "parkingInfo": "提携駐車場あり（2時間まで無料）"
+}

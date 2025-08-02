@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:www.oceantokyo.com)",
+      "Bash(npx create-next-app:*)",
+      "Bash(mkdir:*)",
+      "Bash(npm install)",
+      "Bash(npm run dev:*)",
+      "Bash(npm run lint)",
+      "Bash(npm run type-check:*)",
+      "Bash(npm install:*)",
+      "Bash(npm audit:*)",
+      "Bash(cp:*)",
+      "Bash(npm run:*)",
+      "Bash(aws s3:*)",
+      "Bash(curl:*)",
+      "Bash(tsx scripts/update-salon-data.ts:*)",
+      "Bash(npx tsx:*)"
+    ],
+    "deny": []
+  }
+}

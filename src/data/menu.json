@@ -1,0 +1,101 @@
+[
+  {
+    "id": "cut-1",
+    "category": "カット",
+    "name": "メンズカット",
+    "description": "スタイリストによるプロフェッショナルなメンズカット",
+    "price": 4500,
+    "duration": 60,
+    "isPopular": true
+  },
+  {
+    "id": "cut-2",
+    "category": "カット",
+    "name": "レディースカット",
+    "description": "女性向けのトレンドを取り入れたカット",
+    "price": 5500,
+    "duration": 90
+  },
+  {
+    "id": "cut-3",
+    "category": "カット",
+    "name": "学生カット",
+    "description": "学生限定の特別価格カット（要学生証）",
+    "price": 3500,
+    "duration": 60
+  },
+  {
+    "id": "color-1",
+    "category": "カラー",
+    "name": "ワンカラー",
+    "description": "全体を一色で染めるベーシックなカラーリング",
+    "price": 6500,
+    "duration": 120,
+    "isPopular": true
+  },
+  {
+    "id": "color-2",
+    "category": "カラー",
+    "name": "ハイライト",
+    "description": "立体感を演出するハイライトカラー",
+    "price": 8500,
+    "duration": 150
+  },
+  {
+    "id": "color-3",
+    "category": "カラー",
+    "name": "グラデーションカラー",
+    "description": "グラデーション効果で個性的なスタイルを演出",
+    "price": 9500,
+    "duration": 180
+  },
+  {
+    "id": "perm-1",
+    "category": "パーマ",
+    "name": "デジタルパーマ",
+    "description": "自然な仕上がりのデジタルパーマ",
+    "price": 8000,
+    "duration": 180
+  },
+  {
+    "id": "perm-2",
+    "category": "パーマ",
+    "name": "エアウェーブ",
+    "description": "ダメージを抑えた優しいパーマ",
+    "price": 9000,
+    "duration": 200
+  },
+  {
+    "id": "treatment-1",
+    "category": "トリートメント",
+    "name": "ヘッドスパ",
+    "description": "リラックス効果抜群のヘッドスパ",
+    "price": 3500,
+    "duration": 45,
+    "isPopular": true
+  },
+  {
+    "id": "treatment-2",
+    "category": "トリートメント",
+    "name": "髪質改善トリートメント",
+    "description": "ダメージ髪を集中ケアする特別トリートメント",
+    "price": 5500,
+    "duration": 60
+  },
+  {
+    "id": "set-1",
+    "category": "セット・その他",
+    "name": "ヘアセット",
+    "description": "特別な日のためのヘアセット",
+    "price": 3000,
+    "duration": 45
+  },
+  {
+    "id": "set-2",
+    "category": "セット・その他",
+    "name": "眉カット",
+    "description": "顔周りをすっきりと整える眉カット",
+    "price": 1000,
+    "duration": 15
+  }
+]
