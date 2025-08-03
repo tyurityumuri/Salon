@@ -15,7 +15,8 @@
       "Bash(aws s3:*)",
       "Bash(curl:*)",
       "Bash(tsx scripts/update-salon-data.ts:*)",
-      "Bash(npx tsx:*)"
+      "Bash(npx tsx:*)",
+      "Bash(git branch:*)"
     ],
     "deny": []
   }

@@ -34,3 +34,24 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Claude Code settings
+.claude/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+logs/
+
+# AWS credentials (never commit)
+.aws/
+
+# Environment files
+.env
+.env.production
+.env.staging
