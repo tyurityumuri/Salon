@@ -281,37 +281,6 @@ export default function HomeClient() {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="section-padding bg-primary-900">
-        <div className="container-custom text-center">
-          <p className="text-sm font-medium tracking-[0.3em] uppercase text-white/70 mb-4">BOOK YOUR TRANSFORMATION</p>
-          <h2 className="font-heading text-3xl md:text-5xl font-light text-white mb-8 tracking-wide leading-tight">
-            DISCOVER YOUR<br />
-            NEW STYLE TODAY
-          </h2>
-          <div className="w-24 h-px bg-white/40 mx-auto mb-8"></div>
-          <p className="text-lg text-white/80 mb-12 max-w-2xl mx-auto leading-relaxed font-light">
-            経験豊富なスタイリストがあなたの魅力を最大限に引き出します。<br className="hidden md:block" />
-            お電話またはオンラインで簡単に予約できます。
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <a 
-              href="tel:03-1234-5678"
-              className="bg-white text-primary-900 px-10 py-4 font-medium tracking-wide uppercase text-sm hover:bg-white/90 transition-all duration-300 min-w-[200px]"
-            >
-              CALL FOR BOOKING
-            </a>
-            <a
-              href="https://beauty.hotpepper.jp/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="border-2 border-white text-white px-10 py-4 font-medium tracking-wide uppercase text-sm hover:bg-white hover:text-primary-900 transition-all duration-300 min-w-[200px]"
-            >
-              ONLINE BOOKING
-            </a>
-          </div>
-        </div>
-      </section>
     </Layout>
   )
 }

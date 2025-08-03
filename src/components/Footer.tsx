@@ -13,29 +13,29 @@ const Footer = () => {
               <p className="text-sm tracking-wide">東京都千代田区大手町1-1-1</p>
               <p className="text-sm tracking-wide">TEL: 03-1234-5678</p>
               <div className="pt-4">
-                <p className="text-sm font-medium text-white mb-2">BUSINESS HOURS</p>
-                <p className="text-sm tracking-wide">MONDAY - FRIDAY: 10:00 - 20:00</p>
-                <p className="text-sm tracking-wide">SATURDAY - SUNDAY: 09:00 - 19:00</p>
-                <p className="text-sm tracking-wide text-accent-400">CLOSED: WEDNESDAY</p>
+                <p className="text-sm font-medium text-white mb-2">営業時間</p>
+                <p className="text-sm tracking-wide">月 - 金: 10:00 - 20:00</p>
+                <p className="text-sm tracking-wide">土 - 日: 09:00 - 19:00</p>
+                <p className="text-sm tracking-wide text-accent-400">定休日: 水曜日</p>
               </div>
             </div>
           </div>
 
           {/* お問い合わせ・SNS */}
           <div>
-            <h3 className="font-heading text-lg font-medium tracking-[0.15em] mb-8 text-white uppercase">Contact & Follow</h3>
+            <h3 className="font-heading text-lg font-medium tracking-[0.15em] mb-8 text-white uppercase">お問い合わせ・SNS</h3>
             <div className="space-y-6">
               <div>
                 <a
                   href="tel:03-1234-5678"
                   className="inline-block bg-accent-600 text-white px-8 py-3 font-medium tracking-wide uppercase text-sm hover:bg-accent-700 transition-all duration-300"
                 >
-                  CALL FOR BOOKING
+                  電話で予約
                 </a>
               </div>
               
               <div>
-                <p className="text-sm font-medium text-white mb-4 tracking-wide">FOLLOW US</p>
+                <p className="text-sm font-medium text-white mb-4 tracking-wide">フォローする</p>
                 <div className="flex space-x-6">
                   <a
                     href="#"
