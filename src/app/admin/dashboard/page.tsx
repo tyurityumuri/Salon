@@ -3,13 +3,17 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import stylistsData from '@/data/stylists.json'
-import menuData from '@/data/menu.json'
-import newsData from '@/data/news.json'
-import stylesData from '@/data/styles.json'
 
 export default function AdminDashboard() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [stats, setStats] = useState([
+    { title: 'スタイリスト', count: 0, href: '/admin/stylists', icon: '👥' },
+    { title: 'メニュー', count: 0, href: '/admin/menu', icon: '📋' },
+    { title: 'ニュース', count: 0, href: '/admin/news', icon: '📰' },
+    { title: 'スタイル', count: 0, href: '/admin/styles', icon: '✂️' },
+  ])
+  const [newsCount, setNewsCount] = useState(0)
+  const [stylesCount, setStylesCount] = useState(0)
   const router = useRouter()
 
   useEffect(() => {
@@ -21,6 +25,41 @@ export default function AdminDashboard() {
     }
   }, [router])
 
+  useEffect(() => {
+    const fetchCounts = async () => {
+      try {
+        const [stylistsRes, menuRes, newsRes, stylesRes] = await Promise.all([
+          fetch('/api/stylists'),
+          fetch('/api/menu'),
+          fetch('/api/news'),
+          fetch('/api/styles')
+        ])
+
+        const [stylists, menu, news, styles] = await Promise.all([
+          stylistsRes.ok ? stylistsRes.json() : [],
+          menuRes.ok ? menuRes.json() : [],
+          newsRes.ok ? newsRes.json() : [],
+          stylesRes.ok ? stylesRes.json() : []
+        ])
+
+        setStats([
+          { title: 'スタイリスト', count: stylists.length, href: '/admin/stylists', icon: '👥' },
+          { title: 'メニュー', count: menu.length, href: '/admin/menu', icon: '📋' },
+          { title: 'ニュース', count: news.length, href: '/admin/news', icon: '📰' },
+          { title: 'スタイル', count: styles.length, href: '/admin/styles', icon: '✂️' },
+        ])
+        setNewsCount(news.length)
+        setStylesCount(styles.length)
+      } catch (error) {
+        console.error('Error fetching counts:', error)
+      }
+    }
+
+    if (isAuthenticated) {
+      fetchCounts()
+    }
+  }, [isAuthenticated])
+
   const handleLogout = () => {
     localStorage.removeItem('adminAuth')
     router.push('/admin')
@@ -29,13 +68,6 @@ export default function AdminDashboard() {
   if (!isAuthenticated) {
     return <div>Loading...</div>
   }
-
-  const stats = [
-    { title: 'スタイリスト', count: stylistsData.length, href: '/admin/stylists', icon: '👥' },
-    { title: 'メニュー', count: menuData.length, href: '/admin/menu', icon: '📋' },
-    { title: 'ニュース', count: newsData.length, href: '/admin/news', icon: '📰' },
-    { title: 'スタイル', count: stylesData.length, href: '/admin/styles', icon: '✂️' },
-  ]
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -191,11 +223,11 @@ export default function AdminDashboard() {
                 </div>
                 <div className="flex items-center text-sm text-gray-600">
                   <span className="w-2 h-2 bg-blue-400 rounded-full mr-3"></span>
-                  {newsData.length}件のニュースが公開中
+                  {newsCount}件のニュースが公開中
                 </div>
                 <div className="flex items-center text-sm text-gray-600">
                   <span className="w-2 h-2 bg-purple-400 rounded-full mr-3"></span>
-                  {stylesData.length}件のスタイルが登録済み
+                  {stylesCount}件のスタイルが登録済み
                 </div>
               </div>
             </div>

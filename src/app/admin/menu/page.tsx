@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { MenuItem } from '@/types'
-import menuData from '@/data/menu.json'
 
 export default function AdminMenuPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
@@ -30,12 +29,12 @@ export default function AdminMenuPage() {
         const data = await response.json()
         setMenu(data)
       } else {
-        console.error('Failed to fetch menu, falling back to local data')
-        setMenu(menuData as MenuItem[])
+        console.error('Failed to fetch menu')
+        setMenu([])
       }
     } catch (error) {
-      console.error('Error fetching menu, falling back to local data:', error)
-      setMenu(menuData as MenuItem[])
+      console.error('Error fetching menu:', error)
+      setMenu([])
     } finally {
       setLoading(false)
     }

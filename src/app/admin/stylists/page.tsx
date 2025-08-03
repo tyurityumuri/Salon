@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Stylist } from '@/types'
-import stylistsData from '@/data/stylists.json'
 
 export default function AdminStylistsPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
@@ -30,11 +29,9 @@ export default function AdminStylistsPage() {
         setStylists(data)
       } else {
         console.error('Failed to fetch stylists, falling back to local data')
-        setStylists(stylistsData as Stylist[])
       }
     } catch (error) {
       console.error('Error fetching stylists, falling back to local data:', error)
-      setStylists(stylistsData as Stylist[])
     } finally {
       setLoading(false)
     }

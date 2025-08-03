@@ -19,7 +19,9 @@
       "Bash(git branch:*)",
       "Bash(open https://vercel.com/dashboard)",
       "Bash(npx vercel:*)",
-      "Bash(open https://github.com/tyurityumuri/Salon)"
+      "Bash(open https://github.com/tyurityumuri/Salon)",
+      "Bash(sed:*)",
+      "Bash(grep:*)"
     ],
     "deny": []
   }

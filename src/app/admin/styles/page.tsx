@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import stylesData from '@/data/styles.json'
 
 interface StyleItem {
   id: string
@@ -17,7 +16,8 @@ interface StyleItem {
 
 export default function AdminStylesPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
-  const [styles, setStyles] = useState<StyleItem[]>(stylesData as StyleItem[])
+  const [styles, setStyles] = useState<StyleItem[]>([])
+  const [loading, setLoading] = useState(true)
   const [selectedCategory, setSelectedCategory] = useState<string>('all')
   const [searchTerm, setSearchTerm] = useState<string>('')
   const router = useRouter()
@@ -26,10 +26,29 @@ export default function AdminStylesPage() {
     const auth = localStorage.getItem('adminAuth')
     if (auth === 'true') {
       setIsAuthenticated(true)
+      fetchStyles()
     } else {
       router.push('/admin')
     }
   }, [router])
+
+  const fetchStyles = async () => {
+    try {
+      const response = await fetch('/api/styles')
+      if (response.ok) {
+        const data = await response.json()
+        setStyles(data)
+      } else {
+        console.error('Failed to fetch styles')
+        setStyles([])
+      }
+    } catch (error) {
+      console.error('Error fetching styles:', error)
+      setStyles([])
+    } finally {
+      setLoading(false)
+    }
+  }
 
   const categories = ['all', ...Array.from(new Set(styles.map(item => item.category)))]
 

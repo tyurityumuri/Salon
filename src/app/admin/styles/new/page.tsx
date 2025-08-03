@@ -3,11 +3,11 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import stylistsData from '@/data/stylists.json'
 import { Stylist } from '@/types'
 
 export default function NewStylePage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [stylists, setStylists] = useState<Stylist[]>([])
   const router = useRouter()
   
   const [formData, setFormData] = useState({
@@ -23,10 +23,25 @@ export default function NewStylePage() {
     const auth = localStorage.getItem('adminAuth')
     if (auth === 'true') {
       setIsAuthenticated(true)
+      fetchStylists()
     } else {
       router.push('/admin')
     }
   }, [router])
+
+  const fetchStylists = async () => {
+    try {
+      const response = await fetch('/api/stylists')
+      if (response.ok) {
+        const data = await response.json()
+        setStylists(data)
+      } else {
+        console.error('Failed to fetch stylists')
+      }
+    } catch (error) {
+      console.error('Error fetching stylists:', error)
+    }
+  }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -60,7 +75,6 @@ export default function NewStylePage() {
     return <div>Loading...</div>
   }
 
-  const stylists = stylistsData as Stylist[]
 
   return (
     <div className="min-h-screen bg-gray-50">

@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import newsData from '@/data/news.json'
 
 interface NewsItem {
   id: string
@@ -16,7 +15,8 @@ interface NewsItem {
 
 export default function AdminNewsPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
-  const [news, setNews] = useState<NewsItem[]>(newsData as NewsItem[])
+  const [news, setNews] = useState<NewsItem[]>([])
+  const [loading, setLoading] = useState(true)
   const [selectedCategory, setSelectedCategory] = useState<string>('all')
   const router = useRouter()
 
@@ -24,10 +24,29 @@ export default function AdminNewsPage() {
     const auth = localStorage.getItem('adminAuth')
     if (auth === 'true') {
       setIsAuthenticated(true)
+      fetchNews()
     } else {
       router.push('/admin')
     }
   }, [router])
+
+  const fetchNews = async () => {
+    try {
+      const response = await fetch('/api/news')
+      if (response.ok) {
+        const data = await response.json()
+        setNews(data)
+      } else {
+        console.error('Failed to fetch news')
+        setNews([])
+      }
+    } catch (error) {
+      console.error('Error fetching news:', error)
+      setNews([])
+    } finally {
+      setLoading(false)
+    }
+  }
 
   const categories = [
     { value: 'all', label: 'すべて' },

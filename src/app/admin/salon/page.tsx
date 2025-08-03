@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import salonData from '@/data/salon.json'
 
 interface SalonInfo {
   name: string
@@ -21,18 +20,36 @@ interface SalonInfo {
 
 export default function AdminSalonPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
-  const [formData, setFormData] = useState<SalonInfo>(salonData as SalonInfo)
   const [isSaving, setIsSaving] = useState(false)
+  const [salonInfo, setSalonInfo] = useState<SalonInfo | null>(null)
+  const [loading, setLoading] = useState(true)
   const router = useRouter()
 
   useEffect(() => {
     const auth = localStorage.getItem('adminAuth')
     if (auth === 'true') {
       setIsAuthenticated(true)
+      fetchSalonInfo()
     } else {
       router.push('/admin')
     }
   }, [router])
+
+  const fetchSalonInfo = async () => {
+    try {
+      const response = await fetch('/api/salon')
+      if (response.ok) {
+        const data = await response.json()
+        setSalonInfo(data)
+      } else {
+        console.error('Failed to fetch salon info')
+      }
+    } catch (error) {
+      console.error('Error fetching salon info:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -40,7 +57,7 @@ export default function AdminSalonPage() {
     
     try {
       // 実際の実装では、ここでAPIを呼び出してJSONファイルを更新
-      console.log('更新されたサロン情報:', formData)
+      console.log('更新されたサロン情報:', salonInfo)
       
       // 模擬的な保存処理
       await new Promise(resolve => setTimeout(resolve, 1000))
@@ -55,14 +72,14 @@ export default function AdminSalonPage() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
-    setFormData(prev => ({
+    setSalonInfo(prev => prev ? ({
       ...prev,
       [name]: value
-    }))
+    }) : null)
   }
 
   const handleBusinessHourChange = (day: string, field: 'open' | 'close', value: string) => {
-    setFormData(prev => ({
+    setSalonInfo(prev => prev ? ({
       ...prev,
       businessHours: {
         ...prev.businessHours,
@@ -71,34 +88,36 @@ export default function AdminSalonPage() {
           [field]: value
         }
       }
-    }))
+    }) : null)
   }
 
   const handleAccessInfoChange = (index: number, value: string) => {
-    const newAccessInfo = [...formData.accessInfo]
+    if (!salonInfo) return
+    const newAccessInfo = [...salonInfo.accessInfo]
     newAccessInfo[index] = value
-    setFormData(prev => ({
+    setSalonInfo(prev => prev ? ({
       ...prev,
       accessInfo: newAccessInfo
-    }))
+    }) : null)
   }
 
   const addAccessInfo = () => {
-    setFormData(prev => ({
+    setSalonInfo(prev => prev ? ({
       ...prev,
       accessInfo: [...prev.accessInfo, '']
-    }))
+    }) : null)
   }
 
   const removeAccessInfo = (index: number) => {
-    const newAccessInfo = formData.accessInfo.filter((_, i) => i !== index)
-    setFormData(prev => ({
+    if (!salonInfo) return
+    const newAccessInfo = salonInfo.accessInfo.filter((_, i) => i !== index)
+    setSalonInfo(prev => prev ? ({
       ...prev,
       accessInfo: newAccessInfo
-    }))
+    }) : null)
   }
 
-  if (!isAuthenticated) {
+  if (!isAuthenticated || loading || !salonInfo) {
     return <div>Loading...</div>
   }
 
@@ -142,7 +161,7 @@ export default function AdminSalonPage() {
                       name="name"
                       id="name"
                       required
-                      value={formData.name}
+                      value={salonInfo.name}
                       onChange={handleChange}
                       className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-ocean-blue-500 focus:border-ocean-blue-500 sm:text-sm"
                     />
@@ -157,7 +176,7 @@ export default function AdminSalonPage() {
                       name="address"
                       id="address"
                       required
-                      value={formData.address}
+                      value={salonInfo.address}
                       onChange={handleChange}
                       className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-ocean-blue-500 focus:border-ocean-blue-500 sm:text-sm"
                     />
@@ -172,7 +191,7 @@ export default function AdminSalonPage() {
                       name="phone"
                       id="phone"
                       required
-                      value={formData.phone}
+                      value={salonInfo.phone}
                       onChange={handleChange}
                       className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-ocean-blue-500 focus:border-ocean-blue-500 sm:text-sm"
                     />
@@ -187,7 +206,7 @@ export default function AdminSalonPage() {
                       name="email"
                       id="email"
                       required
-                      value={formData.email}
+                      value={salonInfo.email}
                       onChange={handleChange}
                       className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-ocean-blue-500 focus:border-ocean-blue-500 sm:text-sm"
                     />
@@ -201,7 +220,7 @@ export default function AdminSalonPage() {
                       type="url"
                       name="googleMapsUrl"
                       id="googleMapsUrl"
-                      value={formData.googleMapsUrl}
+                      value={salonInfo.googleMapsUrl}
                       onChange={handleChange}
                       className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-ocean-blue-500 focus:border-ocean-blue-500 sm:text-sm"
                       placeholder="https://maps.google.com/..."
@@ -227,23 +246,23 @@ export default function AdminSalonPage() {
                       <div className="flex items-center space-x-2">
                         <input
                           type="time"
-                          value={formData.businessHours[day]?.open === '休業日' ? '' : formData.businessHours[day]?.open || ''}
+                          value={salonInfo.businessHours[day]?.open === '休業日' ? '' : salonInfo.businessHours[day]?.open || ''}
                           onChange={(e) => handleBusinessHourChange(day, 'open', e.target.value)}
                           className="border-gray-300 rounded-md shadow-sm focus:ring-ocean-blue-500 focus:border-ocean-blue-500 sm:text-sm"
-                          disabled={formData.businessHours[day]?.open === '休業日'}
+                          disabled={salonInfo.businessHours[day]?.open === '休業日'}
                         />
                         <span className="text-gray-500">〜</span>
                         <input
                           type="time"
-                          value={formData.businessHours[day]?.close === '休業日' ? '' : formData.businessHours[day]?.close || ''}
+                          value={salonInfo.businessHours[day]?.close === '休業日' ? '' : salonInfo.businessHours[day]?.close || ''}
                           onChange={(e) => handleBusinessHourChange(day, 'close', e.target.value)}
                           className="border-gray-300 rounded-md shadow-sm focus:ring-ocean-blue-500 focus:border-ocean-blue-500 sm:text-sm"
-                          disabled={formData.businessHours[day]?.close === '休業日'}
+                          disabled={salonInfo.businessHours[day]?.close === '休業日'}
                         />
                         <label className="flex items-center ml-4">
                           <input
                             type="checkbox"
-                            checked={formData.businessHours[day]?.open === '休業日'}
+                            checked={salonInfo.businessHours[day]?.open === '休業日'}
                             onChange={(e) => {
                               if (e.target.checked) {
                                 handleBusinessHourChange(day, 'open', '休業日')
@@ -281,7 +300,7 @@ export default function AdminSalonPage() {
                 </div>
                 
                 <div className="space-y-3">
-                  {formData.accessInfo.map((info, index) => (
+                  {salonInfo.accessInfo.map((info, index) => (
                     <div key={index} className="flex gap-2">
                       <input
                         type="text"
@@ -309,7 +328,7 @@ export default function AdminSalonPage() {
                     name="parkingInfo"
                     id="parkingInfo"
                     rows={3}
-                    value={formData.parkingInfo}
+                    value={salonInfo.parkingInfo}
                     onChange={handleChange}
                     className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-ocean-blue-500 focus:border-ocean-blue-500 sm:text-sm"
                     placeholder="提携駐車場あり（2時間まで無料）"

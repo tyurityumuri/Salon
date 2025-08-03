@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import ImageUpload from '@/components/ImageUpload'
-import stylistsData from '@/data/stylists.json'
 import { Stylist } from '@/types'
 
 interface StyleItem {
@@ -21,6 +20,7 @@ export default function EditStylePage({ params }: { params: { id: string } }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [loading, setLoading] = useState(true)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [stylists, setStylists] = useState<Stylist[]>([])
   const router = useRouter()
   
   const [formData, setFormData] = useState({
@@ -37,6 +37,7 @@ export default function EditStylePage({ params }: { params: { id: string } }) {
     if (auth === 'true') {
       setIsAuthenticated(true)
       fetchStyle()
+      fetchStylists()
     } else {
       router.push('/admin')
     }
@@ -64,6 +65,20 @@ export default function EditStylePage({ params }: { params: { id: string } }) {
       alert('データの取得に失敗しました')
     } finally {
       setLoading(false)
+    }
+  }
+
+  const fetchStylists = async () => {
+    try {
+      const response = await fetch('/api/stylists')
+      if (response.ok) {
+        const data = await response.json()
+        setStylists(data)
+      } else {
+        console.error('Failed to fetch stylists')
+      }
+    } catch (error) {
+      console.error('Error fetching stylists:', error)
     }
   }
 
@@ -116,7 +131,6 @@ export default function EditStylePage({ params }: { params: { id: string } }) {
     return <div>Loading...</div>
   }
 
-  const stylists = stylistsData as Stylist[]
 
   return (
     <div className="min-h-screen bg-gray-50">
