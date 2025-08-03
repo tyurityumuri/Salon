@@ -21,7 +21,8 @@
       "Bash(npx vercel:*)",
       "Bash(open https://github.com/tyurityumuri/Salon)",
       "Bash(sed:*)",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "Bash(ls:*)"
     ],
     "deny": []
   }
