@@ -1,30 +1,75 @@
 import { S3Client, GetObjectCommand, PutObjectCommand } from '@aws-sdk/client-s3'
+import fs from 'fs'
+import path from 'path'
 
 export class S3DataManager {
-  private s3Client: S3Client
-  private bucketName: string
+  private s3Client: S3Client | null
+  private bucketName: string | null
+  private useLocal: boolean
 
   constructor() {
-    this.s3Client = new S3Client({
-      region: process.env.AWS_REGION || 'ap-northeast-1',
-      credentials: {
-        accessKeyId: process.env.AWS_ACCESS_KEY_ID!,
-        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!,
-      },
-    })
-    
-    this.bucketName = process.env.AWS_S3_BUCKET_NAME!
+    // 環境変数の存在チェック
+    const hasS3Config = !!(
+      process.env.AWS_ACCESS_KEY_ID &&
+      process.env.AWS_SECRET_ACCESS_KEY &&
+      process.env.AWS_S3_BUCKET_NAME
+    )
+
+    this.useLocal = !hasS3Config
+
+    if (hasS3Config) {
+      this.s3Client = new S3Client({
+        region: process.env.AWS_REGION || 'ap-northeast-1',
+        credentials: {
+          accessKeyId: process.env.AWS_ACCESS_KEY_ID!,
+          secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!,
+        },
+      })
+      this.bucketName = process.env.AWS_S3_BUCKET_NAME!
+    } else {
+      this.s3Client = null
+      this.bucketName = null
+      console.log('S3 configuration not found, using local files')
+    }
+  }
+
+  // ローカルファイルから読み込み
+  private async getLocalJsonData<T>(filename: string): Promise<T> {
+    try {
+      const filePath = path.join(process.cwd(), 'src', 'data', filename)
+      const fileContent = fs.readFileSync(filePath, 'utf8')
+      return JSON.parse(fileContent)
+    } catch (error) {
+      console.error(`Error reading local file ${filename}:`, error)
+      throw new Error(`Failed to read local file ${filename}`)
+    }
+  }
+
+  // ローカルファイルに保存
+  private async saveLocalJsonData<T>(filename: string, data: T): Promise<void> {
+    try {
+      const filePath = path.join(process.cwd(), 'src', 'data', filename)
+      fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf8')
+      console.log(`Successfully saved ${filename} locally`)
+    } catch (error) {
+      console.error(`Error saving local file ${filename}:`, error)
+      throw new Error(`Failed to save local file ${filename}`)
+    }
   }
 
   // JSONファイルを取得
   async getJsonData<T>(filename: string): Promise<T> {
+    if (this.useLocal) {
+      return this.getLocalJsonData<T>(filename)
+    }
+
     try {
       const command = new GetObjectCommand({
-        Bucket: this.bucketName,
+        Bucket: this.bucketName!,
         Key: `data/${filename}`,
       })
 
-      const response = await this.s3Client.send(command)
+      const response = await this.s3Client!.send(command)
       const body = await response.Body?.transformToString()
       
       if (!body) {
@@ -34,25 +79,33 @@ export class S3DataManager {
       return JSON.parse(body)
     } catch (error) {
       console.error(`Error getting ${filename} from S3:`, error)
-      throw new Error(`Failed to get data from ${filename}`)
+      // S3で失敗した場合、ローカルファイルにフォールバック
+      console.log(`Falling back to local file for ${filename}`)
+      return this.getLocalJsonData<T>(filename)
     }
   }
 
   // JSONファイルを保存
   async saveJsonData<T>(filename: string, data: T): Promise<void> {
+    if (this.useLocal) {
+      return this.saveLocalJsonData(filename, data)
+    }
+
     try {
       const command = new PutObjectCommand({
-        Bucket: this.bucketName,
+        Bucket: this.bucketName!,
         Key: `data/${filename}`,
         Body: JSON.stringify(data, null, 2),
         ContentType: 'application/json',
       })
 
-      await this.s3Client.send(command)
+      await this.s3Client!.send(command)
       console.log(`Successfully saved ${filename} to S3`)
     } catch (error) {
       console.error(`Error saving ${filename} to S3:`, error)
-      throw new Error(`Failed to save ${filename}`)
+      // S3で失敗した場合、ローカルファイルにフォールバック
+      console.log(`Falling back to local file for ${filename}`)
+      return this.saveLocalJsonData(filename, data)
     }
   }
 
@@ -68,7 +121,7 @@ export class S3DataManager {
       // 更新処理を実行
       const updatedData = updateFn(currentData)
       
-      // S3に保存
+      // 保存
       await this.saveJsonData(filename, updatedData)
       
       return updatedData
@@ -80,6 +133,11 @@ export class S3DataManager {
 
   // 公開URLを生成
   getPublicUrl(key: string): string {
+    if (this.useLocal) {
+      // ローカル環境では相対パスを返す
+      return `/data/${key}`
+    }
+
     const cloudFrontDomain = process.env.AWS_CLOUDFRONT_DOMAIN
     
     if (cloudFrontDomain) {
@@ -96,6 +154,11 @@ export class S3DataManager {
 
   // バックアップを作成
   async createBackup(): Promise<void> {
+    if (this.useLocal) {
+      console.log('Backup not supported in local mode')
+      return
+    }
+
     const timestamp = new Date().toISOString().split('T')[0]
     const files = ['stylists.json', 'menu.json', 'news.json', 'styles.json', 'salon.json']
     
