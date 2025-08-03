@@ -5,6 +5,8 @@ import Layout from '@/components/Layout'
 import Link from 'next/link'
 import { Stylist } from '@/types'
 
+
+
 export default function StylistsPage() {
   const [stylists, setStylists] = useState<Stylist[]>([])
   const [loading, setLoading] = useState(true)

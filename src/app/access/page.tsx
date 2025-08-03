@@ -15,6 +15,8 @@ interface SalonInfo {
   parkingInfo: string
 }
 
+
+
 export default function AccessPage() {
   const [salonData, setSalonData] = useState<SalonInfo | null>(null)
   const [loading, setLoading] = useState(true)
