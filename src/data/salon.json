@@ -19,5 +19,12 @@
     "地下鉄大手町駅A1出口から徒歩3分",
     "丸の内線大手町駅直結"
   ],
-  "parkingInfo": "提携駐車場あり（2時間まで無料）"
+  "parkingInfo": "提携駐車場あり（2時間まで無料）",
+  "heroImages": [
+    "https://images.unsplash.com/photo-1560066984-138dadb4c035?ixlib=rb-4.0.3&auto=format&fit=crop&w=2874&q=80",
+    "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2869&q=80",
+    "https://images.unsplash.com/photo-1633681926022-84c23e8cb2d6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2940&q=80"
+  ],
+  "heroTitle": "NAGASE",
+  "heroSubtitle": ""
 }

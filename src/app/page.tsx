@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import Layout from '@/components/Layout'
 import Link from 'next/link'
 import ScrollAnimation from '@/components/ScrollAnimation'
+import HeroSlideshow from '@/components/HeroSlideshow'
 import { MenuItem, Stylist } from '@/types'
 
 interface NewsItem {
@@ -17,7 +18,7 @@ interface NewsItem {
 
 interface SalonData {
   name: string
-  heroImage?: string
+  heroImages?: string[]
   heroTitle?: string
   heroSubtitle?: string
 }
@@ -85,113 +86,15 @@ export default function Home() {
   return (
     <Layout>
       {/* Hero Section */}
-      <section className="relative h-[70vh] md:h-[80vh] flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-ocean-blue-900/80 to-ocean-blue-600/60 z-10"></div>
-        <div className="absolute inset-0">
-          {salonData?.heroImage ? (
-            <img
-              src={salonData.heroImage}
-              alt="Hero Background"
-              className="w-full h-full object-cover"
-              onError={(e) => {
-                const target = e.target as HTMLImageElement;
-                target.style.display = 'none';
-                target.nextElementSibling?.classList.remove('hidden');
-              }}
-            />
-          ) : null}
-          <div className={`w-full h-full bg-gradient-to-br from-gray-800 to-gray-900 ${salonData?.heroImage ? 'hidden' : ''}`}></div>
-        </div>
-        
-        <div className="relative z-20 text-center text-white container-custom">
-          <h1 className="text-5xl md:text-7xl font-bold mb-6 animate-fade-in-slow">
-            {salonData?.heroTitle || salonData?.name || '長瀬サロン'}
-          </h1>
-          <p className="text-xl md:text-2xl mb-8 font-light animate-slide-up" style={{ animationDelay: '0.3s' }}>
-            {salonData?.heroSubtitle || 'プロフェッショナルヘアサロン'}
-          </p>
-          <div className="space-x-4 animate-scale-up-slow" style={{ animationDelay: '0.6s' }}>
-            <a
-              href="https://beauty.hotpepper.jp/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block btn-primary text-lg px-8 py-4 hover:animate-glow"
-            >
-              今すぐ予約
-            </a>
-            <Link href="/styles" className="btn-secondary text-lg px-8 py-4 bg-transparent border-2 border-white text-white hover:bg-white hover:text-gray-900 transition-all duration-300">
-              スタイルを見る
-            </Link>
-          </div>
-        </div>
+      <HeroSlideshow salonData={salonData} />
 
-        {/* Scroll Down Indicator */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 animate-float">
-          <div className="w-6 h-10 border-2 border-white rounded-full flex justify-center">
-            <div className="w-1 h-3 bg-white rounded-full mt-2 animate-pulse-slow"></div>
-          </div>
-        </div>
-      </section>
-
-      {/* Introduction Section */}
-      <section className="section-padding bg-white">
-        <div className="container-custom">
-          <ScrollAnimation animation="animate-fade-in" delay={200}>
-            <div className="max-w-3xl mx-auto text-center">
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-                あなたの魅力を最大限に引き出す
-              </h2>
-              <p className="text-lg text-gray-600 leading-relaxed mb-8">
-                長瀬サロンでは、経験豊富なスタイリストがお客様一人ひとりの個性と魅力を活かした
-                最適なスタイルをご提案いたします。最新のトレンドと確かな技術で、
-                あなたの理想のスタイルを実現します。
-              </p>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
-                <ScrollAnimation animation="animate-bounce-in" delay={400}>
-                  <div className="text-center">
-                    <div className="w-16 h-16 bg-ocean-blue-100 rounded-full flex items-center justify-center mx-auto mb-4 hover:animate-float">
-                      <svg className="w-8 h-8 text-ocean-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C20.832 18.477 19.246 18 17.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                      </svg>
-                    </div>
-                    <h3 className="text-xl font-semibold text-gray-900 mb-2">豊富な経験</h3>
-                    <p className="text-gray-600">経験豊富なスタイリストが技術とセンスでお応えします</p>
-                  </div>
-                </ScrollAnimation>
-                <ScrollAnimation animation="animate-bounce-in" delay={600}>
-                  <div className="text-center">
-                    <div className="w-16 h-16 bg-ocean-blue-100 rounded-full flex items-center justify-center mx-auto mb-4 hover:animate-float">
-                      <svg className="w-8 h-8 text-ocean-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                      </svg>
-                    </div>
-                    <h3 className="text-xl font-semibold text-gray-900 mb-2">個性を重視</h3>
-                    <p className="text-gray-600">お客様の個性と魅力を最大限に引き出すスタイルを提案</p>
-                  </div>
-                </ScrollAnimation>
-                <ScrollAnimation animation="animate-bounce-in" delay={800}>
-                  <div className="text-center">
-                    <div className="w-16 h-16 bg-ocean-blue-100 rounded-full flex items-center justify-center mx-auto mb-4 hover:animate-float">
-                      <svg className="w-8 h-8 text-ocean-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                      </svg>
-                    </div>
-                    <h3 className="text-xl font-semibold text-gray-900 mb-2">最新技術</h3>
-                    <p className="text-gray-600">最新のトレンドと技術で理想のスタイルを実現</p>
-                  </div>
-                </ScrollAnimation>
-              </div>
-            </div>
-          </ScrollAnimation>
-        </div>
-      </section>
 
       {/* Popular Stylists Section */}
       <section className="section-padding bg-gray-50">
         <div className="container-custom">
           <ScrollAnimation animation="animate-slide-up" delay={200}>
             <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4" style={{ fontFamily: "'Playfair Display', serif" }}>
                 人気スタイリスト
               </h2>
               <p className="text-lg text-gray-600">
@@ -262,7 +165,7 @@ export default function Home() {
         <div className="container-custom">
           <ScrollAnimation animation="animate-slide-up" delay={200}>
             <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4" style={{ fontFamily: "'Playfair Display', serif" }}>
                 おすすめメニュー
               </h2>
               <p className="text-lg text-gray-600">
@@ -329,7 +232,7 @@ export default function Home() {
       <section className="section-padding bg-white">
         <div className="container-custom">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4" style={{ fontFamily: "'Playfair Display', serif" }}>
               最新のお知らせ
             </h2>
             <p className="text-lg text-gray-600">
@@ -377,7 +280,7 @@ export default function Home() {
       {/* CTA Section */}
       <section className="section-padding bg-ocean-blue-600">
         <div className="container-custom text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-6" style={{ fontFamily: "'Playfair Display', serif" }}>
             今すぐ予約して、新しい自分を発見しよう
           </h2>
           <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
