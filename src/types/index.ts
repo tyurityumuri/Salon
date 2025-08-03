@@ -66,4 +66,7 @@ export interface SalonInfo {
   googleMapsUrl: string
   accessInfo: string[]
   parkingInfo: string
+  heroImages?: string[]
+  heroTitle?: string
+  heroSubtitle?: string
 }

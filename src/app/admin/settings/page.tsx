@@ -14,7 +14,7 @@ interface SalonSettings {
   googleMapsUrl: string
   accessInfo: string[]
   parkingInfo: string
-  heroImage?: string
+  heroImages?: string[]
   heroTitle?: string
   heroSubtitle?: string
 }
@@ -115,21 +115,57 @@ export default function AdminSettingsPage() {
           <div className="bg-white shadow rounded-lg p-6">
             <h2 className="text-lg font-medium text-gray-900 mb-4">ヒーロー画像設定</h2>
             
-            <div className="space-y-4">
+            <div className="space-y-6">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  ヒーロー画像
+                  ヒーロー画像（複数設定可能）
                 </label>
+                <p className="text-sm text-gray-500 mb-4">
+                  複数の画像を設定すると自動でスライドショーになります。画像は4秒ごとに切り替わります。
+                </p>
+                
+                {/* 既存の画像一覧 */}
+                {settings.heroImages && settings.heroImages.length > 0 && (
+                  <div className="grid grid-cols-2 gap-4 mb-4">
+                    {settings.heroImages.map((image, index) => (
+                      <div key={index} className="relative group">
+                        <img
+                          src={image}
+                          alt={`ヒーロー画像 ${index + 1}`}
+                          className="w-full h-32 object-cover rounded-lg border"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const newImages = settings.heroImages!.filter((_, i) => i !== index)
+                            setSettings(prev => prev ? { ...prev, heroImages: newImages } : null)
+                          }}
+                          className="absolute top-2 right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition-opacity"
+                          title="削除"
+                        >
+                          ×
+                        </button>
+                        <div className="absolute bottom-2 left-2 bg-black/50 text-white text-xs px-2 py-1 rounded">
+                          {index + 1}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                
+                {/* 新しい画像をアップロード */}
                 <ImageUpload
                   category="styles"
-                  onUploadComplete={(imageUrl) => 
-                    setSettings(prev => prev ? { ...prev, heroImage: imageUrl } : null)
-                  }
+                  onUploadComplete={(imageUrl) => {
+                    setSettings(prev => prev ? { 
+                      ...prev, 
+                      heroImages: [...(prev.heroImages || []), imageUrl] 
+                    } : null)
+                  }}
                   onUploadError={(error) => {
                     setMessage(error)
                     setTimeout(() => setMessage(''), 3000)
                   }}
-                  currentImage={settings.heroImage}
                 />
               </div>
 
@@ -137,13 +173,17 @@ export default function AdminSettingsPage() {
                 <label htmlFor="heroTitle" className="block text-sm font-medium text-gray-700">
                   ヒーローセクション タイトル
                 </label>
+                <p className="text-sm text-gray-500 mb-2">
+                  現在は「NAGASE」が固定で表示されます。デザイン変更により、このフィールドは参考用です。
+                </p>
                 <input
                   type="text"
                   id="heroTitle"
                   value={settings.heroTitle || ''}
                   onChange={(e) => setSettings(prev => prev ? { ...prev, heroTitle: e.target.value } : null)}
-                  className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="長瀬サロン"
+                  className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 bg-gray-50"
+                  placeholder="NAGASE（固定表示）"
+                  disabled
                 />
               </div>
 
@@ -151,13 +191,17 @@ export default function AdminSettingsPage() {
                 <label htmlFor="heroSubtitle" className="block text-sm font-medium text-gray-700">
                   ヒーローセクション サブタイトル
                 </label>
+                <p className="text-sm text-gray-500 mb-2">
+                  現在のデザインではサブタイトルは表示されません。
+                </p>
                 <input
                   type="text"
                   id="heroSubtitle"
                   value={settings.heroSubtitle || ''}
                   onChange={(e) => setSettings(prev => prev ? { ...prev, heroSubtitle: e.target.value } : null)}
-                  className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="プロフェッショナルヘアサロン"
+                  className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 bg-gray-50"
+                  placeholder="（現在非表示）"
+                  disabled
                 />
               </div>
             </div>

@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
 import './globals.css'
+import '@fontsource/cinzel/400.css'
+import '@fontsource/cinzel/600.css'
 
 export const metadata: Metadata = {
   title: '長瀬サロン | プロフェッショナルヘアサロン',

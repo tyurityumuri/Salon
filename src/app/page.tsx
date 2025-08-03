@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import Layout from '@/components/Layout'
 import Link from 'next/link'
 import ScrollAnimation from '@/components/ScrollAnimation'
+import HeroSlideshow from '@/components/HeroSlideshow'
 import { MenuItem, Stylist } from '@/types'
 
 interface NewsItem {
@@ -17,7 +18,7 @@ interface NewsItem {
 
 interface SalonData {
   name: string
-  heroImage?: string
+  heroImages?: string[]
   heroTitle?: string
   heroSubtitle?: string
 }
@@ -85,59 +86,13 @@ export default function Home() {
   return (
     <Layout>
       {/* Hero Section */}
-      <section className="relative h-[70vh] md:h-[80vh] flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-ocean-blue-900/80 to-ocean-blue-600/60 z-10"></div>
-        <div className="absolute inset-0">
-          {salonData?.heroImage ? (
-            <img
-              src={salonData.heroImage}
-              alt="Hero Background"
-              className="w-full h-full object-cover"
-              onError={(e) => {
-                const target = e.target as HTMLImageElement;
-                target.style.display = 'none';
-                target.nextElementSibling?.classList.remove('hidden');
-              }}
-            />
-          ) : null}
-          <div className={`w-full h-full bg-gradient-to-br from-gray-800 to-gray-900 ${salonData?.heroImage ? 'hidden' : ''}`}></div>
-        </div>
-        
-        <div className="relative z-20 text-center text-white container-custom">
-          <h1 className="text-5xl md:text-7xl font-bold mb-6 animate-fade-in-slow">
-            {salonData?.heroTitle || salonData?.name || '長瀬サロン'}
-          </h1>
-          <p className="text-xl md:text-2xl mb-8 font-light animate-slide-up" style={{ animationDelay: '0.3s' }}>
-            {salonData?.heroSubtitle || 'プロフェッショナルヘアサロン'}
-          </p>
-          <div className="space-x-4 animate-scale-up-slow" style={{ animationDelay: '0.6s' }}>
-            <a
-              href="https://beauty.hotpepper.jp/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block btn-primary text-lg px-8 py-4 hover:animate-glow"
-            >
-              今すぐ予約
-            </a>
-            <Link href="/styles" className="btn-secondary text-lg px-8 py-4 bg-transparent border-2 border-white text-white hover:bg-white hover:text-gray-900 transition-all duration-300">
-              スタイルを見る
-            </Link>
-          </div>
-        </div>
-
-        {/* Scroll Down Indicator */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 animate-float">
-          <div className="w-6 h-10 border-2 border-white rounded-full flex justify-center">
-            <div className="w-1 h-3 bg-white rounded-full mt-2 animate-pulse-slow"></div>
-          </div>
-        </div>
-      </section>
+      <HeroSlideshow salonData={salonData} />
 
       {/* Introduction Section */}
       <section className="section-padding bg-white">
         <div className="container-custom">
           <ScrollAnimation animation="animate-fade-in" delay={200}>
-            <div className="max-w-3xl mx-auto text-center">
+            {/* <div className="max-w-3xl mx-auto text-center">
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
                 あなたの魅力を最大限に引き出す
               </h2>
@@ -180,8 +135,8 @@ export default function Home() {
                     <p className="text-gray-600">最新のトレンドと技術で理想のスタイルを実現</p>
                   </div>
                 </ScrollAnimation>
-              </div>
-            </div>
+              </div> */}
+            {/* </div> */}
           </ScrollAnimation>
         </div>
       </section>
