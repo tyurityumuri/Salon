@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import ImageUpload from '@/components/ImageUpload'
+import ImageUpload from '../../../../../components/ImageUpload'
 import { Stylist } from '@/types'
 
 interface StyleItem {

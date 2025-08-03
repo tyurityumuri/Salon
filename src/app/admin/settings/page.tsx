@@ -1,8 +1,8 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import AdminLayout from '@/components/AdminLayout'
-import ImageUpload from '@/components/ImageUpload'
+import AdminLayout from '../../../components/AdminLayout'
+import ImageUpload from '../../../components/ImageUpload'
 
 interface SalonSettings {
   name: string
