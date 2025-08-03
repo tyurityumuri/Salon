@@ -9,33 +9,82 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        // メインブランドカラー - モダンな黒とグレー
         primary: {
-          50: '#eff6ff',
-          100: '#dbeafe',
-          200: '#bfdbfe',
-          300: '#93c5fd',
-          400: '#60a5fa',
-          500: '#3b82f6',
-          600: '#2563eb',
-          700: '#1d4ed8',
-          800: '#1e40af',
-          900: '#1e3a8a',
+          50: '#fafafa',
+          100: '#f5f5f5',
+          200: '#e5e5e5',
+          300: '#d4d4d4',
+          400: '#a3a3a3',
+          500: '#737373',
+          600: '#525252',
+          700: '#404040',
+          800: '#262626',
+          900: '#171717',
         },
+        // アクセントカラー - 温かみのあるゴールド
+        accent: {
+          50: '#fffbeb',
+          100: '#fef3c7',
+          200: '#fde68a',
+          300: '#fcd34d',
+          400: '#fbbf24',
+          500: '#f59e0b',
+          600: '#d97706',
+          700: '#b45309',
+          800: '#92400e',
+          900: '#78350f',
+        },
+        // セカンダリカラー - 上品なベージュ
+        secondary: {
+          50: '#fdfcfb',
+          100: '#f7f5f3',
+          200: '#f1ede8',
+          300: '#e8e1d9',
+          400: '#d6c7b5',
+          500: '#c4ad91',
+          600: '#a6906f',
+          700: '#8b7355',
+          800: '#6f5a45',
+          900: '#5a4a3a',
+        },
+        // 旧カラーとの互換性保持
         'ocean-blue': {
-          50: '#f0f9ff',
-          100: '#e0f2fe',
-          200: '#bae6fd',
-          300: '#7dd3fc',
-          400: '#38bdf8',
-          500: '#0ea5e9',
-          600: '#0284c7',
-          700: '#0369a1',
-          800: '#075985',
-          900: '#0c4a6e',
+          50: '#fafafa',
+          100: '#f5f5f5',
+          200: '#e5e5e5',
+          300: '#d4d4d4',
+          400: '#a3a3a3',
+          500: '#737373',
+          600: '#525252',
+          700: '#404040',
+          800: '#262626',
+          900: '#171717',
         }
       },
       fontFamily: {
-        sans: ['Hiragino Kaku Gothic ProN', 'Helvetica Neue', 'Arial', 'sans-serif'],
+        sans: [
+          'Inter', 
+          'Hiragino Kaku Gothic ProN', 
+          'Helvetica Neue', 
+          'Yu Gothic Medium', 
+          'YuGothic', 
+          'Meiryo', 
+          'system-ui', 
+          'sans-serif'
+        ],
+        serif: [
+          'Playfair Display', 
+          'Georgia', 
+          'Times New Roman', 
+          'serif'
+        ],
+        heading: [
+          'Montserrat', 
+          'Hiragino Kaku Gothic ProN', 
+          'Helvetica Neue', 
+          'sans-serif'
+        ],
       },
       animation: {
         'fade-in': 'fadeIn 0.8s ease-in-out',

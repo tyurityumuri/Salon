@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -12,6 +14,27 @@
     color: rgb(var(--foreground));
     background: rgb(var(--background));
   }
+
+  /* パフォーマンス最適化 */
+  img {
+    content-visibility: auto;
+  }
+  
+  /* 重要なリソースのプリロード */
+  @font-face {
+    font-family: 'Inter';
+    font-display: swap;
+  }
+  
+  @font-face {
+    font-family: 'Playfair Display';
+    font-display: swap;
+  }
+  
+  @font-face {
+    font-family: 'Montserrat';
+    font-display: swap;
+  }
 }
 
 @layer components {
@@ -20,14 +43,38 @@
   }
   
   .btn-primary {
-    @apply bg-ocean-blue-600 text-white px-6 py-3 rounded-md font-medium hover:bg-ocean-blue-700 transition-colors duration-200;
+    @apply bg-primary-900 text-white px-8 py-3 rounded-none font-medium hover:bg-primary-800 transition-all duration-300 tracking-wide uppercase text-sm;
   }
   
   .btn-secondary {
-    @apply bg-gray-200 text-gray-800 px-6 py-3 rounded-md font-medium hover:bg-gray-300 transition-colors duration-200;
+    @apply bg-transparent border-2 border-primary-900 text-primary-900 px-8 py-3 rounded-none font-medium hover:bg-primary-900 hover:text-white transition-all duration-300 tracking-wide uppercase text-sm;
+  }
+  
+  .btn-accent {
+    @apply bg-accent-600 text-white px-8 py-3 rounded-none font-medium hover:bg-accent-700 transition-all duration-300 tracking-wide uppercase text-sm;
   }
   
   .section-padding {
-    @apply py-16 lg:py-24;
+    @apply py-20 lg:py-32;
+  }
+  
+  .section-padding-sm {
+    @apply py-12 lg:py-16;
+  }
+  
+  .heading-primary {
+    @apply font-heading text-4xl lg:text-6xl font-light tracking-wide text-primary-900;
+  }
+  
+  .heading-secondary {
+    @apply font-heading text-2xl lg:text-4xl font-light tracking-wide text-primary-900;
+  }
+  
+  .text-body {
+    @apply text-primary-600 leading-relaxed;
+  }
+  
+  .divider {
+    @apply w-16 h-px bg-accent-600 mx-auto my-8;
   }
 }

@@ -1,9 +1,10 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState, useEffect } from 'react'
+import Link from 'next/link'
 
 interface SalonData {
-  name: string
+  name?: string
   heroImages?: string[]
   heroTitle?: string
   heroSubtitle?: string
@@ -22,7 +23,7 @@ export default function HeroSlideshow({ salonData }: HeroSlideshowProps) {
 
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % heroImages.length)
-    }, 5000) // 5秒ごとにスライド
+    }, 6000) // 6秒ごとにスライド
 
     return () => clearInterval(interval)
   }, [heroImages.length])
@@ -30,7 +31,7 @@ export default function HeroSlideshow({ salonData }: HeroSlideshowProps) {
   const hasImages = heroImages.length > 0
 
   return (
-    <section className="relative h-[50vh] md:h-[60vh] lg:h-[70vh] flex items-center justify-center overflow-hidden">
+    <section className="relative h-screen flex items-center justify-center overflow-hidden">
       {/* 背景画像 */}
       <div className="absolute inset-0">
         {hasImages ? (
@@ -38,58 +39,68 @@ export default function HeroSlideshow({ salonData }: HeroSlideshowProps) {
             {heroImages.map((image, index) => (
               <div
                 key={index}
-                className={`absolute inset-0 transition-opacity duration-1000 ${
-                  index === currentSlide ? 'opacity-100' : 'opacity-0'
+                className={`absolute inset-0 transition-all duration-2000 ease-in-out ${
+                  index === currentSlide ? 'opacity-100 scale-100' : 'opacity-0 scale-105'
                 }`}
               >
                 <img
                   src={image}
                   alt={`Hero Background ${index + 1}`}
                   className="w-full h-full object-cover"
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement
-                    target.style.display = 'none'
-                  }}
                 />
               </div>
             ))}
           </>
         ) : (
-          <div className="w-full h-full bg-gradient-to-br from-gray-800 to-gray-900"></div>
+          <div className="w-full h-full bg-gradient-to-br from-secondary-50 via-primary-50 to-secondary-100"></div>
         )}
+        
+        {/* オーバーレイ */}
+        <div className="absolute inset-0 bg-black/30"></div>
       </div>
 
-      {/* NAGASEテキスト - 左上に配置 */}
-      <div className="absolute top-8 left-8 z-20">
-        <h1 
-          className="text-white text-4xl md:text-6xl lg:text-7xl font-bold tracking-[0.3em] opacity-90"
-          style={{
-            fontFamily: "'Playfair Display', serif",
-            textShadow: '2px 2px 8px rgba(0,0,0,0.7)',
-            letterSpacing: '0.2em'
-          }}
-        >
-          NAGASE
-        </h1>
+      {/* メインコンテンツ */}
+      <div className="relative z-10 text-center text-white px-4">
+        <div className="max-w-4xl mx-auto">
+          {/* サブタイトル */}
+          <p className="text-sm md:text-base font-light tracking-[0.3em] uppercase mb-6 text-white/90">
+            Professional Hair Salon
+          </p>
+          
+          {/* メインタイトル */}
+          <h1 className="heading-primary text-white mb-8 leading-tight">
+            {salonData?.heroTitle || 'NAGASE'}
+          </h1>
+        
+          
+          
+        </div>
       </div>
 
       {/* スライドインジケーター */}
-      {heroImages.length > 1 && (
-        <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 z-20 flex space-x-2">
+      {hasImages && heroImages.length > 1 && (
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-3">
           {heroImages.map((_, index) => (
             <button
               key={index}
               onClick={() => setCurrentSlide(index)}
               className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                index === currentSlide
-                  ? 'bg-white opacity-100 scale-125'
-                  : 'bg-white/50 opacity-70 hover:opacity-90'
+                index === currentSlide 
+                  ? 'bg-white w-8' 
+                  : 'bg-white/50 hover:bg-white/70'
               }`}
-              aria-label={`スライド ${index + 1} に移動`}
+              aria-label={`スライド ${index + 1} を表示`}
             />
           ))}
         </div>
       )}
+
+      {/* スクロールダウンインジケーター */}
+      <div className="absolute bottom-8 right-8 text-white/70 animate-bounce">
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+        </svg>
+      </div>
     </section>
   )
 }

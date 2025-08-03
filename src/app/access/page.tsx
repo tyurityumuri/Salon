@@ -44,8 +44,8 @@ export default function AccessPage() {
       <Layout>
         <div className="flex items-center justify-center min-h-screen">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-ocean-blue-600 mx-auto mb-4"></div>
-            <p className="text-gray-600">読み込み中...</p>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-900 mx-auto mb-4"></div>
+            <p className="text-primary-600 font-light tracking-wide">LOADING...</p>
           </div>
         </div>
       </Layout>
@@ -57,44 +57,49 @@ export default function AccessPage() {
   }
   return (
     <Layout>
-      <div className="section-padding">
+      <div className="section-padding bg-secondary-50">
         <div className="container-custom">
           {/* Header */}
-          <div className="text-center mb-16">
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-              アクセス
+          <div className="text-center mb-20">
+            <p className="text-sm font-medium tracking-[0.3em] uppercase text-primary-600 mb-4">LOCATION & ACCESS</p>
+            <h1 className="heading-primary mb-8">
+              ACCESS
             </h1>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              東京駅からアクセス抜群の立地にあります。お気軽にお越しください。
+            <div className="divider mb-8"></div>
+            <p className="text-body max-w-3xl mx-auto">
+              東京駅からアクセス抜群の立地にあります。<br className="hidden md:block" />
+              お気軽にお越しください。
             </p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Left Column - Map */}
             <div>
-              <div className="bg-gray-200 rounded-lg overflow-hidden h-96 mb-6">
-                {/* Google Maps Placeholder */}
-                <div className="w-full h-full bg-gradient-to-br from-gray-300 to-gray-400 flex items-center justify-center">
-                  <div className="text-center">
-                    <svg className="w-16 h-16 text-gray-500 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                    </svg>
-                    <p className="text-gray-600">Google Mapsを埋め込み予定</p>
-                  </div>
-                </div>
+              <div className="bg-primary-50 border border-primary-100 overflow-hidden h-96 mb-6">
+                {/* Google Maps Embed */}
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3240.8280665444595!2d139.7634!3d35.6812!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60188bfbd89f700b%3A0x277c49ba34ed38!2z5aSn5omL55S6!5e0!3m2!1sja!2sjp!4v1641234567890!5m2!1sja!2sjp"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen={true}
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title="長瀬サロンの場所"
+                  className="w-full h-full"
+                />
               </div>
 
               {/* Access Info */}
-              <div className="bg-white rounded-lg shadow-md p-6">
-                <h3 className="text-xl font-semibold text-gray-900 mb-4">電車でのアクセス</h3>
-                <div className="space-y-3">
+              <div className="bg-white border border-primary-100 p-8">
+                <h3 className="font-heading text-lg font-medium text-primary-900 mb-6 tracking-wide uppercase">Train Access</h3>
+                <div className="space-y-4">
                   {salonData?.accessInfo?.map((info, index) => (
                     <div key={index} className="flex items-center">
-                      <svg className="w-5 h-5 text-ocean-blue-600 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-4 h-4 text-accent-600 mr-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
-                      <span className="text-gray-700">{info}</span>
+                      <span className="text-primary-600 text-sm leading-relaxed">{info}</span>
                     </div>
                   ))}
                 </div>
@@ -104,31 +109,31 @@ export default function AccessPage() {
             {/* Right Column - Info */}
             <div className="space-y-6">
               {/* Basic Info */}
-              <div className="bg-white rounded-lg shadow-md p-6">
-                <h3 className="text-xl font-semibold text-gray-900 mb-4">店舗情報</h3>
+              <div className="bg-white border border-primary-100 p-8">
+                <h3 className="font-heading text-lg font-medium text-primary-900 mb-6 tracking-wide uppercase">Salon Information</h3>
                 <div className="space-y-4">
                   <div>
                     <div className="flex items-start">
-                      <svg className="w-5 h-5 text-ocean-blue-600 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                      <svg className="w-4 h-4 text-accent-600 mr-4 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                       </svg>
                       <div>
-                        <div className="font-medium text-gray-900">住所</div>
-                        <div className="text-gray-600">{salonData?.address}</div>
+                        <div className="font-heading font-medium text-primary-900 text-sm tracking-wide uppercase">Address</div>
+                        <div className="text-primary-600 text-sm leading-relaxed">{salonData?.address}</div>
                       </div>
                     </div>
                   </div>
 
                   <div>
                     <div className="flex items-start">
-                      <svg className="w-5 h-5 text-ocean-blue-600 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                      <svg className="w-4 h-4 text-accent-600 mr-4 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                       </svg>
                       <div>
-                        <div className="font-medium text-gray-900">電話番号</div>
-                        <div className="text-gray-600">
-                          <a href={`tel:${salonData?.phone}`} className="text-ocean-blue-600 hover:text-ocean-blue-700">
+                        <div className="font-heading font-medium text-primary-900 text-sm tracking-wide uppercase">Phone</div>
+                        <div className="text-primary-600">
+                          <a href={`tel:${salonData?.phone}`} className="text-accent-600 hover:text-accent-700 transition-colors duration-300 text-sm">
                             {salonData?.phone}
                           </a>
                         </div>
@@ -138,13 +143,13 @@ export default function AccessPage() {
 
                   <div>
                     <div className="flex items-start">
-                      <svg className="w-5 h-5 text-ocean-blue-600 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                      <svg className="w-4 h-4 text-accent-600 mr-4 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                       </svg>
                       <div>
-                        <div className="font-medium text-gray-900">メール</div>
-                        <div className="text-gray-600">
-                          <a href={`mailto:${salonData?.email}`} className="text-ocean-blue-600 hover:text-ocean-blue-700">
+                        <div className="font-heading font-medium text-primary-900 text-sm tracking-wide uppercase">Email</div>
+                        <div className="text-primary-600">
+                          <a href={`mailto:${salonData?.email}`} className="text-accent-600 hover:text-accent-700 transition-colors duration-300 text-sm">
                             {salonData?.email}
                           </a>
                         </div>
@@ -155,59 +160,65 @@ export default function AccessPage() {
               </div>
 
               {/* Business Hours */}
-              <div className="bg-white rounded-lg shadow-md p-6">
-                <h3 className="text-xl font-semibold text-gray-900 mb-4">営業時間</h3>
+              <div className="bg-white border border-primary-100 p-8">
+                <h3 className="font-heading text-lg font-medium text-primary-900 mb-6 tracking-wide uppercase">Business Hours</h3>
                 <div className="space-y-2">
                   {Object.entries(salonData?.businessHours || {}).map(([day, hours]) => (
-                    <div key={day} className="flex justify-between items-center py-2 border-b border-gray-100 last:border-b-0">
-                      <span className="font-medium text-gray-900">{day}曜日</span>
-                      <span className={`${hours.open === '休業日' ? 'text-red-600' : 'text-gray-600'}`}>
-                        {hours.open === '休業日' ? '休業日' : `${hours.open} - ${hours.close}`}
+                    <div key={day} className="flex justify-between items-center py-3 border-b border-primary-100 last:border-b-0">
+                      <span className="font-heading font-medium text-primary-900 text-sm tracking-wide uppercase">{day}</span>
+                      <span className={`text-sm tracking-wide ${hours.open === '休業日' ? 'text-red-600 uppercase' : 'text-primary-600'}`}>
+                        {hours.open === '休業日' ? 'CLOSED' : `${hours.open} - ${hours.close}`}
                       </span>
                     </div>
                   ))}
                 </div>
-                <div className="mt-4 p-3 bg-red-50 rounded-lg">
+                <div className="mt-6 p-4 bg-red-50 border border-red-100">
                   <div className="flex items-center">
-                    <svg className="w-5 h-5 text-red-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                    <svg className="w-4 h-4 text-red-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
                     </svg>
-                    <span className="text-sm text-red-700 font-medium">
-                      定休日: {salonData?.closedDays?.join('、')}
+                    <span className="text-xs text-red-700 font-medium tracking-wide uppercase">
+                      CLOSED: {salonData?.closedDays?.join(', ')}
                     </span>
                   </div>
                 </div>
               </div>
 
               {/* Parking Info */}
-              <div className="bg-white rounded-lg shadow-md p-6">
-                <h3 className="text-xl font-semibold text-gray-900 mb-4">駐車場情報</h3>
+              <div className="bg-white border border-primary-100 p-8">
+                <h3 className="font-heading text-lg font-medium text-primary-900 mb-6 tracking-wide uppercase">Parking Information</h3>
                 <div className="flex items-start">
-                  <svg className="w-5 h-5 text-ocean-blue-600 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  <svg className="w-4 h-4 text-accent-600 mr-4 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                   </svg>
                   <div>
-                    <div className="font-medium text-gray-900 mb-1">駐車場</div>
-                    <div className="text-gray-600">{salonData?.parkingInfo}</div>
+                    <div className="font-heading font-medium text-primary-900 mb-2 text-sm tracking-wide uppercase">Parking</div>
+                    <div className="text-primary-600 text-sm leading-relaxed">{salonData?.parkingInfo}</div>
                   </div>
                 </div>
               </div>
 
               {/* Contact CTA */}
-              <div className="bg-ocean-blue-50 rounded-lg p-6 text-center">
-                <h3 className="text-lg font-semibold text-gray-900 mb-3">ご予約・お問い合わせ</h3>
-                <div className="space-y-3">
+              <div className="bg-white border border-primary-100 p-8 text-center">
+                <p className="text-xs font-medium tracking-[0.3em] uppercase text-primary-600 mb-3">CONTACT US</p>
+                <h3 className="font-heading text-lg font-medium text-primary-900 mb-6 tracking-wide">ご予約・お問い合わせ</h3>
+                <div className="space-y-4">
                   <a
                     href={`tel:${salonData?.phone}`}
                     className="block btn-primary py-3"
                   >
-                    電話で予約する
+                    CALL FOR BOOKING
                   </a>
-                  <button className="block w-full btn-secondary py-3">
-                    オンライン予約
-                  </button>
+                  <a
+                    href="https://beauty.hotpepper.jp/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block btn-secondary py-3"
+                  >
+                    ONLINE BOOKING
+                  </a>
                 </div>
-                <p className="text-sm text-gray-600 mt-3">
+                <p className="text-xs text-primary-500 mt-4 tracking-wide">
                   お気軽にお電話ください<br />
                   営業時間内にお電話いただければスムーズです
                 </p>

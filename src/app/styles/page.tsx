@@ -45,8 +45,8 @@ export default function StylesPage() {
       <Layout>
         <div className="flex items-center justify-center min-h-screen">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-ocean-blue-600 mx-auto mb-4"></div>
-            <p className="text-gray-600">読み込み中...</p>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-900 mx-auto mb-4"></div>
+            <p className="text-primary-600 font-light tracking-wide">LOADING...</p>
           </div>
         </div>
       </Layout>
@@ -65,59 +65,63 @@ export default function StylesPage() {
 
   return (
     <Layout>
-      <div className="section-padding">
+      <div className="section-padding bg-secondary-50">
         <div className="container-custom">
           {/* Header */}
-          <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-              スタイルギャラリー
+          <div className="text-center mb-16">
+            <p className="text-sm font-medium tracking-[0.3em] uppercase text-primary-600 mb-4">STYLE SHOWCASE</p>
+            <h1 className="heading-primary mb-8">
+              STYLE GALLERY
             </h1>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              当サロンの実績とスタイリストの技術をご覧ください。
+            <div className="divider mb-8"></div>
+            <p className="text-body max-w-3xl mx-auto">
+              当サロンの実績とスタイリストの技術をご覧ください。<br className="hidden md:block" />
               お気に入りのスタイルが見つかったら、担当スタイリストを指名してご予約いただけます。
             </p>
           </div>
 
           {/* Filters */}
-          <div className="mb-8">
-            <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
-              {/* Search */}
-              <div className="relative flex-1 max-w-md">
-                <svg className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-                <input
-                  type="text"
-                  placeholder="スタイルやタグで検索..."
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-blue-500 focus:border-transparent"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                />
+          <div className="mb-12">
+            <div className="bg-white border border-primary-100 p-6">
+              <div className="flex flex-col lg:flex-row gap-6 items-center justify-between">
+                {/* Search */}
+                <div className="relative flex-1 max-w-md">
+                  <svg className="absolute left-4 top-1/2 transform -translate-y-1/2 text-primary-400 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                  <input
+                    type="text"
+                    placeholder="SEARCH STYLES..."
+                    className="w-full pl-12 pr-4 py-3 border border-primary-200 focus:ring-2 focus:ring-accent-500 focus:border-accent-500 font-light tracking-wide text-sm uppercase"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                  />
+                </div>
+
+                {/* Category Filters */}
+                <div className="flex flex-wrap gap-3">
+                  {categories.map((category) => (
+                    <button
+                      key={category}
+                      onClick={() => setSelectedCategory(category)}
+                      className={`px-4 py-2 text-xs font-medium tracking-wide uppercase transition-all duration-300 ${
+                        selectedCategory === category
+                          ? 'bg-primary-900 text-white'
+                          : 'bg-primary-50 text-primary-700 hover:bg-primary-100 border border-primary-200'
+                      }`}
+                    >
+                      {category === 'all' ? 'ALL STYLES' : category}
+                    </button>
+                  ))}
+                </div>
               </div>
 
-              {/* Category Filters */}
-              <div className="flex flex-wrap gap-2">
-                {categories.map((category) => (
-                  <button
-                    key={category}
-                    onClick={() => setSelectedCategory(category)}
-                    className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
-                      selectedCategory === category
-                        ? 'bg-ocean-blue-600 text-white'
-                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                    }`}
-                  >
-                    {category === 'all' ? 'すべて' : category}
-                  </button>
-                ))}
+              {/* Results Count */}
+              <div className="mt-4 text-xs text-primary-500 tracking-wide uppercase">
+                {filteredStyles.length} STYLES FOUND
+                {selectedCategory !== 'all' && ` IN ${selectedCategory}`}
+                {searchTerm && ` FOR "${searchTerm}"`}
               </div>
-            </div>
-
-            {/* Results Count */}
-            <div className="mt-4 text-sm text-gray-600">
-              {filteredStyles.length}件のスタイルが見つかりました
-              {selectedCategory !== 'all' && ` (${selectedCategory})`}
-              {searchTerm && ` - 検索: "${searchTerm}"`}
             </div>
           </div>
 
@@ -136,12 +140,12 @@ export default function StylesPage() {
               />
             </div>
           ) : (
-            <div className="text-center py-16">
-              <svg className="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0112 15c-2.34 0-4.29-1.044-5.709-2.573M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+            <div className="text-center py-20 bg-white border border-primary-100">
+              <svg className="w-16 h-16 text-primary-300 mx-auto mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0112 15c-2.34 0-4.29-1.044-5.709-2.573M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
               </svg>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">スタイルが見つかりませんでした</h3>
-              <p className="text-gray-600 mb-4">検索条件を変更してお試しください</p>
+              <h3 className="font-heading text-lg font-medium text-primary-900 mb-3 tracking-wide">NO STYLES FOUND</h3>
+              <p className="text-primary-600 mb-6">検索条件を変更してお試しください</p>
               <button
                 onClick={() => {
                   setSelectedCategory('all')
@@ -149,27 +153,35 @@ export default function StylesPage() {
                 }}
                 className="btn-secondary"
               >
-                フィルターをリセット
+                RESET FILTERS
               </button>
             </div>
           )}
 
           {/* CTA Section */}
-          <div className="bg-ocean-blue-50 rounded-lg p-8 text-center">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">
+          <div className="bg-white border border-primary-100 p-10 text-center mt-12">
+            <p className="text-sm font-medium tracking-[0.3em] uppercase text-primary-600 mb-4">READY TO TRANSFORM?</p>
+            <h2 className="font-heading text-2xl font-medium text-primary-900 mb-6 tracking-wide">
               お気に入りのスタイルは見つかりましたか？
             </h2>
-            <p className="text-lg text-gray-600 mb-6">
-              スタイリストを指名してご予約いただけます。
+            <div className="w-16 h-px bg-accent-600 mx-auto mb-6"></div>
+            <p className="text-body mb-8 max-w-2xl mx-auto">
+              スタイリストを指名してご予約いただけます。<br className="hidden md:block" />
               ご相談やカウンセリングも承っております。
             </p>
-            <div className="space-x-4">
-              <button className="btn-primary">
-                電話で予約する
-              </button>
-              <button className="btn-secondary">
-                スタイリスト一覧を見る
-              </button>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+              <a 
+                href="tel:03-1234-5678"
+                className="btn-primary min-w-[200px]"
+              >
+                CALL FOR BOOKING
+              </a>
+              <a
+                href="/stylists"
+                className="btn-secondary min-w-[200px]"
+              >
+                VIEW STYLISTS
+              </a>
             </div>
           </div>
         </div>

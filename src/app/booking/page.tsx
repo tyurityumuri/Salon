@@ -45,8 +45,8 @@ export default function BookingPage() {
       <Layout>
         <div className="flex items-center justify-center min-h-screen">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-ocean-blue-600 mx-auto mb-4"></div>
-            <p className="text-gray-600">読み込み中...</p>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-900 mx-auto mb-4"></div>
+            <p className="text-primary-600 font-light tracking-wide">LOADING...</p>
           </div>
         </div>
       </Layout>
@@ -58,15 +58,17 @@ export default function BookingPage() {
   }
   return (
     <Layout>
-      <div className="section-padding">
+      <div className="section-padding bg-secondary-50">
         <div className="container-custom">
           {/* Header */}
-          <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-              ご予約
+          <div className="text-center mb-20">
+            <p className="text-sm font-medium tracking-[0.3em] uppercase text-primary-600 mb-4">RESERVATION</p>
+            <h1 className="heading-primary mb-8">
+              BOOKING
             </h1>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              ホットペッパービューティーまたはお電話でご予約いただけます。
+            <div className="divider mb-8"></div>
+            <p className="text-body max-w-3xl mx-auto">
+              ホットペッパービューティーまたはお電話でご予約いただけます。<br className="hidden md:block" />
               詳細なご要望がある場合は詳細予約フォームもご利用ください。
             </p>
           </div>
@@ -75,14 +77,14 @@ export default function BookingPage() {
           <div className="mb-16">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
               {/* HotPepper Booking */}
-              <div className="bg-white rounded-lg shadow-lg p-8 text-center border-2 border-orange-200">
-                <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <svg className="w-8 h-8 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              <div className="bg-white border border-primary-100 shadow-sm hover:shadow-md transition-shadow duration-500 p-10 text-center">
+                <div className="w-16 h-16 bg-accent-50 flex items-center justify-center mx-auto mb-8">
+                  <svg className="w-8 h-8 text-accent-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                   </svg>
                 </div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-4">ホットペッパービューティー</h3>
-                <p className="text-gray-600 mb-6">
+                <h3 className="font-heading text-xl font-medium text-primary-900 mb-6 tracking-wide">HOT PEPPER BEAUTY</h3>
+                <p className="text-primary-600 mb-8 leading-relaxed">
                   24時間いつでも簡単予約！<br />
                   スタイリスト指名・クーポン利用も可能
                 </p>
@@ -90,34 +92,34 @@ export default function BookingPage() {
                   href="https://beauty.hotpepper.jp/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-block bg-orange-500 text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-orange-600 transition-colors"
+                  className="btn-accent mb-4"
                 >
-                  ホットペッパーで予約
+                  BOOK ON HOT PEPPER
                 </a>
-                <div className="mt-4 text-sm text-gray-500">
+                <div className="text-xs text-primary-500 tracking-wide">
                   ※外部サイトに移動します
                 </div>
               </div>
 
               {/* Phone Booking */}
-              <div className="bg-white rounded-lg shadow-lg p-8 text-center border-2 border-ocean-blue-200">
-                <div className="w-16 h-16 bg-ocean-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <svg className="w-8 h-8 text-ocean-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+              <div className="bg-white border border-primary-100 shadow-sm hover:shadow-md transition-shadow duration-500 p-10 text-center">
+                <div className="w-16 h-16 bg-primary-50 flex items-center justify-center mx-auto mb-8">
+                  <svg className="w-8 h-8 text-primary-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                   </svg>
                 </div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-4">お電話で予約</h3>
-                <p className="text-gray-600 mb-6">
+                <h3 className="font-heading text-xl font-medium text-primary-900 mb-6 tracking-wide">PHONE BOOKING</h3>
+                <p className="text-primary-600 mb-8 leading-relaxed">
                   詳しいご相談をしながら<br />
                   最適な施術プランをご提案
                 </p>
                 <a
                   href={`tel:${salonData?.phone}`}
-                  className="inline-block bg-ocean-blue-600 text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-ocean-blue-700 transition-colors"
+                  className="btn-primary mb-4"
                 >
                   {salonData?.phone}
                 </a>
-                <div className="mt-4 text-sm text-gray-500">
+                <div className="text-xs text-primary-500 tracking-wide">
                   営業時間: 10:00 - 20:00（水曜定休）
                 </div>
               </div>
@@ -125,25 +127,25 @@ export default function BookingPage() {
           </div>
 
           {/* Advanced Booking Form Toggle */}
-          <div className="text-center mb-8">
+          <div className="text-center mb-12">
             <button
               id="advanced-form-toggle"
-              className="text-ocean-blue-600 hover:text-ocean-blue-700 underline"
+              className="text-primary-600 hover:text-accent-600 transition-colors duration-300 text-sm tracking-wide uppercase font-medium"
               onClick={() => {
                 const form = document.getElementById('advanced-booking-form');
                 const toggle = document.getElementById('advanced-form-toggle');
                 if (form && toggle) {
                   if (form.style.display === 'none' || form.style.display === '') {
                     form.style.display = 'block';
-                    toggle.textContent = '詳細予約フォームを閉じる';
+                    toggle.textContent = 'CLOSE DETAILED FORM';
                   } else {
                     form.style.display = 'none';
-                    toggle.textContent = '詳細なご要望がある方はこちら（詳細予約フォーム）';
+                    toggle.textContent = 'DETAILED BOOKING FORM';
                   }
                 }
               }}
             >
-              詳細なご要望がある方はこちら（詳細予約フォーム）
+              DETAILED BOOKING FORM
             </button>
           </div>
 
