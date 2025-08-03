@@ -91,9 +91,9 @@ salon001/
 |-------------|------|--------|
 | **プロジェクト管理** | 開発状況・タスク管理・技術仕様 | [CLAUDE.md](./CLAUDE.md) |
 | **開発過程の知見** | 問題・解決策・獲得ナレッジ | [DEVELOPMENT_LESSONS.md](./docs/DEVELOPMENT_LESSONS.md) |
-| **API仕様** | APIエンドポイント仕様書 | [API_REFERENCE.md](./docs/API_REFERENCE.md) |
-| **コンポーネントガイド** | 再利用可能コンポーネント | [COMPONENTS.md](./docs/COMPONENTS.md) |
-| **デプロイメントガイド** | 本番環境設定・デプロイ手順 | [DEPLOYMENT.md](./docs/DEPLOYMENT.md) |
+| **API仕様** | APIエンドポイント仕様書 | 📊 [API一覧](#-api-エンドポイント) |
+| **コンポーネントガイド** | 再利用可能コンポーネント | 🎨 [デザインシステム](#-デザインシステム) |
+| **デプロイメントガイド** | 本番環境設定・デプロイ手順 | 🚀 [デプロイメント](#-デプロイメント) |
 
 ### 📋 主要ページ
 
