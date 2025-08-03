@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { MenuItem } from '@/types'
@@ -21,17 +21,7 @@ export default function EditMenuPage({ params }: { params: { id: string } }) {
     options: [{ name: '', additionalPrice: '' }]
   })
 
-  useEffect(() => {
-    const auth = localStorage.getItem('adminAuth')
-    if (auth === 'true') {
-      setIsAuthenticated(true)
-      fetchMenu()
-    } else {
-      router.push('/admin')
-    }
-  }, [router, params.id])
-
-  const fetchMenu = async () => {
+  const fetchMenu = useCallback(async () => {
     try {
       const response = await fetch(`/api/menu/${params.id}`)
       if (response.ok) {
@@ -57,7 +47,17 @@ export default function EditMenuPage({ params }: { params: { id: string } }) {
     } finally {
       setLoading(false)
     }
-  }
+  }, [params.id, router])
+
+  useEffect(() => {
+    const auth = localStorage.getItem('adminAuth')
+    if (auth === 'true') {
+      setIsAuthenticated(true)
+      fetchMenu()
+    } else {
+      router.push('/admin')
+    }
+  }, [router, params.id, fetchMenu])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()

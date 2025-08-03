@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import ImageUpload from '../../../../../components/ImageUpload'
@@ -32,18 +32,7 @@ export default function EditStylePage({ params }: { params: { id: string } }) {
     height: '400'
   })
 
-  useEffect(() => {
-    const auth = localStorage.getItem('adminAuth')
-    if (auth === 'true') {
-      setIsAuthenticated(true)
-      fetchStyle()
-      fetchStylists()
-    } else {
-      router.push('/admin')
-    }
-  }, [router, params.id])
-
-  const fetchStyle = async () => {
+  const fetchStyle = useCallback(async () => {
     try {
       const response = await fetch(`/api/styles/${params.id}`)
       if (response.ok) {
@@ -66,9 +55,9 @@ export default function EditStylePage({ params }: { params: { id: string } }) {
     } finally {
       setLoading(false)
     }
-  }
+  }, [params.id, router])
 
-  const fetchStylists = async () => {
+  const fetchStylists = useCallback(async () => {
     try {
       const response = await fetch('/api/stylists')
       if (response.ok) {
@@ -80,7 +69,18 @@ export default function EditStylePage({ params }: { params: { id: string } }) {
     } catch (error) {
       console.error('Error fetching stylists:', error)
     }
-  }
+  }, [])
+
+  useEffect(() => {
+    const auth = localStorage.getItem('adminAuth')
+    if (auth === 'true') {
+      setIsAuthenticated(true)
+      fetchStyle()
+      fetchStylists()
+    } else {
+      router.push('/admin')
+    }
+  }, [router, params.id, fetchStyle, fetchStylists])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()

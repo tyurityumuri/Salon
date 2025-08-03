@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import ImageUpload from '../../../../../components/ImageUpload'
@@ -28,17 +28,7 @@ export default function EditNewsPage({ params }: { params: { id: string } }) {
     image: ''
   })
 
-  useEffect(() => {
-    const auth = localStorage.getItem('adminAuth')
-    if (auth === 'true') {
-      setIsAuthenticated(true)
-      fetchNews()
-    } else {
-      router.push('/admin')
-    }
-  }, [router, params.id])
-
-  const fetchNews = async () => {
+  const fetchNews = useCallback(async () => {
     try {
       const response = await fetch(`/api/news/${params.id}`)
       if (response.ok) {
@@ -60,7 +50,17 @@ export default function EditNewsPage({ params }: { params: { id: string } }) {
     } finally {
       setLoading(false)
     }
-  }
+  }, [params.id, router])
+
+  useEffect(() => {
+    const auth = localStorage.getItem('adminAuth')
+    if (auth === 'true') {
+      setIsAuthenticated(true)
+      fetchNews()
+    } else {
+      router.push('/admin')
+    }
+  }, [router, params.id, fetchNews])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()

@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import ImageUpload from '@/components/ImageUpload'
@@ -26,17 +26,7 @@ export default function EditStylistPage({ params }: { params: { id: string } }) 
     image: ''
   })
 
-  useEffect(() => {
-    const auth = localStorage.getItem('adminAuth')
-    if (auth === 'true') {
-      setIsAuthenticated(true)
-      fetchStylist()
-    } else {
-      router.push('/admin')
-    }
-  }, [router, params.id])
-
-  const fetchStylist = async () => {
+  const fetchStylist = useCallback(async () => {
     try {
       const response = await fetch(`/api/stylists/${params.id}`)
       if (response.ok) {
@@ -64,7 +54,17 @@ export default function EditStylistPage({ params }: { params: { id: string } }) 
     } finally {
       setLoading(false)
     }
-  }
+  }, [params.id, router])
+
+  useEffect(() => {
+    const auth = localStorage.getItem('adminAuth')
+    if (auth === 'true') {
+      setIsAuthenticated(true)
+      fetchStylist()
+    } else {
+      router.push('/admin')
+    }
+  }, [router, params.id, fetchStylist])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
