@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react'
 import Layout from '@/components/Layout'
 import { MenuItem } from '@/types'
 
+
+
 export default function MenuPage() {
   const [menuData, setMenuData] = useState<MenuItem[]>([])
   const [loading, setLoading] = useState(true)

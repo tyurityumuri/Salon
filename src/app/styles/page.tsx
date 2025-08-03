@@ -14,6 +14,8 @@ interface StyleItem {
   height: number
 }
 
+
+
 export default function StylesPage() {
   const [stylesData, setStylesData] = useState<StyleItem[]>([])
   const [loading, setLoading] = useState(true)

@@ -4,7 +4,7 @@ const Footer = () => {
   return (
     <footer className="bg-gray-900 text-white">
       <div className="container-custom py-12">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* サロン情報 */}
           <div>
             <h3 className="text-xl font-bold mb-4 text-ocean-blue-400">長瀬サロン</h3>
@@ -15,25 +15,6 @@ const Footer = () => {
               <p className="text-sm">営業時間: 10:00 - 20:00</p>
               <p className="text-sm">定休日: 水曜日</p>
             </div>
-          </div>
-
-          {/* ナビゲーション */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4">ナビゲーション</h3>
-            <nav className="space-y-2">
-              <Link href="/stylists" className="block text-sm text-gray-300 hover:text-ocean-blue-400 transition-colors">
-                スタイリスト
-              </Link>
-              <Link href="/styles" className="block text-sm text-gray-300 hover:text-ocean-blue-400 transition-colors">
-                スタイル
-              </Link>
-              <Link href="/menu" className="block text-sm text-gray-300 hover:text-ocean-blue-400 transition-colors">
-                メニュー・料金
-              </Link>
-              <Link href="/access" className="block text-sm text-gray-300 hover:text-ocean-blue-400 transition-colors">
-                アクセス
-              </Link>
-            </nav>
           </div>
 
           {/* SNS・お問い合わせ */}
@@ -74,7 +55,7 @@ const Footer = () => {
 
         <div className="border-t border-gray-800 mt-8 pt-8 text-center">
           <p className="text-sm text-gray-400">
-            © 2025 長瀬サロン. All rights reserved.
+            &copy; {new Date().getFullYear()} 長瀬サロン. All rights reserved.
           </p>
         </div>
       </div>
