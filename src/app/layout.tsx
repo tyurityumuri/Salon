@@ -4,6 +4,10 @@ import '@fontsource/playfair-display/400.css'
 import '@fontsource/playfair-display/700.css'
 import '@fontsource/cormorant-garamond/400.css'
 import '@fontsource/cormorant-garamond/600.css'
+import { AuthProvider } from '@/contexts/AuthContext'
+import Analytics from '@/components/Analytics'
+import ServiceWorkerRegistration from '@/components/ServiceWorkerRegistration'
+import PWAInstaller from '@/components/PWAInstaller'
 
 export const metadata: Metadata = {
   title: {
@@ -71,7 +75,22 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ja" className="--background: 255 255 255; --foreground: 0 0 0;">
-      <body>{children}</body>
+      <head>
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#1f2937" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="長瀬サロン" />
+        <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
+      </head>
+      <body>
+        <AuthProvider>
+          <ServiceWorkerRegistration />
+          <Analytics />
+          {children}
+          <PWAInstaller />
+        </AuthProvider>
+      </body>
     </html>
   )
 }
