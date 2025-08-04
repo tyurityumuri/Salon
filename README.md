@@ -18,7 +18,10 @@
 - ⚡ **高パフォーマンス**: Next.js 14とTypeScriptによる最適化
 - 🔍 **SEO最適化**: 構造化データと適切なメタタグ実装
 - 🎭 **リッチアニメーション**: スムーズなスクロールアニメーション
-- 📊 **管理システム**: コンテンツ管理機能付き
+- 📊 **管理システム**: Firebase認証付きコンテンツ管理
+- 📱 **PWA対応**: オフライン動作・アプリインストール可能
+- 📈 **アナリティクス**: Google Analytics 4 & Web Vitals監視
+- 🧪 **テスト完備**: Jest単体テスト & Playwright E2Eテスト
 
 ## 🛠️ 技術スタック
 
@@ -27,6 +30,11 @@
 | **Next.js** | 14.2.31 | React フレームワーク |
 | **TypeScript** | 5.0+ | 型安全な開発 |
 | **Tailwind CSS** | 3.0+ | ユーティリティファーストCSS |
+| **Firebase** | 12.0+ | 認証・データベース |
+| **Google Analytics 4** | Latest | ユーザー行動分析 |
+| **Jest** | 30.0+ | 単体テスト |
+| **Playwright** | 1.54+ | E2Eテスト |
+| **PWA** | - | プログレッシブWebアプリ |
 | **Vercel** | Latest | ホスティング・デプロイ |
 | **AWS S3** | - | 画像ストレージ |
 
@@ -91,6 +99,7 @@ salon001/
 |-------------|------|--------|
 | **プロジェクト管理** | 開発状況・タスク管理・技術仕様 | [CLAUDE.md](./CLAUDE.md) |
 | **開発過程の知見** | 問題・解決策・獲得ナレッジ | [DEVELOPMENT_LESSONS.md](./docs/DEVELOPMENT_LESSONS.md) |
+| **コスト分析レポート** | 実装機能のコスト・ROI分析 | [COST_ANALYSIS.md](./docs/COST_ANALYSIS.md) |
 | **API仕様** | APIエンドポイント仕様書 | 📊 [API一覧](#-api-エンドポイント) |
 | **コンポーネントガイド** | 再利用可能コンポーネント | 🎨 [デザインシステム](#-デザインシステム) |
 | **デプロイメントガイド** | 本番環境設定・デプロイ手順 | 🚀 [デプロイメント](#-デプロイメント) |
@@ -139,6 +148,21 @@ npm run lint
 
 # TypeScript型チェック
 npm run type-check
+
+# 単体テスト実行
+npm test
+
+# 単体テスト（ウォッチモード）
+npm run test:watch
+
+# テストカバレッジ確認
+npm run test:coverage
+
+# E2Eテスト実行
+npm run test:e2e
+
+# E2EテストUI実行
+npm run test:e2e:ui
 ```
 
 ## 🏗️ アーキテクチャ
