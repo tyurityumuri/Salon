@@ -88,16 +88,18 @@ export default function BookingPage() {
                   24時間いつでも簡単予約！<br />
                   スタイリスト指名・クーポン利用も可能
                 </p>
-                <a
-                  href="https://beauty.hotpepper.jp/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn-accent mb-4"
-                >
-                  BOOK ON HOT PEPPER
-                </a>
-                <div className="text-xs text-primary-500 tracking-wide">
-                  ※外部サイトに移動します
+                <div className="space-y-3">
+                  <a
+                    href="https://beauty.hotpepper.jp/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-accent block"
+                  >
+                    BOOK ON HOT PEPPER
+                  </a>
+                  <div className="text-xs text-primary-500 tracking-wide text-center">
+                    ※外部サイトに移動します
+                  </div>
                 </div>
               </div>
 
@@ -109,18 +111,20 @@ export default function BookingPage() {
                   </svg>
                 </div>
                 <h3 className="font-heading text-xl font-medium text-primary-900 mb-6 tracking-wide">PHONE BOOKING</h3>
-                <p className="text-primary-600 mb-8 leading-relaxed">
+                <p className="text-primary-600 mb-10 leading-relaxed">
                   詳しいご相談をしながら<br />
                   最適な施術プランをご提案
                 </p>
-                <a
-                  href={`tel:${salonData?.phone}`}
-                  className="btn-primary mb-4"
-                >
-                  {salonData?.phone}
-                </a>
-                <div className="text-xs text-primary-500 tracking-wide">
-                  営業時間: 10:00 - 20:00（水曜定休）
+                <div className="space-y-6">
+                  <a
+                    href={`tel:${salonData?.phone}`}
+                    className="btn-primary block mb-4"
+                  >
+                    {salonData?.phone}
+                  </a>
+                  <div className="text-xs text-primary-500 tracking-wide text-center pt-2">
+                    営業時間: 10:00 - 20:00（水曜定休）
+                  </div>
                 </div>
               </div>
             </div>

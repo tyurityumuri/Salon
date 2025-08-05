@@ -1,10 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getS3DataManager } from '@/lib/s3-data-manager'
 import { Stylist } from '@/types'
+import { publicApiRateLimit, adminApiRateLimit } from '@/lib/rate-limit'
+import { stylistSchema, formatZodError } from '@/lib/validation'
 
 const dataManager = getS3DataManager()
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+  // レート制限チェック
+  const rateLimitResult = await publicApiRateLimit(request)
+  if (rateLimitResult) return rateLimitResult
   try {
     const stylists = await dataManager.getJsonData<Stylist[]>('stylists.json')
     return NextResponse.json(stylists)
@@ -18,45 +23,27 @@ export async function GET() {
 }
 
 export async function POST(request: NextRequest) {
+  // 管理画面API用のレート制限チェック
+  const rateLimitResult = await adminApiRateLimit(request)
+  if (rateLimitResult) return rateLimitResult
+  
   try {
     const body = await request.json()
     
-    const { name, position, bio, experience, rating, reviewCount, specialties } = body
+    // Zodスキーマによるバリデーション
+    const validationResult = stylistSchema.safeParse(body)
     
-    if (!name || !position || !bio || experience === undefined || rating === undefined || reviewCount === undefined || !specialties) {
+    if (!validationResult.success) {
       return NextResponse.json(
-        { error: 'Required fields are missing' },
+        { 
+          error: 'Validation failed',
+          details: formatZodError(validationResult.error)
+        },
         { status: 400 }
       )
     }
-
-    const stylistData = {
-      name: String(name),
-      position: String(position),
-      bio: String(bio),
-      experience: Number(experience),
-      rating: Number(rating),
-      reviewCount: Number(reviewCount),
-      specialties: Array.isArray(specialties) ? specialties : specialties.split(',').map((s: string) => s.trim()),
-      social: body.social || {},
-      image: body.image || null,
-      skills: body.skills || [],
-      portfolio: body.portfolio || []
-    }
-
-    if (stylistData.rating < 1 || stylistData.rating > 5) {
-      return NextResponse.json(
-        { error: 'Rating must be between 1 and 5' },
-        { status: 400 }
-      )
-    }
-
-    if (stylistData.experience < 0) {
-      return NextResponse.json(
-        { error: 'Experience must be non-negative' },
-        { status: 400 }
-      )
-    }
+    
+    const stylistData = validationResult.data
     
     const updatedStylists = await dataManager.updateJsonData<Stylist[]>(
       'stylists.json',

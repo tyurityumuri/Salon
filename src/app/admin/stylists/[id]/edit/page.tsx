@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import ImageUpload from '@/components/ImageUpload'
+import PortfolioManager from '@/components/PortfolioManager'
 import { Stylist } from '@/types'
 
 export default function EditStylistPage({ params }: { params: { id: string } }) {
@@ -25,6 +26,8 @@ export default function EditStylistPage({ params }: { params: { id: string } }) 
     youtube: '',
     image: ''
   })
+  
+  const [portfolio, setPortfolio] = useState<any[]>([])
 
   const fetchStylist = useCallback(async () => {
     try {
@@ -44,6 +47,7 @@ export default function EditStylistPage({ params }: { params: { id: string } }) 
           youtube: stylist.social?.youtube || '',
           image: stylist.image || ''
         })
+        setPortfolio(stylist.portfolio || [])
       } else {
         alert('スタイリストが見つかりません')
         router.push('/admin/stylists')
@@ -84,7 +88,8 @@ export default function EditStylistPage({ params }: { params: { id: string } }) 
           twitter: formData.twitter || undefined,
           youtube: formData.youtube || undefined
         },
-        image: formData.image || null
+        image: formData.image || null,
+        portfolio: portfolio
       }
 
       const response = await fetch(`/api/stylists/${params.id}`, {
@@ -341,6 +346,16 @@ export default function EditStylistPage({ params }: { params: { id: string } }) 
                     />
                   </div>
                 </div>
+              </div>
+            </div>
+
+            {/* ポートフォリオ管理 */}
+            <div className="bg-white shadow rounded-lg">
+              <div className="px-4 py-5 sm:p-6">
+                <PortfolioManager
+                  portfolio={portfolio}
+                  onChange={setPortfolio}
+                />
               </div>
             </div>
 

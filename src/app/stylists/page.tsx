@@ -67,21 +67,37 @@ export default function StylistsPage() {
                   {/* Stylist Image */}
                   <div className="relative h-96 overflow-hidden">
                     {stylist.image ? (
-                      <Image
-                        src={stylist.image}
-                        alt={stylist.name}
-                        fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-700"
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      />
-                    ) : null}
-                    <div className={`absolute inset-0 bg-gradient-to-br from-primary-100 to-primary-200 flex items-center justify-center ${stylist.image ? 'hidden' : ''}`}>
-                      <div className="w-24 h-24 bg-primary-300 rounded-full flex items-center justify-center">
-                        <svg className="w-12 h-12 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                        </svg>
+                      <>
+                        <Image
+                          src={stylist.image}
+                          alt={stylist.name}
+                          fill
+                          className="object-cover group-hover:scale-105 transition-transform duration-700"
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          onError={(e) => {
+                            const target = e.target as HTMLImageElement;
+                            target.style.display = 'none';
+                            const fallback = target.nextElementSibling as HTMLElement;
+                            if (fallback) fallback.style.display = 'flex';
+                          }}
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-br from-primary-100 to-primary-200 flex items-center justify-center" style={{ display: 'none' }}>
+                          <div className="w-24 h-24 bg-primary-300 rounded-full flex items-center justify-center">
+                            <svg className="w-12 h-12 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                          </div>
+                        </div>
+                      </>
+                    ) : (
+                      <div className="absolute inset-0 bg-gradient-to-br from-primary-100 to-primary-200 flex items-center justify-center">
+                        <div className="w-24 h-24 bg-primary-300 rounded-full flex items-center justify-center">
+                          <svg className="w-12 h-12 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                          </svg>
+                        </div>
                       </div>
-                    </div>
+                    )}
                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-500"></div>
                     <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-6">
                       <h3 className="font-heading text-xl font-medium text-white tracking-wide mb-1">{stylist.name}</h3>
@@ -117,7 +133,7 @@ export default function StylistsPage() {
                     </div>
 
                     {/* Social Links */}
-                    {Object.keys(stylist.social).length > 0 && (
+                    {stylist.social && (Object.keys(stylist.social).filter(key => stylist.social[key as keyof typeof stylist.social]).length > 0) && (
                       <div className="flex space-x-4 pt-4 border-t border-primary-100">
                         {stylist.social.instagram && (
                           <a

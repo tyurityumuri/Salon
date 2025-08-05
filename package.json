@@ -27,12 +27,17 @@
     "@aws-sdk/s3-request-presigner": "^3.859.0",
     "@fontsource/cormorant-garamond": "^5.2.9",
     "@fontsource/playfair-display": "^5.2.6",
+    "@types/crypto-js": "^4.2.2",
+    "crypto-js": "^4.2.0",
     "dotenv": "^17.2.1",
+    "express-rate-limit": "^8.0.1",
     "firebase": "^12.0.0",
+    "isomorphic-dompurify": "^2.26.0",
     "next": "^14.2.31",
     "react": "^18",
     "react-dom": "^18",
-    "web-vitals": "^5.1.0"
+    "web-vitals": "^5.1.0",
+    "zod": "^4.0.14"
   },
   "devDependencies": {
     "@playwright/test": "^1.54.2",

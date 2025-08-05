@@ -5,6 +5,7 @@ import Layout from '@/components/Layout'
 import Link from 'next/link'
 import { notFound, useRouter } from 'next/navigation'
 import { Stylist } from '@/types'
+import StyleDetailModal from '@/components/StyleDetailModal'
 
 interface Props {
   params: {
@@ -12,9 +13,25 @@ interface Props {
   }
 }
 
+interface StyleDetail {
+  id: string
+  title: string
+  description: string
+  category: string
+  images: {
+    front: string
+    side: string
+    back: string
+  }
+  stylist: string
+  tags: string[]
+}
+
 export default function StylistDetailClient({ params }: Props) {
   const [stylist, setStylist] = useState<Stylist | null>(null)
   const [loading, setLoading] = useState(true)
+  const [selectedStyle, setSelectedStyle] = useState<StyleDetail | null>(null)
+  const [isModalOpen, setIsModalOpen] = useState(false)
   const router = useRouter()
 
   useEffect(() => {
@@ -28,8 +45,13 @@ export default function StylistDetailClient({ params }: Props) {
           if (foundStylist) {
             setStylist(foundStylist)
           } else {
-            notFound()
+            console.error('Stylist not found for id:', params.id)
+            console.log('Available stylists:', stylists.map(s => ({ id: s.id, name: s.name })))
+            // Instead of notFound(), just set loading to false and show error message
+            setStylist(null)
           }
+        } else {
+          console.error('Failed to fetch stylists:', response.status, response.statusText)
         }
       } catch (error) {
         console.error('Error fetching stylist:', error)
@@ -40,6 +62,29 @@ export default function StylistDetailClient({ params }: Props) {
 
     fetchStylist()
   }, [params.id, router])
+
+  const handleStyleClick = (portfolio: any) => {
+    const styleDetail: StyleDetail = {
+      id: portfolio.id,
+      title: portfolio.title,
+      description: portfolio.description || `${stylist?.name}による${portfolio.title}のスタイルです。`,
+      category: portfolio.category || 'スタイル',
+      images: {
+        front: portfolio.image,
+        side: portfolio.sideImage || '',
+        back: portfolio.backImage || ''
+      },
+      stylist: stylist?.name || '',
+      tags: portfolio.tags || []
+    }
+    setSelectedStyle(styleDetail)
+    setIsModalOpen(true)
+  }
+
+  const closeModal = () => {
+    setIsModalOpen(false)
+    setSelectedStyle(null)
+  }
 
   if (loading) {
     return (
@@ -55,7 +100,24 @@ export default function StylistDetailClient({ params }: Props) {
   }
 
   if (!stylist) {
-    notFound()
+    return (
+      <Layout>
+        <div className="section-padding bg-white">
+          <div className="container-custom">
+            <div className="text-center py-20">
+              <h1 className="text-3xl font-bold text-gray-900 mb-4">スタイリストが見つかりません</h1>
+              <p className="text-gray-600 mb-8">お探しのスタイリストは存在しないか、現在利用できません。</p>
+              <Link 
+                href="/stylists" 
+                className="btn-primary"
+              >
+                スタイリスト一覧に戻る
+              </Link>
+            </div>
+          </div>
+        </div>
+      </Layout>
+    )
   }
 
   return (
@@ -188,6 +250,40 @@ export default function StylistDetailClient({ params }: Props) {
                 </div>
               </div>
 
+              {/* Portfolio */}
+              {stylist.portfolio && stylist.portfolio.length > 0 && (
+                <div>
+                  <h2 className="text-2xl font-bold text-gray-900 mb-4">ポートフォリオ</h2>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                    {stylist.portfolio.map((portfolio, index) => (
+                      <button
+                        key={index}
+                        onClick={() => handleStyleClick(portfolio)}
+                        className="group relative aspect-square rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105"
+                      >
+                        <img
+                          src={portfolio.image}
+                          alt={portfolio.title}
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                          loading="lazy"
+                        />
+                        <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-all duration-300 flex items-center justify-center">
+                          <div className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-center">
+                            <div className="w-8 h-8 mx-auto mb-2">
+                              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                              </svg>
+                            </div>
+                            <p className="text-sm font-medium">{portfolio.title}</p>
+                          </div>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               {/* Call to Action */}
               <div className="bg-ocean-blue-50 rounded-lg p-6">
                 <h3 className="text-xl font-bold text-gray-900 mb-4">
@@ -216,6 +312,13 @@ export default function StylistDetailClient({ params }: Props) {
             </div>
           </div>
         </div>
+
+        {/* Style Detail Modal */}
+        <StyleDetailModal
+          isOpen={isModalOpen}
+          onClose={closeModal}
+          style={selectedStyle}
+        />
       </div>
     </Layout>
   )
