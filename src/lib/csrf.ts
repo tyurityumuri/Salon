@@ -7,7 +7,8 @@ const csrfTokens = new Map<string, { token: string; expires: number; used: boole
 // 期限切れトークンを定期的にクリーンアップ（1時間ごと）
 setInterval(() => {
   const now = Date.now()
-  for (const [sessionId, data] of csrfTokens.entries()) {
+  const entries = Array.from(csrfTokens.entries())
+  for (const [sessionId, data] of entries) {
     if (data.expires < now || data.used) {
       csrfTokens.delete(sessionId)
     }

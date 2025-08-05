@@ -2,17 +2,7 @@
 
 import { useState } from 'react'
 import ImageUpload from '@/components/ImageUpload'
-
-interface PortfolioItem {
-  id: string
-  title: string
-  description: string
-  image: string
-  sideImage?: string
-  backImage?: string
-  category?: string
-  tags?: string[]
-}
+import { PortfolioItem } from '@/types'
 
 interface PortfolioManagerProps {
   portfolio: PortfolioItem[]
@@ -246,9 +236,10 @@ export default function PortfolioManager({ portfolio, onChange }: PortfolioManag
                         メイン画像 *
                       </label>
                       <ImageUpload
+                        category="styles"
                         currentImage={editingItem.image}
-                        onImageUpload={(url) => handleImageUpload(url, 'main')}
-                        aspectRatio="1:1"
+                        onUploadComplete={(url) => handleImageUpload(url, 'main')}
+                        onUploadError={(error) => alert(error)}
                       />
                     </div>
 
@@ -258,9 +249,10 @@ export default function PortfolioManager({ portfolio, onChange }: PortfolioManag
                         横からの画像
                       </label>
                       <ImageUpload
+                        category="styles"
                         currentImage={editingItem.sideImage || ''}
-                        onImageUpload={(url) => handleImageUpload(url, 'side')}
-                        aspectRatio="1:1"
+                        onUploadComplete={(url) => handleImageUpload(url, 'side')}
+                        onUploadError={(error) => alert(error)}
                       />
                     </div>
 
@@ -270,9 +262,10 @@ export default function PortfolioManager({ portfolio, onChange }: PortfolioManag
                         後ろからの画像
                       </label>
                       <ImageUpload
+                        category="styles"
                         currentImage={editingItem.backImage || ''}
-                        onImageUpload={(url) => handleImageUpload(url, 'back')}
-                        aspectRatio="1:1"
+                        onUploadComplete={(url) => handleImageUpload(url, 'back')}
+                        onUploadError={(error) => alert(error)}
                       />
                     </div>
                   </div>

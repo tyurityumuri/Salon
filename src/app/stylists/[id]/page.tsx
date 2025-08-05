@@ -68,7 +68,7 @@ export default async function StylistDetailPage({ params }: Props) {
     name: stylist.name,
     jobTitle: stylist.position,
     description: stylist.bio,
-    image: stylist.image,
+    image: stylist.image || undefined,
     url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://nagase-salon.vercel.app'}/stylists/${stylist.id}`,
     worksFor: {
       name: '長瀬サロン',

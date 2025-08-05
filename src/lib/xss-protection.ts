@@ -76,7 +76,7 @@ export function sanitizeHTML(
   }
   
   try {
-    return DOMPurify.sanitize(input, config)
+    return DOMPurify.sanitize(input, config) as unknown as string
   } catch (error) {
     console.error('HTML sanitization failed:', error)
     return ''
@@ -193,7 +193,7 @@ export function sanitizeCSS(css: string): string {
     // JavaScript実行を防ぐ
     .replace(/javascript\s*:/gi, '')
     .replace(/expression\s*\(/gi, '')
-    .replace//@import/gi, '')
+    .replace(/@import/gi, '')
     .replace(/-moz-binding/gi, '')
     .replace(/behavior\s*:/gi, '')
     

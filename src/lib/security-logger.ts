@@ -239,7 +239,7 @@ function detectAnomalousActivity(event: SecurityEvent): void {
           reason: 'High frequency security events',
           eventCount: activity.count,
           timeWindow: now - activity.firstSeen,
-          eventTypes: [...new Set(activity.events)]
+          eventTypes: Array.from(new Set(activity.events))
         },
         event.userId,
         event.email
@@ -372,7 +372,8 @@ function cleanupSuspiciousActivities(): void {
   const now = Date.now()
   const maxAge = 24 * 60 * 60 * 1000 // 24時間
   
-  for (const [key, activity] of suspiciousActivities.entries()) {
+  const entries = Array.from(suspiciousActivities.entries())
+  for (const [key, activity] of entries) {
     if (now - activity.lastSeen > maxAge) {
       suspiciousActivities.delete(key)
     }

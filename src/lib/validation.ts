@@ -24,9 +24,13 @@ export const stylistSchema = z.object({
   })).optional(),
   portfolio: z.array(z.object({
     id: z.string(),
-    image: z.string(),
     title: z.string(),
-    description: z.string()
+    description: z.string(),
+    image: z.string(),
+    sideImage: z.string().optional(),
+    backImage: z.string().optional(),
+    category: z.string().optional(),
+    tags: z.array(z.string()).optional()
   })).optional()
 })
 
@@ -37,7 +41,7 @@ export const menuItemSchema = z.object({
   duration: z.string().regex(/^\d+分$/, '所要時間は「60分」の形式で入力してください'),
   description: z.string().min(1, '説明は必須です').max(300, '説明は300文字以内で入力してください'),
   category: z.enum(['cut', 'color', 'perm', 'treatment', 'other'], {
-    errorMap: () => ({ message: 'カテゴリーを選択してください' })
+    message: 'カテゴリーを選択してください'
   }),
   isPopular: z.boolean().optional()
 })
@@ -68,7 +72,7 @@ export const newsSchema = z.object({
   date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, '日付はYYYY-MM-DD形式で入力してください'),
   content: z.string().min(1, '内容は必須です').max(1000, '内容は1000文字以内で入力してください'),
   category: z.enum(['news', 'campaign', 'holiday', 'other'], {
-    errorMap: () => ({ message: 'カテゴリーを選択してください' })
+    message: 'カテゴリーを選択してください'
   })
 })
 
@@ -105,9 +109,9 @@ export function sanitizeInput(input: string): string {
 export function formatZodError(error: z.ZodError): Record<string, string> {
   const formatted: Record<string, string> = {}
   
-  error.errors.forEach((err) => {
-    const path = err.path.join('.')
-    formatted[path] = err.message
+  error.issues.forEach((issue) => {
+    const path = issue.path.join('.')
+    formatted[path] = issue.message
   })
   
   return formatted

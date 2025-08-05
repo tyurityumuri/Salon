@@ -4,7 +4,7 @@ export interface Stylist {
   position: string
   experience: number
   specialties: string[]
-  image: string
+  image: string | null
   bio: string
   skills: string[]
   social: {
@@ -12,7 +12,7 @@ export interface Stylist {
     twitter?: string
     youtube?: string
   }
-  portfolio: StyleImage[]
+  portfolio: PortfolioItem[]
   rating: number
   reviewCount: number
 }
@@ -26,6 +26,17 @@ export interface StyleImage {
   tags: string[]
   width?: number
   height?: number
+}
+
+export interface PortfolioItem {
+  id: string
+  title: string
+  description: string
+  image: string
+  sideImage?: string
+  backImage?: string
+  category?: string
+  tags?: string[]
 }
 
 export interface MenuItem {

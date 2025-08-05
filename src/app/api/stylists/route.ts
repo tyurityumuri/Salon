@@ -50,7 +50,11 @@ export async function POST(request: NextRequest) {
       (currentStylists) => {
         const newStylist: Stylist = {
           id: Date.now().toString(),
-          ...stylistData
+          ...stylistData,
+          image: stylistData.image || null,
+          social: stylistData.social || {},
+          portfolio: stylistData.portfolio || [],
+          skills: stylistData.skills?.map(skill => skill.name) || []
         }
         return [...currentStylists, newStylist]
       }

@@ -13,7 +13,8 @@ const loginAttempts = new Map<string, { attempts: number; lastAttempt: number; l
 // ログイン試行のクリーンアップ（1時間ごと）
 setInterval(() => {
   const now = Date.now()
-  for (const [ip, data] of loginAttempts.entries()) {
+  const entries = Array.from(loginAttempts.entries())
+  for (const [ip, data] of entries) {
     if (data.lockedUntil && data.lockedUntil < now) {
       loginAttempts.delete(ip)
     } else if (now - data.lastAttempt > 60 * 60 * 1000) { // 1時間経過

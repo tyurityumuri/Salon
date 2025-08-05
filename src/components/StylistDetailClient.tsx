@@ -46,7 +46,7 @@ export default function StylistDetailClient({ params }: Props) {
             setStylist(foundStylist)
           } else {
             console.error('Stylist not found for id:', params.id)
-            console.log('Available stylists:', stylists.map(s => ({ id: s.id, name: s.name })))
+            console.log('Available stylists:', stylists.map((s: Stylist) => ({ id: s.id, name: s.name })))
             // Instead of notFound(), just set loading to false and show error message
             setStylist(null)
           }

@@ -47,7 +47,8 @@ const ADMIN_SESSION_CONFIG: SessionConfig = {
  */
 setInterval(() => {
   const now = Date.now()
-  for (const [sessionId, data] of sessions.entries()) {
+  const entries = Array.from(sessions.entries())
+  for (const [sessionId, data] of entries) {
     const config = data.role === 'admin' ? ADMIN_SESSION_CONFIG : DEFAULT_SESSION_CONFIG
     
     // セッション期限切れまたはアイドルタイムアウトをチェック
@@ -159,7 +160,8 @@ export function destroySession(sessionId: string): boolean {
  */
 export function destroyAllUserSessions(userId: string): number {
   let count = 0
-  for (const [sessionId, data] of sessions.entries()) {
+  const entries = Array.from(sessions.entries())
+  for (const [sessionId, data] of entries) {
     if (data.userId === userId) {
       sessions.delete(sessionId)
       count++
@@ -187,7 +189,8 @@ export function getActiveSessionCount(): number {
  */
 export function getUserActiveSessionCount(userId: string): number {
   let count = 0
-  for (const data of sessions.values()) {
+  const values = Array.from(sessions.values())
+  for (const data of values) {
     if (data.userId === userId) {
       count++
     }

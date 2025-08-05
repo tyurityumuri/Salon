@@ -51,6 +51,7 @@ export async function PUT(
     }
     if (body.social !== undefined) updateData.social = body.social
     if (body.image !== undefined) updateData.image = body.image
+    if (body.portfolio !== undefined) updateData.portfolio = body.portfolio
 
     if (updateData.rating && (updateData.rating < 1 || updateData.rating > 5)) {
       return NextResponse.json(

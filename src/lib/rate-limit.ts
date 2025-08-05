@@ -20,7 +20,8 @@ const DEFAULT_CONFIG: RateLimitConfig = {
 // 定期的にメモリをクリーンアップ（1時間ごと）
 setInterval(() => {
   const now = Date.now()
-  for (const [ip, data] of requestCounts.entries()) {
+  const entries = Array.from(requestCounts.entries())
+  for (const [ip, data] of entries) {
     if (data.resetTime < now) {
       requestCounts.delete(ip)
     }
