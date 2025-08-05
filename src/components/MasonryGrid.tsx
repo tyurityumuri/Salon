@@ -2,15 +2,10 @@
 
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
+import { StyleImage } from '@/types'
 
-interface MasonryItem {
-  id: string
-  url: string
-  alt: string
-  category: string
-  stylistId: string
+interface MasonryItem extends Omit<StyleImage, 'width' | 'height'> {
   stylistName: string
-  tags: string[]
   width: number
   height: number
   description: string
@@ -19,9 +14,10 @@ interface MasonryItem {
 interface MasonryGridProps {
   items: MasonryItem[]
   columns?: number
+  onItemClick?: (item: MasonryItem) => void
 }
 
-const MasonryGrid = ({ items, columns = 3 }: MasonryGridProps) => {
+const MasonryGrid = ({ items, columns = 3, onItemClick }: MasonryGridProps) => {
   const [columnHeights, setColumnHeights] = useState<number[]>([])
   const [positionedItems, setPositionedItems] = useState<Array<MasonryItem & { x: number; y: number; column: number }>>([])
   const containerRef = useRef<HTMLDivElement>(null)
@@ -88,8 +84,9 @@ const MasonryGrid = ({ items, columns = 3 }: MasonryGridProps) => {
           <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 group">
             {/* Style Image */}
             <div 
-              className="relative overflow-hidden"
+              className="relative overflow-hidden cursor-pointer"
               style={{ aspectRatio: `${item.width}/${item.height}` }}
+              onClick={() => onItemClick?.(item)}
             >
               {item.url ? (
                 <img

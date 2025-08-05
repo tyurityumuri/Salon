@@ -4,17 +4,9 @@ import { useEffect, useState, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import ImageUpload from '../../../../../components/ImageUpload'
-import { Stylist } from '@/types'
+import MultiAngleImageUpload from '../../components/MultiAngleImageUpload'
+import { Stylist, StyleImage } from '@/types'
 
-interface StyleItem {
-  id: string
-  src: string
-  alt: string
-  category: string
-  tags: string[]
-  stylistName: string
-  height: number
-}
 
 export default function EditStylePage({ params }: { params: { id: string } }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
@@ -29,21 +21,27 @@ export default function EditStylePage({ params }: { params: { id: string } }) {
     category: '',
     tags: '',
     stylistName: '',
-    height: '400'
+    height: '400',
+    frontImage: '',
+    sideImage: '',
+    backImage: ''
   })
 
   const fetchStyle = useCallback(async () => {
     try {
       const response = await fetch(`/api/styles/${params.id}`)
       if (response.ok) {
-        const style: StyleItem = await response.json()
+        const style: StyleImage = await response.json()
         setFormData({
-          src: style.src,
+          src: style.url,
           alt: style.alt,
           category: style.category,
           tags: style.tags.join(', '),
-          stylistName: style.stylistName,
-          height: style.height.toString()
+          stylistName: 'スタイリスト',
+          height: (style.height || 400).toString(),
+          frontImage: style.frontImage || '',
+          sideImage: style.sideImage || '',
+          backImage: style.backImage || ''
         })
       } else {
         alert('スタイルが見つかりません')
@@ -93,7 +91,10 @@ export default function EditStylePage({ params }: { params: { id: string } }) {
         category: formData.category,
         tags: formData.tags.split(',').map(tag => tag.trim()).filter(tag => tag),
         stylistName: formData.stylistName,
-        height: parseInt(formData.height)
+        height: parseInt(formData.height),
+        frontImage: formData.frontImage,
+        sideImage: formData.sideImage,
+        backImage: formData.backImage
       }
 
       const response = await fetch(`/api/styles/${params.id}`, {
@@ -274,6 +275,21 @@ export default function EditStylePage({ params }: { params: { id: string } }) {
                   onUploadError={(error) => alert(error)}
                   currentImage={formData.src}
                 />
+
+                {/* マルチアングル画像 */}
+                <div className="mt-6">
+                  <MultiAngleImageUpload
+                    frontImage={formData.frontImage}
+                    sideImage={formData.sideImage}
+                    backImage={formData.backImage}
+                    onChange={(angle, url) => {
+                      setFormData({
+                        ...formData,
+                        [`${angle}Image`]: url
+                      })
+                    }}
+                  />
+                </div>
               </div>
             </div>
 

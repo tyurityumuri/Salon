@@ -26,6 +26,9 @@ export interface StyleImage {
   tags: string[]
   width?: number
   height?: number
+  frontImage?: string
+  sideImage?: string
+  backImage?: string
 }
 
 export interface PortfolioItem {

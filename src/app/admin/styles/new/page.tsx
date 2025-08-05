@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Stylist } from '@/types'
+import MultiAngleImageUpload from '../components/MultiAngleImageUpload'
 
 export default function NewStylePage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
@@ -16,7 +17,10 @@ export default function NewStylePage() {
     category: '',
     tags: '',
     stylistName: '',
-    height: '400'
+    height: '400',
+    frontImage: '',
+    sideImage: '',
+    backImage: ''
   })
 
   useEffect(() => {
@@ -55,7 +59,10 @@ export default function NewStylePage() {
       category: formData.category,
       tags: formData.tags.split(',').map(tag => tag.trim()).filter(tag => tag),
       stylistName: formData.stylistName,
-      height: parseInt(formData.height)
+      height: parseInt(formData.height),
+      frontImage: formData.frontImage,
+      sideImage: formData.sideImage,
+      backImage: formData.backImage
     }
 
     console.log('新しいスタイル:', newStyle)
@@ -234,6 +241,21 @@ export default function NewStylePage() {
                       タグをカンマ区切りで入力してください（例: ナチュラル, 小顔, カジュアル）
                     </p>
                   </div>
+                </div>
+
+                {/* マルチアングル画像 */}
+                <div className="sm:col-span-2 mt-6">
+                  <MultiAngleImageUpload
+                    frontImage={formData.frontImage}
+                    sideImage={formData.sideImage}
+                    backImage={formData.backImage}
+                    onChange={(angle, url) => {
+                      setFormData({
+                        ...formData,
+                        [`${angle}Image`]: url
+                      })
+                    }}
+                  />
                 </div>
               </div>
             </div>

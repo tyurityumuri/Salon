@@ -1,15 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getS3DataManager } from '@/lib/s3-data-manager'
-
-interface StyleItem {
-  id: string
-  src: string
-  alt: string
-  category: string
-  tags: string[]
-  stylistName: string
-  height: number
-}
+import { StyleImage } from '@/types'
 
 const dataManager = getS3DataManager()
 
@@ -19,11 +10,11 @@ export async function GET(request: NextRequest) {
     const category = searchParams.get('category')
     const stylistName = searchParams.get('stylistName')
 
-    const allStyles = await dataManager.getJsonData<StyleItem[]>('styles.json')
+    const allStyles = await dataManager.getJsonData<StyleImage[]>('styles.json')
     
     let styles = allStyles
     if (stylistName) {
-      styles = allStyles.filter(style => style.stylistName === stylistName)
+      styles = allStyles.filter(style => style.stylistId === stylistName)
     } else if (category) {
       styles = allStyles.filter(style => style.category === category)
     }
@@ -42,7 +33,7 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
     
-    const { src, alt, category, tags, stylistName, height } = body
+    const { src, alt, category, tags, stylistName, height, frontImage, sideImage, backImage } = body
     
     if (!src || !alt || !category || !tags || !stylistName || height === undefined) {
       return NextResponse.json(
@@ -52,12 +43,15 @@ export async function POST(request: NextRequest) {
     }
 
     const styleData = {
-      src: String(src),
+      url: String(src),
       alt: String(alt),
       category: String(category),
       tags: Array.isArray(tags) ? tags : tags.split(',').map((tag: string) => tag.trim()),
-      stylistName: String(stylistName),
-      height: Number(height)
+      stylistId: String(stylistName),
+      height: Number(height),
+      frontImage: frontImage ? String(frontImage) : undefined,
+      sideImage: sideImage ? String(sideImage) : undefined,
+      backImage: backImage ? String(backImage) : undefined
     }
 
     if (styleData.height < 200 || styleData.height > 800) {
@@ -74,10 +68,10 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const updatedStyles = await dataManager.updateJsonData<StyleItem[]>(
+    const updatedStyles = await dataManager.updateJsonData<StyleImage[]>(
       'styles.json',
       (currentStyles) => {
-        const newStyle: StyleItem = {
+        const newStyle: StyleImage = {
           id: Date.now().toString(),
           ...styleData
         }

@@ -3,24 +3,18 @@
 import { useState, useEffect } from 'react'
 import Layout from '@/components/Layout'
 import MasonryGrid from '@/components/MasonryGrid'
-
-interface StyleItem {
-  id: string
-  src: string
-  alt: string
-  category: string
-  tags: string[]
-  stylistName: string
-  height: number
-}
+import StyleGalleryModal from '@/components/StyleGalleryModal'
+import { StyleImage } from '@/types'
 
 
 
 export default function StylesPage() {
-  const [stylesData, setStylesData] = useState<StyleItem[]>([])
+  const [stylesData, setStylesData] = useState<StyleImage[]>([])
   const [loading, setLoading] = useState(true)
   const [selectedCategory, setSelectedCategory] = useState<string>('all')
   const [searchTerm, setSearchTerm] = useState<string>('')
+  const [selectedStyle, setSelectedStyle] = useState<StyleImage | null>(null)
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   useEffect(() => {
     const fetchStyles = async () => {
@@ -58,8 +52,7 @@ export default function StylesPage() {
   const filteredStyles = stylesData.filter(style => {
     const matchesCategory = selectedCategory === 'all' || style.category === selectedCategory
     const matchesSearch = style.alt.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         style.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase())) ||
-                         style.stylistName.toLowerCase().includes(searchTerm.toLowerCase())
+                         style.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()))
     return matchesCategory && matchesSearch
   })
 
@@ -131,12 +124,19 @@ export default function StylesPage() {
               <MasonryGrid 
                 items={filteredStyles.map(style => ({
                   ...style,
-                  url: style.src,
-                  stylistId: style.id,
+                  stylistName: 'スタイリスト',
                   width: 300,
+                  height: style.height || 400,
                   description: style.alt
                 }))} 
                 columns={3}
+                onItemClick={(item) => {
+                  const fullStyle = stylesData.find(s => s.id === item.id)
+                  if (fullStyle) {
+                    setSelectedStyle(fullStyle)
+                    setIsModalOpen(true)
+                  }
+                }}
               />
             </div>
           ) : (
@@ -186,6 +186,18 @@ export default function StylesPage() {
           </div>
         </div>
       </div>
+
+      {/* Style Gallery Modal */}
+      {selectedStyle && (
+        <StyleGalleryModal
+          style={selectedStyle}
+          isOpen={isModalOpen}
+          onClose={() => {
+            setIsModalOpen(false)
+            setSelectedStyle(null)
+          }}
+        />
+      )}
     </Layout>
   )
 }

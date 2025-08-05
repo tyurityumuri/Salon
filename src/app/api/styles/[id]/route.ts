@@ -1,15 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getS3DataManager } from '@/lib/s3-data-manager'
-
-interface StyleItem {
-  id: string
-  src: string
-  alt: string
-  category: string
-  tags: string[]
-  stylistName: string
-  height: number
-}
+import { StyleImage } from '@/types'
 
 const dataManager = getS3DataManager()
 
@@ -18,7 +9,7 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
-    const styles = await dataManager.getJsonData<StyleItem[]>('styles.json')
+    const styles = await dataManager.getJsonData<StyleImage[]>('styles.json')
     const style = styles.find(s => s.id === params.id)
     
     if (!style) {
@@ -47,7 +38,7 @@ export async function PUT(
     
     const updateData: any = {}
     
-    if (body.src !== undefined) updateData.src = String(body.src)
+    if (body.src !== undefined) updateData.url = String(body.src)
     if (body.alt !== undefined) updateData.alt = String(body.alt)
     if (body.category !== undefined) updateData.category = String(body.category)
     if (body.tags !== undefined) {
@@ -55,8 +46,11 @@ export async function PUT(
         ? body.tags 
         : body.tags.split(',').map((tag: string) => tag.trim())
     }
-    if (body.stylistName !== undefined) updateData.stylistName = String(body.stylistName)
+    if (body.stylistName !== undefined) updateData.stylistId = String(body.stylistName)
     if (body.height !== undefined) updateData.height = Number(body.height)
+    if (body.frontImage !== undefined) updateData.frontImage = body.frontImage ? String(body.frontImage) : undefined
+    if (body.sideImage !== undefined) updateData.sideImage = body.sideImage ? String(body.sideImage) : undefined
+    if (body.backImage !== undefined) updateData.backImage = body.backImage ? String(body.backImage) : undefined
 
     if (updateData.height && (updateData.height < 200 || updateData.height > 800)) {
       return NextResponse.json(
@@ -72,7 +66,7 @@ export async function PUT(
       )
     }
 
-    await dataManager.updateJsonData<StyleItem[]>(
+    await dataManager.updateJsonData<StyleImage[]>(
       'styles.json',
       (currentStyles) => {
         return currentStyles.map(style =>
@@ -99,7 +93,7 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   try {
-    await dataManager.updateJsonData<StyleItem[]>(
+    await dataManager.updateJsonData<StyleImage[]>(
       'styles.json',
       (currentStyles) => {
         return currentStyles.filter(style => style.id !== params.id)
