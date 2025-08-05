@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getS3DataManager } from '@/lib/s3-data-manager'
 import { Stylist } from '@/types'
+import { adminApiRateLimit } from '@/lib/rate-limit'
 
 const dataManager = getS3DataManager()
 
@@ -33,6 +34,10 @@ export async function PUT(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
+  // 管理画面API用のレート制限チェック
+  const rateLimitResult = await adminApiRateLimit(request)
+  if (rateLimitResult) return rateLimitResult
+  
   try {
     const body = await request.json()
     
@@ -93,6 +98,10 @@ export async function DELETE(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
+  // 管理画面API用のレート制限チェック
+  const rateLimitResult = await adminApiRateLimit(request)
+  if (rateLimitResult) return rateLimitResult
+  
   try {
     await dataManager.updateJsonData<Stylist[]>(
       'stylists.json',

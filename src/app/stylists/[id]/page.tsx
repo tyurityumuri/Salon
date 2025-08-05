@@ -4,6 +4,7 @@ import StylistDetailClient from '@/components/StylistDetailClient'
 import { generateSEO, generateStylistStructuredData } from '@/utils/seo'
 import { StructuredData } from '@/components/StructuredData'
 import { Stylist } from '@/types'
+import { getS3DataManager } from '@/lib/s3-data-manager'
 
 interface Props {
   params: {
@@ -14,14 +15,8 @@ interface Props {
 // スタイリストデータを取得する関数
 async function getStylist(id: string): Promise<Stylist | null> {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
-    const response = await fetch(`${baseUrl}/api/stylists`, {
-      next: { revalidate: 60 } // 1分間キャッシュ
-    })
-    
-    if (!response.ok) return null
-    
-    const stylists = await response.json()
+    const dataManager = getS3DataManager()
+    const stylists = await dataManager.getJsonData<Stylist[]>('stylists.json')
     return stylists.find((s: Stylist) => s.id === id) || null
   } catch (error) {
     console.error('Error fetching stylist:', error)

@@ -7,9 +7,7 @@ import { stylistSchema, formatZodError } from '@/lib/validation'
 const dataManager = getS3DataManager()
 
 export async function GET(request: NextRequest) {
-  // レート制限チェック
-  const rateLimitResult = await publicApiRateLimit(request)
-  if (rateLimitResult) return rateLimitResult
+  // GETリクエストはレート制限をスキップ（読み取り専用のため）
   try {
     const stylists = await dataManager.getJsonData<Stylist[]>('stylists.json')
     return NextResponse.json(stylists)

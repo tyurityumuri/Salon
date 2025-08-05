@@ -37,24 +37,20 @@ export default function StylistDetailClient({ params }: Props) {
   useEffect(() => {
     const fetchStylist = async () => {
       try {
-        const response = await fetch('/api/stylists')
+        const response = await fetch(`/api/stylists/${params.id}`)
         if (response.ok) {
-          const stylists = await response.json()
-          const foundStylist = stylists.find((s: Stylist) => s.id === params.id)
-          
-          if (foundStylist) {
-            setStylist(foundStylist)
-          } else {
-            console.error('Stylist not found for id:', params.id)
-            console.log('Available stylists:', stylists.map((s: Stylist) => ({ id: s.id, name: s.name })))
-            // Instead of notFound(), just set loading to false and show error message
-            setStylist(null)
-          }
+          const stylist = await response.json()
+          setStylist(stylist)
+        } else if (response.status === 404) {
+          console.error('Stylist not found for id:', params.id)
+          setStylist(null)
         } else {
-          console.error('Failed to fetch stylists:', response.status, response.statusText)
+          console.error('Failed to fetch stylist:', response.status, response.statusText)
+          setStylist(null)
         }
       } catch (error) {
         console.error('Error fetching stylist:', error)
+        setStylist(null)
       } finally {
         setLoading(false)
       }
