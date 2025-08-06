@@ -68,7 +68,7 @@ const Header = () => {
                   <Link
                     key={item.name}
                     href={item.href}
-                    className="text-sm font-medium tracking-[0.15em] text-primary-700 hover:text-primary-900 transition-colors duration-300 uppercase border-b border-primary-100 pb-4"
+                    className="text-base font-medium text-primary-700 hover:text-primary-900 transition-colors duration-300 uppercase border-b border-primary-100 pb-4"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     {item.name}

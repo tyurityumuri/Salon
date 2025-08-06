@@ -20,6 +20,7 @@ interface NewsItem {
 interface SalonData {
   name: string
   heroImages?: string[]
+  heroImagesMobile?: string[]
   heroTitle?: string
   heroSubtitle?: string
 }
@@ -105,7 +106,8 @@ export default function HomeClient() {
             </div>
           </ScrollAnimation>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+          {/* PC表示（md以上） */}
+          <div className="hidden md:grid grid-cols-3 gap-8 mb-8">
             {stylists.slice(0, 3).map((stylist, index) => (
               <ScrollAnimation key={stylist.id} animation="animate-scale-up" delay={400 + index * 200}>
                 <Link href={`/stylists/${stylist.id}`}>
@@ -152,7 +154,96 @@ export default function HomeClient() {
             ))}
           </div>
 
-          <div className="text-center">
+          {/* スマホ表示（mdより小さい） */}
+          <div className="md:hidden mb-8">
+            {/* 1行目: 最初の2人を横並び */}
+            <div className="grid grid-cols-2 gap-4 mb-4">
+              {stylists.slice(0, 2).map((stylist, index) => (
+                <ScrollAnimation key={stylist.id} animation="animate-scale-up" delay={400 + index * 200}>
+                  <Link href={`/stylists/${stylist.id}`}>
+                    <div className="bg-white shadow-sm hover:shadow-md transition-all duration-500 group overflow-hidden">
+                      <div className="relative h-40 overflow-hidden">
+                        {stylist.image ? (
+                          <Image
+                            src={stylist.image}
+                            alt={stylist.name}
+                            fill
+                            className="object-cover group-hover:scale-105 transition-transform duration-700"
+                            sizes="50vw"
+                            priority={index < 2}
+                          />
+                        ) : null}
+                        <div className={`absolute inset-0 bg-gradient-to-br from-primary-100 to-primary-200 flex items-center justify-center ${stylist.image ? 'hidden' : ''}`}>
+                          <div className="w-12 h-12 bg-primary-300 rounded-full flex items-center justify-center">
+                            <svg className="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                          </div>
+                        </div>
+                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-500"></div>
+                        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-3">
+                          <h3 className="font-heading text-sm font-medium text-white tracking-wide">{stylist.name}</h3>
+                          <p className="text-white/80 text-xs font-light tracking-wide uppercase">{stylist.position}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                </ScrollAnimation>
+              ))}
+            </div>
+
+            {/* 2行目: 3人目（左側）と「全て見る」ボタン（右側） */}
+            <div className="grid grid-cols-2 gap-4">
+              {stylists.length > 2 && (
+                <ScrollAnimation animation="animate-scale-up" delay={800}>
+                  <Link href={`/stylists/${stylists[2].id}`}>
+                    <div className="bg-white shadow-sm hover:shadow-md transition-all duration-500 group overflow-hidden">
+                      <div className="relative h-40 overflow-hidden">
+                        {stylists[2].image ? (
+                          <Image
+                            src={stylists[2].image}
+                            alt={stylists[2].name}
+                            fill
+                            className="object-cover group-hover:scale-105 transition-transform duration-700"
+                            sizes="50vw"
+                          />
+                        ) : null}
+                        <div className={`absolute inset-0 bg-gradient-to-br from-primary-100 to-primary-200 flex items-center justify-center ${stylists[2].image ? 'hidden' : ''}`}>
+                          <div className="w-12 h-12 bg-primary-300 rounded-full flex items-center justify-center">
+                            <svg className="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                          </div>
+                        </div>
+                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-500"></div>
+                        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-3">
+                          <h3 className="font-heading text-sm font-medium text-white tracking-wide">{stylists[2].name}</h3>
+                          <p className="text-white/80 text-xs font-light tracking-wide uppercase">{stylists[2].position}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                </ScrollAnimation>
+              )}
+              
+              {/* 全て見るボタン */}
+              <ScrollAnimation animation="animate-scale-up" delay={1000}>
+                <Link href="/stylists" className="bg-white border-2 border-primary-200 hover:border-primary-900 hover:bg-primary-50 transition-all duration-500 flex items-center justify-center h-40 group">
+                  <div className="text-center">
+                    <div className="w-12 h-12 bg-primary-100 group-hover:bg-primary-200 rounded-full flex items-center justify-center mx-auto mb-2 transition-colors duration-300">
+                      <svg className="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                      </svg>
+                    </div>
+                    <span className="text-primary-900 font-medium text-sm tracking-wide">全てのスタイリスト</span>
+                  </div>
+                </Link>
+              </ScrollAnimation>
+            </div>
+          </div>
+
+          {/* PC表示のボタン */}
+          <div className="hidden md:block text-center">
             <Link href="/stylists" className="btn-secondary">
               全てのスタイリストを見る
             </Link>
@@ -176,7 +267,8 @@ export default function HomeClient() {
             </div>
           </ScrollAnimation>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+          {/* PC表示（md以上） */}
+          <div className="hidden md:grid grid-cols-3 gap-8 mb-8">
             {popularMenus.map((menu, index) => (
               <ScrollAnimation key={menu.id} animation="animate-scale-up" delay={400 + index * 200}>
                 <div className="bg-white border border-primary-100 hover:shadow-lg transition-all duration-500 group">
@@ -215,6 +307,27 @@ export default function HomeClient() {
                       >
                         予約する
                       </Link>
+                    </div>
+                  </div>
+                </div>
+              </ScrollAnimation>
+            ))}
+          </div>
+
+          {/* スマホ表示（mdより小さい） */}
+          <div className="md:hidden grid gap-4 mb-8">
+            {popularMenus.map((menu, index) => (
+              <ScrollAnimation key={menu.id} animation="animate-scale-up" delay={400 + index * 200}>
+                <div className="bg-white border border-primary-100 hover:shadow-lg transition-all duration-500 group">
+                  <div className="p-4">
+                    <div className="flex items-center justify-between mb-3">
+                      <h3 className="font-heading text-lg font-medium text-primary-900 tracking-wide flex-1">{menu.name}</h3>
+                      <div className="text-right ml-4">
+                        <div className="text-xl font-heading font-medium text-primary-900">
+                          ¥{menu.price.toLocaleString()}
+                        </div>
+                        <div className="text-xs text-primary-500 tracking-wide">税込</div>
+                      </div>
                     </div>
                   </div>
                 </div>

@@ -6,6 +6,7 @@ import Link from 'next/link'
 interface SalonData {
   name?: string
   heroImages?: string[]
+  heroImagesMobile?: string[]
   heroTitle?: string
   heroSubtitle?: string
 }
@@ -16,7 +17,23 @@ interface HeroSlideshowProps {
 
 export default function HeroSlideshow({ salonData }: HeroSlideshowProps) {
   const [currentSlide, setCurrentSlide] = useState(0)
-  const heroImages = salonData?.heroImages || []
+  const [isMobile, setIsMobile] = useState(false)
+
+  // スマホかどうかを判定
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
+
+  // 画面サイズに応じて適切な画像配列を選択
+  const heroImages = isMobile 
+    ? (salonData?.heroImagesMobile || salonData?.heroImages || [])
+    : (salonData?.heroImages || [])
 
   useEffect(() => {
     if (heroImages.length <= 1) return
@@ -46,7 +63,9 @@ export default function HeroSlideshow({ salonData }: HeroSlideshowProps) {
                 <img
                   src={image}
                   alt={`Hero Background ${index + 1}`}
-                  className="w-full h-full object-cover"
+                  className={`w-full h-full object-cover ${
+                    isMobile ? 'object-center' : 'object-center'
+                  }`}
                 />
               </div>
             ))}

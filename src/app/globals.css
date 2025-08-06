@@ -43,15 +43,15 @@
   }
   
   .btn-primary {
-    @apply bg-primary-900 text-white px-8 py-3 rounded-none font-medium hover:bg-primary-800 transition-all duration-300 tracking-wide uppercase text-sm;
+    @apply bg-primary-900 text-white px-6 sm:px-8 py-3 rounded-none font-medium hover:bg-primary-800 transition-all duration-300 tracking-wide uppercase text-sm;
   }
   
   .btn-secondary {
-    @apply bg-transparent border-2 border-primary-900 text-primary-900 px-8 py-3 rounded-none font-medium hover:bg-primary-900 hover:text-white transition-all duration-300 tracking-wide uppercase text-sm;
+    @apply bg-transparent border-2 border-primary-900 text-primary-900 px-6 sm:px-8 py-3 rounded-none font-medium hover:bg-primary-900 hover:text-white transition-all duration-300 tracking-wide uppercase text-sm;
   }
   
   .btn-accent {
-    @apply bg-accent-600 text-white px-8 py-3 rounded-none font-medium hover:bg-accent-700 transition-all duration-300 tracking-wide uppercase text-sm;
+    @apply bg-accent-600 text-white px-6 sm:px-8 py-3 rounded-none font-medium hover:bg-accent-700 transition-all duration-300 tracking-wide uppercase text-sm;
   }
   
   .section-padding {
@@ -63,11 +63,11 @@
   }
   
   .heading-primary {
-    @apply font-heading text-4xl lg:text-6xl font-light tracking-wide text-primary-900;
+    @apply font-heading text-3xl md:text-4xl lg:text-6xl font-light tracking-wide text-primary-900;
   }
   
   .heading-secondary {
-    @apply font-heading text-2xl lg:text-4xl font-light tracking-wide text-primary-900;
+    @apply font-heading text-xl md:text-2xl lg:text-4xl font-light tracking-wide text-primary-900;
   }
   
   .text-body {
