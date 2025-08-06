@@ -1,0 +1,170 @@
+# Page snapshot
+
+```yaml
+- alert
+- banner:
+  - link "NAGASE":
+    - /url: /
+  - navigation:
+    - link "STYLISTS":
+      - /url: /stylists
+    - link "STYLES":
+      - /url: /styles
+    - link "MENU":
+      - /url: /menu
+    - link "ACCESS":
+      - /url: /access
+    - link "BOOKING":
+      - /url: /booking
+  - link "BOOK NOW":
+    - /url: /booking
+- main:
+  - paragraph: STYLE SHOWCASE
+  - heading "STYLE GALLERY" [level=1]
+  - paragraph: 当サロンの実績とスタイリストの技術をご覧ください。 お気に入りのスタイルが見つかったら、担当スタイリストを指名してご予約いただけます。
+  - img
+  - textbox "SEARCH STYLES..."
+  - button "ALL STYLES"
+  - button "メンズカット"
+  - button "レディースカット"
+  - button "カラーリング"
+  - button "パーマ"
+  - button "ヘアアレンジ"
+  - text: 12 STYLES FOUND
+  - img
+  - heading "モダンメンズショート" [level=3]
+  - paragraph: メンズカット
+  - text: メンズカット
+  - link "スタイリスト":
+    - /url: /stylists/undefined
+  - heading "モダンメンズショート" [level=3]
+  - paragraph: モダンメンズショート
+  - text: ショート ビジネス クール
+  - img
+  - heading "ナチュラルレイヤー" [level=3]
+  - paragraph: レディースカット
+  - text: レディースカット
+  - link "スタイリスト":
+    - /url: /stylists/undefined
+  - heading "ナチュラルレイヤー" [level=3]
+  - paragraph: ナチュラルレイヤー
+  - text: レイヤー ナチュラル ミディアム
+  - img
+  - heading "フェードカット" [level=3]
+  - paragraph: メンズカット
+  - text: メンズカット
+  - link "スタイリスト":
+    - /url: /stylists/undefined
+  - heading "フェードカット" [level=3]
+  - paragraph: フェードカット
+  - text: フェード ショート スタイリッシュ
+  - img
+  - heading "ハイライトカラー" [level=3]
+  - paragraph: カラーリング
+  - text: カラーリング
+  - link "スタイリスト":
+    - /url: /stylists/undefined
+  - heading "ハイライトカラー" [level=3]
+  - paragraph: ハイライトカラー
+  - text: ハイライト ブロンド トレンド
+  - img
+  - heading "カジュアルパーマ" [level=3]
+  - paragraph: パーマ
+  - text: パーマ
+  - link "スタイリスト":
+    - /url: /stylists/undefined
+  - heading "カジュアルパーマ" [level=3]
+  - paragraph: カジュアルパーマ
+  - text: パーマ カジュアル ウェーブ
+  - img
+  - heading "ボブスタイル" [level=3]
+  - paragraph: レディースカット
+  - text: レディースカット
+  - link "スタイリスト":
+    - /url: /stylists/undefined
+  - heading "ボブスタイル" [level=3]
+  - paragraph: ボブスタイル
+  - text: ボブ ショート エレガント
+  - img
+  - heading "ツーブロックスタイル" [level=3]
+  - paragraph: メンズカット
+  - text: メンズカット
+  - link "スタイリスト":
+    - /url: /stylists/undefined
+  - heading "ツーブロックスタイル" [level=3]
+  - paragraph: ツーブロックスタイル
+  - text: ツーブロック トレンド 学生
+  - img
+  - heading "グラデーションカラー" [level=3]
+  - paragraph: カラーリング
+  - text: カラーリング
+  - link "スタイリスト":
+    - /url: /stylists/undefined
+  - heading "グラデーションカラー" [level=3]
+  - paragraph: グラデーションカラー
+  - text: グラデーション ピンク 個性的
+  - img
+  - heading "アップスタイル" [level=3]
+  - paragraph: ヘアアレンジ
+  - text: ヘアアレンジ
+  - link "スタイリスト":
+    - /url: /stylists/undefined
+  - heading "アップスタイル" [level=3]
+  - paragraph: アップスタイル
+  - text: アップスタイル フォーマル エレガント
+  - img
+  - heading "デジタルパーマ" [level=3]
+  - paragraph: パーマ
+  - text: パーマ
+  - link "スタイリスト":
+    - /url: /stylists/undefined
+  - heading "デジタルパーマ" [level=3]
+  - paragraph: デジタルパーマ
+  - text: デジタルパーマ ロング ゴージャス
+  - img
+  - heading "クラシカルスタイル" [level=3]
+  - paragraph: メンズカット
+  - text: メンズカット
+  - link "スタイリスト":
+    - /url: /stylists/undefined
+  - heading "クラシカルスタイル" [level=3]
+  - paragraph: クラシカルスタイル
+  - text: クラシック フォーマル ジェントルマン
+  - img
+  - heading "ピクシーカット" [level=3]
+  - paragraph: レディースカット
+  - text: レディースカット
+  - link "スタイリスト":
+    - /url: /stylists/undefined
+  - heading "ピクシーカット" [level=3]
+  - paragraph: ピクシーカット
+  - text: ピクシー ベリーショート キュート
+  - paragraph: READY TO TRANSFORM?
+  - heading "お気に入りのスタイルは見つかりましたか？" [level=2]
+  - paragraph: スタイリストを指名してご予約いただけます。 ご相談やカウンセリングも承っております。
+  - link "CALL FOR BOOKING":
+    - /url: tel:03-1234-5678
+  - link "VIEW STYLISTS":
+    - /url: /stylists
+- contentinfo:
+  - heading "NAGASE SALON" [level=3]
+  - paragraph: 〒100-0004
+  - paragraph: 東京都千代田区大手町1-1-1
+  - paragraph: "TEL: 03-1234-5678"
+  - paragraph: 営業時間
+  - paragraph: "月 - 金: 10:00 - 20:00"
+  - paragraph: "土 - 日: 09:00 - 19:00"
+  - paragraph: "定休日: 水曜日"
+  - heading "お問い合わせ・SNS" [level=3]
+  - link "電話で予約":
+    - /url: tel:03-1234-5678
+  - paragraph: フォローする
+  - link "Instagram":
+    - /url: "#"
+    - img
+  - link "Twitter":
+    - /url: "#"
+    - img
+  - paragraph: © 2025 NAGASE SALON. ALL RIGHTS RESERVED.
+  - paragraph: DESIGNED WITH EXCELLENCE
+```

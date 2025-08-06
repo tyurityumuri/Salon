@@ -1,0 +1,45 @@
+# Page snapshot
+
+```yaml
+- banner:
+  - link "NAGASE":
+    - /url: /
+  - navigation:
+    - link "STYLISTS":
+      - /url: /stylists
+    - link "STYLES":
+      - /url: /styles
+    - link "MENU":
+      - /url: /menu
+    - link "ACCESS":
+      - /url: /access
+    - link "BOOKING":
+      - /url: /booking
+  - link "BOOK NOW":
+    - /url: /booking
+  - button "メニューを開く":
+    - img
+- main:
+  - paragraph: LOADING...
+- contentinfo:
+  - heading "NAGASE SALON" [level=3]
+  - paragraph: 〒100-0004
+  - paragraph: 東京都千代田区大手町1-1-1
+  - paragraph: "TEL: 03-1234-5678"
+  - paragraph: 営業時間
+  - paragraph: "月 - 金: 10:00 - 20:00"
+  - paragraph: "土 - 日: 09:00 - 19:00"
+  - paragraph: "定休日: 水曜日"
+  - heading "お問い合わせ・SNS" [level=3]
+  - link "電話で予約":
+    - /url: tel:03-1234-5678
+  - paragraph: フォローする
+  - link "Instagram":
+    - /url: "#"
+    - img
+  - link "Twitter":
+    - /url: "#"
+    - img
+  - paragraph: © 2025 NAGASE SALON. ALL RIGHTS RESERVED.
+  - paragraph: DESIGNED WITH EXCELLENCE
+```

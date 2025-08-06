@@ -1,0 +1,118 @@
+# Page snapshot
+
+```yaml
+- banner:
+  - link "NAGASE":
+    - /url: /
+  - navigation:
+    - link "STYLISTS":
+      - /url: /stylists
+    - link "STYLES":
+      - /url: /styles
+    - link "MENU":
+      - /url: /menu
+    - link "ACCESS":
+      - /url: /access
+    - link "BOOKING":
+      - /url: /booking
+  - link "BOOK NOW":
+    - /url: /booking
+- main:
+  - paragraph: PROFESSIONAL TEAM
+  - heading "OUR STYLISTS" [level=1]
+  - paragraph: 経験豊富なプロフェッショナルなスタイリストが、あなたの魅力を最大限に引き出します。 それぞれの専門分野を活かし、お客様に最適なスタイルをご提案いたします。
+  - 'link "るな るな チーフスタイリスト 12年の経験を持つベテランスタイリスト。メンズカットを得意とし、ビジネスシーンに最適なスタイルを提案します。 EXPERIENCE: 12 YEARS 4.8 (156) メンズカット フェードカット ビジネススタイル"':
+    - /url: /stylists/1
+    - img "るな"
+    - heading "るな" [level=3]
+    - paragraph: チーフスタイリスト
+    - paragraph: 12年の経験を持つベテランスタイリスト。メンズカットを得意とし、ビジネスシーンに最適なスタイルを提案します。
+    - text: "EXPERIENCE: 12 YEARS"
+    - img
+    - text: 4.8 (156) メンズカット フェードカット ビジネススタイル
+    - link:
+      - /url: https://instagram.com/tanaka_stylist
+      - img
+    - link:
+      - /url: https://twitter.com/tanaka_hair
+      - img
+  - 'link "佐藤 美香 佐藤 美香 シニアスタイリスト 女性の魅力を引き出すカットとカラーリングが得意。トレンドを取り入れたスタイルを提案します。 EXPERIENCE: 8 YEARS 4.9 (203) レディースカット カラーリング トリートメント"':
+    - /url: /stylists/2
+    - img "佐藤 美香"
+    - heading "佐藤 美香" [level=3]
+    - paragraph: シニアスタイリスト
+    - paragraph: 女性の魅力を引き出すカットとカラーリングが得意。トレンドを取り入れたスタイルを提案します。
+    - text: "EXPERIENCE: 8 YEARS"
+    - img
+    - text: 4.9 (203) レディースカット カラーリング トリートメント
+    - link:
+      - /url: https://instagram.com/mika_hair_style
+      - img
+  - 'link "山田 健太 山田 健太 スタイリスト 若い世代に人気のスタイリスト。最新のトレンドを取り入れたスタイルが得意です。 EXPERIENCE: 5 YEARS 4.7 (89) メンズカット パーマ ヘアアレンジ"':
+    - /url: /stylists/3
+    - img "山田 健太"
+    - heading "山田 健太" [level=3]
+    - paragraph: スタイリスト
+    - paragraph: 若い世代に人気のスタイリスト。最新のトレンドを取り入れたスタイルが得意です。
+    - text: "EXPERIENCE: 5 YEARS"
+    - img
+    - text: 4.7 (89) メンズカット パーマ ヘアアレンジ
+    - link:
+      - /url: https://instagram.com/kenta_hair
+      - img
+    - link:
+      - /url: https://youtube.com/kentahair
+      - img
+  - 'link "鈴木 麗子 鈴木 麗子 スタイリスト ショートヘアのスペシャリスト。お客様一人ひとりに合わせたスタイルを提案します。 EXPERIENCE: 6 YEARS 4.6 (121) ショートカット カラーリング ヘッドスパ"':
+    - /url: /stylists/4
+    - img "鈴木 麗子"
+    - heading "鈴木 麗子" [level=3]
+    - paragraph: スタイリスト
+    - paragraph: ショートヘアのスペシャリスト。お客様一人ひとりに合わせたスタイルを提案します。
+    - text: "EXPERIENCE: 6 YEARS"
+    - img
+    - text: 4.6 (121) ショートカット カラーリング ヘッドスパ
+    - link:
+      - /url: https://instagram.com/reiko_short_hair
+      - img
+  - 'link "a a チーフスタイリスト a EXPERIENCE: 4 YEARS 1.6 (5) a"':
+    - /url: /stylists/1754115331876
+    - img "a"
+    - heading "a" [level=3]
+    - paragraph: チーフスタイリスト
+    - paragraph: a
+    - text: "EXPERIENCE: 4 YEARS"
+    - img
+    - text: 1.6 (5) a
+  - 'link "橋本美幸 橋本美幸 ジュニアスタイリスト ちゅく EXPERIENCE: 4 YEARS 1.6 (6) 坊主"':
+    - /url: /stylists/1754147031635
+    - img "橋本美幸"
+    - heading "橋本美幸" [level=3]
+    - paragraph: ジュニアスタイリスト
+    - paragraph: ちゅく
+    - text: "EXPERIENCE: 4 YEARS"
+    - img
+    - text: 1.6 (6) 坊主
+- contentinfo:
+  - heading "NAGASE SALON" [level=3]
+  - paragraph: 〒100-0004
+  - paragraph: 東京都千代田区大手町1-1-1
+  - paragraph: "TEL: 03-1234-5678"
+  - paragraph: 営業時間
+  - paragraph: "月 - 金: 10:00 - 20:00"
+  - paragraph: "土 - 日: 09:00 - 19:00"
+  - paragraph: "定休日: 水曜日"
+  - heading "お問い合わせ・SNS" [level=3]
+  - link "電話で予約":
+    - /url: tel:03-1234-5678
+  - paragraph: フォローする
+  - link "Instagram":
+    - /url: "#"
+    - img
+  - link "Twitter":
+    - /url: "#"
+    - img
+  - paragraph: © 2025 NAGASE SALON. ALL RIGHTS RESERVED.
+  - paragraph: DESIGNED WITH EXCELLENCE
+- alert
+```

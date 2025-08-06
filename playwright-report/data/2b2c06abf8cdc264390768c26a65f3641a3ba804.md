@@ -1,0 +1,113 @@
+# Page snapshot
+
+```yaml
+- banner:
+  - link "NAGASE":
+    - /url: /
+  - button "メニューを開く":
+    - img
+- main:
+  - img "Hero Background 1"
+  - img "Hero Background 2"
+  - paragraph: Professional Hair Salon
+  - heading "NAGASE" [level=1]
+  - button "スライド 1 を表示"
+  - button "スライド 2 を表示"
+  - img
+  - paragraph: PROFESSIONAL TEAM
+  - heading "OUR STYLISTS" [level=2]
+  - paragraph: 経験豊富なプロフェッショナルが、あなたの魅力を引き出します
+  - 'link "るな るな チーフスタイリスト 12年の経験を持つベテランスタイリスト。メンズカットを得意とし、ビジネスシーンに最適なスタイルを提案します。 EXPERIENCE: 12 YEARS 4.8"':
+    - /url: /stylists/1
+    - img "るな"
+    - heading "るな" [level=3]
+    - paragraph: チーフスタイリスト
+    - paragraph: 12年の経験を持つベテランスタイリスト。メンズカットを得意とし、ビジネスシーンに最適なスタイルを提案します。
+    - text: "EXPERIENCE: 12 YEARS"
+    - img
+    - text: "4.8"
+  - 'link "佐藤 美香 佐藤 美香 シニアスタイリスト 女性の魅力を引き出すカットとカラーリングが得意。トレンドを取り入れたスタイルを提案します。 EXPERIENCE: 8 YEARS 4.9"':
+    - /url: /stylists/2
+    - img "佐藤 美香"
+    - heading "佐藤 美香" [level=3]
+    - paragraph: シニアスタイリスト
+    - paragraph: 女性の魅力を引き出すカットとカラーリングが得意。トレンドを取り入れたスタイルを提案します。
+    - text: "EXPERIENCE: 8 YEARS"
+    - img
+    - text: "4.9"
+  - 'link "山田 健太 山田 健太 スタイリスト 若い世代に人気のスタイリスト。最新のトレンドを取り入れたスタイルが得意です。 EXPERIENCE: 5 YEARS 4.7"':
+    - /url: /stylists/3
+    - img "山田 健太"
+    - heading "山田 健太" [level=3]
+    - paragraph: スタイリスト
+    - paragraph: 若い世代に人気のスタイリスト。最新のトレンドを取り入れたスタイルが得意です。
+    - text: "EXPERIENCE: 5 YEARS"
+    - img
+    - text: "4.7"
+  - link "全てのスタイリストを見る":
+    - /url: /stylists
+  - paragraph: SIGNATURE SERVICES
+  - heading "POPULAR MENU" [level=2]
+  - paragraph: 特に人気の高いメニューをご紹介します
+  - text: POPULAR カット
+  - heading "メンズカット" [level=3]
+  - paragraph: スタイリストによるプロフェッショナルなメンズカット
+  - img
+  - text: 60 MIN ¥450,000 TAX INCLUDED
+  - link "予約する":
+    - /url: /booking
+  - text: POPULAR カラー
+  - heading "ワンカラー" [level=3]
+  - paragraph: 全体を一色で染めるベーシックなカラーリング
+  - img
+  - text: 120 MIN ¥6,500 TAX INCLUDED
+  - link "予約する":
+    - /url: /booking
+  - text: POPULAR トリートメント
+  - heading "ヘッドスパ" [level=3]
+  - paragraph: リラックス効果抜群のヘッドスパ
+  - img
+  - text: 45 MIN ¥3,500 TAX INCLUDED
+  - link "予約する":
+    - /url: /booking
+  - link "全てのメニューを見る":
+    - /url: /menu
+  - paragraph: LATEST UPDATES
+  - heading "NEWS & EVENTS" [level=2]
+  - paragraph: キャンペーン情報やサロンからのお知らせをお届けします
+  - article:
+    - img
+    - text: CAMPAIGN 2025/8/1
+    - heading "夏季限定キャンペーン開始！" [level=3]
+    - paragraph: 8月末まで、カット+カラーセットが通常価格より20%OFFでご利用いただけます。この機会にぜひ新しいスタイルにチャレンジしてみませんか？
+  - article:
+    - text: NEWS 2025/7/28
+    - heading "新スタイリスト加入のお知らせ" [level=3]
+    - paragraph: この度、経験豊富なスタイリスト高橋翔太が当サロンに加入いたしました。若い感性を活かした最新トレンドスタイルをお楽しみください。
+  - article:
+    - text: NEWS 2025/7/25
+    - heading "お盆期間の営業について" [level=3]
+    - paragraph: 8月13日〜8月16日の期間中も通常通り営業いたします。ご予約はお早めにお取りください。
+- contentinfo:
+  - heading "NAGASE SALON" [level=3]
+  - paragraph: 〒100-0004
+  - paragraph: 東京都千代田区大手町1-1-1
+  - paragraph: "TEL: 03-1234-5678"
+  - paragraph: 営業時間
+  - paragraph: "月 - 金: 10:00 - 20:00"
+  - paragraph: "土 - 日: 09:00 - 19:00"
+  - paragraph: "定休日: 水曜日"
+  - heading "お問い合わせ・SNS" [level=3]
+  - link "電話で予約":
+    - /url: tel:03-1234-5678
+  - paragraph: フォローする
+  - link "Instagram":
+    - /url: "#"
+    - img
+  - link "Twitter":
+    - /url: "#"
+    - img
+  - paragraph: © 2025 NAGASE SALON. ALL RIGHTS RESERVED.
+  - paragraph: DESIGNED WITH EXCELLENCE
+- alert
+```

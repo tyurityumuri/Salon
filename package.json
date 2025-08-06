@@ -28,6 +28,7 @@
     "@fontsource/cormorant-garamond": "^5.2.9",
     "@fontsource/playfair-display": "^5.2.6",
     "@types/crypto-js": "^4.2.2",
+    "browser-image-compression": "^2.0.2",
     "crypto-js": "^4.2.0",
     "dotenv": "^17.2.1",
     "express-rate-limit": "^8.0.1",

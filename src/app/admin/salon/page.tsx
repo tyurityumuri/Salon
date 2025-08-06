@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import ImageUploadManager from '@/components/admin/ImageUploadManager'
 
 interface SalonInfo {
   name: string
@@ -344,146 +345,99 @@ export default function AdminSalonPage() {
             {/* ヒーロー画像設定 */}
             <div className="bg-white shadow rounded-lg">
               <div className="px-4 py-5 sm:p-6">
-                <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">
-                  ヒーロー画像設定
-                </h3>
-                
-                {/* PC用ヒーロー画像 */}
-                <div className="mb-6">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    PC用ヒーロー画像URL（最大3枚）
-                  </label>
-                  <div className="space-y-3">
-                    {(salonInfo.heroImages || []).map((image, index) => (
-                      <div key={index} className="flex gap-2">
-                        <input
-                          type="url"
-                          value={image}
-                          onChange={(e) => {
-                            const newHeroImages = [...(salonInfo.heroImages || [])]
-                            newHeroImages[index] = e.target.value
-                            setSalonInfo(prev => prev ? ({ ...prev, heroImages: newHeroImages }) : null)
-                          }}
-                          className="flex-1 border-gray-300 rounded-md shadow-sm focus:ring-ocean-blue-500 focus:border-ocean-blue-500 sm:text-sm"
-                          placeholder="https://example.com/hero-image.jpg"
-                        />
-                        <button
-                          type="button"
-                          onClick={() => {
-                            const newHeroImages = (salonInfo.heroImages || []).filter((_, i) => i !== index)
-                            setSalonInfo(prev => prev ? ({ ...prev, heroImages: newHeroImages }) : null)
-                          }}
-                          className="bg-red-600 text-white px-3 py-2 rounded-md text-sm hover:bg-red-700"
-                        >
-                          削除
-                        </button>
+                <div className="mb-8">
+                  <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">
+                    ヒーロー画像設定
+                  </h3>
+                  <div className="bg-blue-50 border border-blue-200 rounded-md p-4 mb-6">
+                    <div className="flex">
+                      <svg className="w-5 h-5 text-blue-400 mr-2 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      <div className="text-sm text-blue-800">
+                        <p className="font-medium">ヒーロー画像について</p>
+                        <p className="mt-1">
+                          PC用とスマホ用で異なる画像を設定できます。スマホ用画像が設定されていない場合は、PC用画像が使用されます。
+                          5MB以上の画像は自動的に圧縮されます。
+                        </p>
                       </div>
-                    ))}
-                    {(salonInfo.heroImages || []).length < 3 && (
-                      <button
-                        type="button"
-                        onClick={() => {
-                          const newHeroImages = [...(salonInfo.heroImages || []), '']
-                          setSalonInfo(prev => prev ? ({ ...prev, heroImages: newHeroImages }) : null)
-                        }}
-                        className="bg-ocean-blue-600 text-white px-4 py-2 rounded-md text-sm hover:bg-ocean-blue-700"
-                      >
-                        PC用画像を追加
-                      </button>
-                    )}
+                    </div>
                   </div>
                 </div>
 
-                {/* スマホ用ヒーロー画像 */}
-                <div className="mb-6">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    スマホ用ヒーロー画像URL（最大3枚）
-                  </label>
-                  <div className="space-y-3">
-                    {(salonInfo.heroImagesMobile || []).map((image, index) => (
-                      <div key={index} className="flex gap-2">
-                        <input
-                          type="url"
-                          value={image}
-                          onChange={(e) => {
-                            const newHeroImagesMobile = [...(salonInfo.heroImagesMobile || [])]
-                            newHeroImagesMobile[index] = e.target.value
-                            setSalonInfo(prev => prev ? ({ ...prev, heroImagesMobile: newHeroImagesMobile }) : null)
-                          }}
-                          className="flex-1 border-gray-300 rounded-md shadow-sm focus:ring-ocean-blue-500 focus:border-ocean-blue-500 sm:text-sm"
-                          placeholder="https://example.com/hero-mobile-image.jpg"
-                        />
-                        <button
-                          type="button"
-                          onClick={() => {
-                            const newHeroImagesMobile = (salonInfo.heroImagesMobile || []).filter((_, i) => i !== index)
-                            setSalonInfo(prev => prev ? ({ ...prev, heroImagesMobile: newHeroImagesMobile }) : null)
-                          }}
-                          className="bg-red-600 text-white px-3 py-2 rounded-md text-sm hover:bg-red-700"
-                        >
-                          削除
-                        </button>
-                      </div>
-                    ))}
-                    {(salonInfo.heroImagesMobile || []).length < 3 && (
-                      <button
-                        type="button"
-                        onClick={() => {
-                          const newHeroImagesMobile = [...(salonInfo.heroImagesMobile || []), '']
-                          setSalonInfo(prev => prev ? ({ ...prev, heroImagesMobile: newHeroImagesMobile }) : null)
-                        }}
-                        className="bg-ocean-blue-600 text-white px-4 py-2 rounded-md text-sm hover:bg-ocean-blue-700"
-                      >
-                        スマホ用画像を追加
-                      </button>
-                    )}
+                {/* PC/スマホ画像管理を2列レイアウトで表示 */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                  {/* PC用画像 */}
+                  <div className="bg-gray-50 p-6 rounded-lg border-2 border-blue-200">
+                    <div className="flex items-center mb-4">
+                      <svg className="w-6 h-6 text-blue-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                      </svg>
+                      <h4 className="text-lg font-medium text-gray-900">PC・タブレット用</h4>
+                    </div>
+                    <ImageUploadManager
+                      images={salonInfo.heroImages || []}
+                      onChange={(images) => {
+                        setSalonInfo(prev => prev ? ({ ...prev, heroImages: images }) : null)
+                      }}
+                      maxImages={3}
+                      title=""
+                      description="デスクトップ・タブレットで表示される画像（推奨サイズ: 1920x1080px）"
+                    />
+                  </div>
+
+                  {/* スマホ用画像 */}
+                  <div className="bg-gray-50 p-6 rounded-lg border-2 border-green-200">
+                    <div className="flex items-center mb-4">
+                      <svg className="w-6 h-6 text-green-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a1 1 0 001-1V4a1 1 0 00-1-1H8a1 1 0 00-1 1v16a1 1 0 001 1z" />
+                      </svg>
+                      <h4 className="text-lg font-medium text-gray-900">スマートフォン用</h4>
+                    </div>
+                    <ImageUploadManager
+                      images={salonInfo.heroImagesMobile || []}
+                      onChange={(images) => {
+                        setSalonInfo(prev => prev ? ({ ...prev, heroImagesMobile: images }) : null)
+                      }}
+                      maxImages={3}
+                      title=""
+                      description="スマートフォンで表示される画像（推奨サイズ: 768x1024px）"
+                    />
                   </div>
                 </div>
 
                 {/* ヒーロータイトル・サブタイトル */}
-                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                  <div>
-                    <label htmlFor="heroTitle" className="block text-sm font-medium text-gray-700">
-                      ヒーロータイトル
-                    </label>
-                    <input
-                      type="text"
-                      name="heroTitle"
-                      id="heroTitle"
-                      value={salonInfo.heroTitle || ''}
-                      onChange={handleChange}
-                      className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-ocean-blue-500 focus:border-ocean-blue-500 sm:text-sm"
-                      placeholder="NAGASE"
-                    />
-                  </div>
-                  
-                  <div>
-                    <label htmlFor="heroSubtitle" className="block text-sm font-medium text-gray-700">
-                      ヒーローサブタイトル
-                    </label>
-                    <input
-                      type="text"
-                      name="heroSubtitle"
-                      id="heroSubtitle"
-                      value={salonInfo.heroSubtitle || ''}
-                      onChange={handleChange}
-                      className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-ocean-blue-500 focus:border-ocean-blue-500 sm:text-sm"
-                      placeholder="Professional Hair Salon"
-                    />
-                  </div>
-                </div>
-
-                <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-md">
-                  <div className="flex">
-                    <svg className="w-5 h-5 text-blue-400 mr-2 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <div className="text-sm text-blue-800">
-                      <p className="font-medium">ヒーロー画像について</p>
-                      <p className="mt-1">
-                        PC用とスマホ用で異なる画像を設定できます。スマホ用画像が設定されていない場合は、PC用画像が使用されます。
-                        画像は横幅768px以上を推奨します。
-                      </p>
+                <div className="border-t pt-6">
+                  <h4 className="text-lg font-medium text-gray-900 mb-4">テキスト設定</h4>
+                  <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                    <div>
+                      <label htmlFor="heroTitle" className="block text-sm font-medium text-gray-700">
+                        ヒーロータイトル
+                      </label>
+                      <input
+                        type="text"
+                        name="heroTitle"
+                        id="heroTitle"
+                        value={salonInfo.heroTitle || ''}
+                        onChange={handleChange}
+                        className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-ocean-blue-500 focus:border-ocean-blue-500 sm:text-sm"
+                        placeholder="NAGASE"
+                      />
+                    </div>
+                    
+                    <div>
+                      <label htmlFor="heroSubtitle" className="block text-sm font-medium text-gray-700">
+                        ヒーローサブタイトル
+                      </label>
+                      <input
+                        type="text"
+                        name="heroSubtitle"
+                        id="heroSubtitle"
+                        value={salonInfo.heroSubtitle || ''}
+                        onChange={handleChange}
+                        className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-ocean-blue-500 focus:border-ocean-blue-500 sm:text-sm"
+                        placeholder="Professional Hair Salon"
+                      />
                     </div>
                   </div>
                 </div>
