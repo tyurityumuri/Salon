@@ -17,12 +17,23 @@ interface HeroSlideshowProps {
 
 export default function HeroSlideshow({ salonData }: HeroSlideshowProps) {
   const [currentSlide, setCurrentSlide] = useState(0)
-  const [isMobile, setIsMobile] = useState(false)
+  const [isMobile, setIsMobile] = useState<boolean | null>(null)
 
-  // スマホかどうかを判定
+  // スマホかどうかを判定（User-Agentとウィンドウサイズの両方を考慮）
   useEffect(() => {
     const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768)
+      // User-Agentによる判定
+      const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera
+      const isMobileUA = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(userAgent.toLowerCase())
+      
+      // 画面幅による判定
+      const isMobileWidth = window.innerWidth < 768
+      
+      // タッチデバイスかどうかの判定
+      const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0
+      
+      // いずれかの条件を満たせばモバイルと判定
+      setIsMobile(isMobileUA || (isMobileWidth && isTouchDevice))
     }
     
     checkMobile()
@@ -31,9 +42,29 @@ export default function HeroSlideshow({ salonData }: HeroSlideshowProps) {
   }, [])
 
   // 画面サイズに応じて適切な画像配列を選択
-  const heroImages = isMobile 
-    ? (salonData?.heroImagesMobile || salonData?.heroImages || [])
-    : (salonData?.heroImages || [])
+  // 初期状態（null）の場合は両方の画像を準備
+  const pcImages = salonData?.heroImages || []
+  const mobileImages = salonData?.heroImagesMobile || []
+  const hasMobileImages = mobileImages.length > 0
+  
+  // デバッグ情報（開発環境のみ）
+  useEffect(() => {
+    if (process.env.NODE_ENV === 'development') {
+      console.log('Mobile detection:', {
+        isMobile,
+        hasMobileImages,
+        mobileImagesCount: mobileImages.length,
+        pcImagesCount: pcImages.length
+      })
+    }
+  }, [isMobile, hasMobileImages, mobileImages.length, pcImages.length])
+
+  // モバイル判定が完了するまではPC画像を使用（フォールバック）
+  const heroImages = isMobile === null 
+    ? pcImages // 初期状態
+    : isMobile && hasMobileImages 
+      ? mobileImages 
+      : pcImages
 
   useEffect(() => {
     if (heroImages.length <= 1) return
@@ -51,24 +82,65 @@ export default function HeroSlideshow({ salonData }: HeroSlideshowProps) {
     <section className="relative h-screen flex items-center justify-center overflow-hidden">
       {/* 背景画像 */}
       <div className="absolute inset-0">
-        {hasImages ? (
+        {(pcImages.length > 0 || mobileImages.length > 0) ? (
           <>
-            {heroImages.map((image, index) => (
-              <div
-                key={index}
-                className={`absolute inset-0 transition-all duration-2000 ease-in-out ${
-                  index === currentSlide ? 'opacity-100 scale-100' : 'opacity-0 scale-105'
-                }`}
-              >
-                <img
-                  src={image}
-                  alt={`Hero Background ${index + 1}`}
-                  className={`w-full h-full object-cover ${
-                    isMobile ? 'object-center' : 'object-center'
-                  }`}
-                />
+            {/* PC用画像（デスクトップで表示） */}
+            {pcImages.length > 0 && (
+              <div className="hidden md:block absolute inset-0">
+                {pcImages.map((image, index) => (
+                  <div
+                    key={`pc-${index}`}
+                    className={`absolute inset-0 transition-all duration-2000 ease-in-out ${
+                      index === currentSlide ? 'opacity-100 scale-100' : 'opacity-0 scale-105'
+                    }`}
+                  >
+                    <img
+                      src={image}
+                      alt={`Hero Background PC ${index + 1}`}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                ))}
               </div>
-            ))}
+            )}
+            
+            {/* モバイル用画像（モバイルで表示） */}
+            {hasMobileImages ? (
+              <div className="md:hidden absolute inset-0">
+                {mobileImages.map((image, index) => (
+                  <div
+                    key={`mobile-${index}`}
+                    className={`absolute inset-0 transition-all duration-2000 ease-in-out ${
+                      index === currentSlide ? 'opacity-100 scale-100' : 'opacity-0 scale-105'
+                    }`}
+                  >
+                    <img
+                      src={image}
+                      alt={`Hero Background Mobile ${index + 1}`}
+                      className="w-full h-full object-cover object-center"
+                    />
+                  </div>
+                ))}
+              </div>
+            ) : (
+              // モバイル画像がない場合はPC画像を表示
+              <div className="md:hidden absolute inset-0">
+                {pcImages.map((image, index) => (
+                  <div
+                    key={`pc-mobile-${index}`}
+                    className={`absolute inset-0 transition-all duration-2000 ease-in-out ${
+                      index === currentSlide ? 'opacity-100 scale-100' : 'opacity-0 scale-105'
+                    }`}
+                  >
+                    <img
+                      src={image}
+                      alt={`Hero Background ${index + 1}`}
+                      className="w-full h-full object-cover object-center"
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
           </>
         ) : (
           <div className="w-full h-full bg-gradient-to-br from-secondary-50 via-primary-50 to-secondary-100"></div>
@@ -97,20 +169,39 @@ export default function HeroSlideshow({ salonData }: HeroSlideshowProps) {
       </div>
 
       {/* スライドインジケーター */}
-      {hasImages && heroImages.length > 1 && (
+      {((pcImages.length > 1) || (mobileImages.length > 1)) && (
         <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-3">
-          {heroImages.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => setCurrentSlide(index)}
-              className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                index === currentSlide 
-                  ? 'bg-white w-8' 
-                  : 'bg-white/50 hover:bg-white/70'
-              }`}
-              aria-label={`スライド ${index + 1} を表示`}
-            />
-          ))}
+          {/* PC用インジケーター */}
+          <div className="hidden md:flex space-x-3">
+            {pcImages.map((_, index) => (
+              <button
+                key={`pc-indicator-${index}`}
+                onClick={() => setCurrentSlide(index)}
+                className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                  index === currentSlide 
+                    ? 'bg-white w-8' 
+                    : 'bg-white/50 hover:bg-white/70'
+                }`}
+                aria-label={`スライド ${index + 1} を表示`}
+              />
+            ))}
+          </div>
+          
+          {/* モバイル用インジケーター */}
+          <div className="flex md:hidden space-x-3">
+            {(hasMobileImages ? mobileImages : pcImages).map((_, index) => (
+              <button
+                key={`mobile-indicator-${index}`}
+                onClick={() => setCurrentSlide(index)}
+                className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                  index === currentSlide 
+                    ? 'bg-white w-8' 
+                    : 'bg-white/50 hover:bg-white/70'
+                }`}
+                aria-label={`スライド ${index + 1} を表示`}
+              />
+            ))}
+          </div>
         </div>
       )}
 
