@@ -3,53 +3,61 @@ import { S3Service } from '@/lib/s3'
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json()
-    const { filename, contentType, category } = body
+    const formData = await request.formData()
+    const file = formData.get('file') as File
+    const folder = formData.get('folder') as string || 'general'
 
-    // パラメータの検証
-    if (!filename || !contentType || !category) {
+    // ファイルの検証
+    if (!file) {
       return NextResponse.json(
-        { error: 'filename, contentType, category are required' },
+        { error: 'No file provided' },
         { status: 400 }
       )
     }
 
-    // カテゴリの検証
-    const validCategories = ['stylists', 'styles', 'news']
-    if (!validCategories.includes(category)) {
-      return NextResponse.json(
-        { error: 'Invalid category' },
-        { status: 400 }
-      )
-    }
-
-    // コンテンツタイプの検証
-    if (!contentType.startsWith('image/')) {
+    // ファイルタイプの検証
+    if (!file.type.startsWith('image/')) {
       return NextResponse.json(
         { error: 'Only image files are allowed' },
         { status: 400 }
       )
     }
 
+    // ファイルサイズの検証（50MBまで）
+    const maxSize = 50 * 1024 * 1024 // 50MB
+    if (file.size > maxSize) {
+      return NextResponse.json(
+        { error: 'File size too large. Maximum 50MB allowed.' },
+        { status: 400 }
+      )
+    }
+
     // S3アップロード用のキーを生成
-    const imageKey = S3Service.generateImageKey(category as 'stylists' | 'styles' | 'news', filename)
+    const timestamp = Date.now()
+    const randomString = Math.random().toString(36).substring(2, 8)
+    const extension = file.name.split('.').pop() || 'jpg'
+    const imageKey = `images/${folder}/${timestamp}-${randomString}.${extension}`
     
-    // 署名付きアップロードURLを生成
-    const uploadUrl = await S3Service.getUploadUrl(imageKey, contentType)
+    // ファイルをBufferに変換
+    const buffer = Buffer.from(await file.arrayBuffer())
+    
+    // S3にアップロード
+    await S3Service.uploadFile(imageKey, buffer, file.type)
     
     // 公開URLを生成
     const publicUrl = S3Service.getPublicUrl(imageKey)
 
     return NextResponse.json({
-      uploadUrl,
-      publicUrl,
-      imageKey
+      url: publicUrl,
+      key: imageKey,
+      size: file.size,
+      type: file.type
     })
 
   } catch (error) {
-    console.error('Upload URL generation error:', error)
+    console.error('File upload error:', error)
     return NextResponse.json(
-      { error: 'Failed to generate upload URL' },
+      { error: 'Failed to upload file' },
       { status: 500 }
     )
   }

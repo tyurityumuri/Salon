@@ -45,7 +45,7 @@ export default function ImageUploadManager({
     const options = {
       maxSizeMB: 5,
       maxWidthOrHeight: 1920,
-      useWebWorker: true,
+      useWebWorker: false, // CSPエラー回避のためWeb Workerを無効化
       fileType: file.type
     }
 

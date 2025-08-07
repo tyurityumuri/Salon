@@ -35,6 +35,18 @@ export class S3Service {
     return await getSignedUrl(s3Client, command, { expiresIn: 3600 })
   }
 
+  // ファイルをアップロード
+  static async uploadFile(key: string, buffer: Buffer, contentType: string): Promise<void> {
+    const command = new PutObjectCommand({
+      Bucket: BUCKET_NAME,
+      Key: key,
+      Body: buffer,
+      ContentType: contentType,
+    })
+
+    await s3Client.send(command)
+  }
+
   // ファイルを削除
   static async deleteFile(key: string): Promise<void> {
     const command = new DeleteObjectCommand({
