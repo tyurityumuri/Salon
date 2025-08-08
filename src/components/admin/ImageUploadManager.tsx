@@ -1,14 +1,7 @@
 'use client'
 
 import { useState, useCallback } from 'react'
-import imageCompression from 'browser-image-compression'
-
-interface ImageItem {
-  id: string
-  url: string
-  file?: File
-  isUploading?: boolean
-}
+import CompressedImageUpload from '@/components/common/CompressedImageUpload'
 
 interface ImageUploadManagerProps {
   images: string[]
@@ -29,326 +22,132 @@ export default function ImageUploadManager({
   acceptedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'],
   folder = 'general'
 }: ImageUploadManagerProps) {
-  const [imageItems, setImageItems] = useState<ImageItem[]>(() => 
-    images.map((url, index) => ({ id: `existing-${index}`, url }))
-  )
-  const [dragOver, setDragOver] = useState(false)
-  const [messages, setMessages] = useState<{ type: 'success' | 'error' | 'info', text: string }[]>([])
+  const [currentImages, setCurrentImages] = useState<string[]>(images)
 
-  const addMessage = useCallback((type: 'success' | 'error' | 'info', text: string) => {
-    const id = Date.now()
-    setMessages(prev => [...prev, { type, text }])
-    setTimeout(() => {
-      setMessages(prev => prev.filter((_, i) => prev[i] !== prev.find(m => m.text === text)))
-    }, 5000)
-  }, [])
-
-  const compressImage = useCallback(async (file: File): Promise<File> => {
-    // 元のファイル情報を保存
-    const originalName = file.name
-    const originalType = file.type
-    const fileExtension = originalName.split('.').pop()?.toLowerCase() || 'jpg'
+  const handleImageUpload = useCallback((index: number) => (url: string) => {
+    const newImages = [...currentImages]
     
-    const options = {
-      maxSizeMB: 5,
-      maxWidthOrHeight: 1920,
-      useWebWorker: false, // CSPエラー回避のためWeb Workerを無効化
-      fileType: originalType, // 元のファイルタイプを保持
-      initialQuality: 0.8 // 品質を調整
-    }
-
-    try {
-      const compressedFile = await imageCompression(file, options)
-      
-      // 元のファイル情報を保持して新しいFileオブジェクトを作成
-      const renamedFile = new File([compressedFile], originalName, {
-        type: originalType, // 元のタイプを使用
-        lastModified: Date.now()
-      })
-      
-      // 5MB以上だった場合の通知
-      if (file.size > 5 * 1024 * 1024) {
-        addMessage('info', `画像ファイルを圧縮して5MB以下に調整しました (${fileExtension.toUpperCase()})`)
+    if (url) {
+      // 新しい画像を追加または既存の画像を更新
+      if (index < newImages.length) {
+        newImages[index] = url
+      } else {
+        newImages.push(url)
       }
-      
-      console.log('Compressed file details:', {
-        originalName,
-        originalType,
-        fileExtension,
-        compressedSize: renamedFile.size,
-        compressedType: renamedFile.type
-      })
-      
-      return renamedFile
-    } catch (error) {
-      console.error('Image compression failed:', error)
-      throw new Error('画像の圧縮に失敗しました')
+    } else {
+      // 画像を削除
+      newImages.splice(index, 1)
     }
-  }, [addMessage])
-
-  const uploadImage = useCallback(async (file: File): Promise<string> => {
-    const formData = new FormData()
-    formData.append('file', file)
-    formData.append('folder', folder)
-
-    const response = await fetch('/api/upload', {
-      method: 'POST',
-      body: formData
-    })
-
-    if (!response.ok) {
-      const errorData = await response.json()
-      throw new Error(errorData.error || 'アップロードに失敗しました')
-    }
-
-    const data = await response.json()
-    return data.url
-  }, [folder])
-
-  const handleFileSelect = useCallback(async (files: FileList | File[]) => {
-    const fileArray = Array.from(files)
-    const remainingSlots = maxImages - imageItems.length
-
-    if (fileArray.length > remainingSlots) {
-      addMessage('error', `最大${maxImages}枚まで追加できます`)
-      return
-    }
-
-    for (const file of fileArray) {
-      // ファイルタイプチェック
-      if (!acceptedTypes.includes(file.type)) {
-        addMessage('error', `${file.name}: サポートされていないファイル形式です`)
-        continue
-      }
-
-      // 仮のアイテムを追加（アップロード中表示用）
-      const tempId = `temp-${Date.now()}-${Math.random()}`
-      const tempItem: ImageItem = {
-        id: tempId,
-        url: URL.createObjectURL(file),
-        file,
-        isUploading: true
-      }
-
-      setImageItems(prev => [...prev, tempItem])
-
-      try {
-        // 画像圧縮
-        const compressedFile = await compressImage(file)
-        
-        // アップロード
-        const uploadedUrl = await uploadImage(compressedFile)
-        
-        // 成功時の更新
-        setImageItems(prev => prev.map(item => 
-          item.id === tempId 
-            ? { ...item, url: uploadedUrl, isUploading: false }
-            : item
-        ))
-        
-        addMessage('success', '画像をアップロードしました')
-      } catch (error) {
-        console.error('Upload failed:', error)
-        addMessage('error', `${file.name}: ${error instanceof Error ? error.message : 'アップロードに失敗しました'}`)
-        
-        // エラー時はアイテムを削除
-        setImageItems(prev => prev.filter(item => item.id !== tempId))
-      }
-    }
-  }, [imageItems.length, maxImages, acceptedTypes, addMessage, compressImage, uploadImage])
-
-  const handleDrop = useCallback((e: React.DragEvent) => {
-    e.preventDefault()
-    setDragOver(false)
     
-    if (e.dataTransfer.files.length > 0) {
-      handleFileSelect(e.dataTransfer.files)
-    }
-  }, [handleFileSelect])
+    setCurrentImages(newImages)
+    onChange(newImages)
+  }, [currentImages, onChange])
 
-  const handleDragOver = useCallback((e: React.DragEvent) => {
-    e.preventDefault()
-    setDragOver(true)
-  }, [])
+  const handleRemoveImage = useCallback((index: number) => {
+    const newImages = currentImages.filter((_, i) => i !== index)
+    setCurrentImages(newImages)
+    onChange(newImages)
+  }, [currentImages, onChange])
 
-  const handleDragLeave = useCallback((e: React.DragEvent) => {
-    e.preventDefault()
-    setDragOver(false)
-  }, [])
-
-  const removeImage = useCallback((id: string) => {
-    setImageItems(prev => prev.filter(item => item.id !== id))
-  }, [])
-
-  const moveImage = useCallback((fromIndex: number, toIndex: number) => {
-    setImageItems(prev => {
-      const newItems = [...prev]
-      const [movedItem] = newItems.splice(fromIndex, 1)
-      newItems.splice(toIndex, 0, movedItem)
-      return newItems
-    })
-  }, [])
-
-  // 外部への変更通知
-  const currentUrls = imageItems.filter(item => !item.isUploading).map(item => item.url)
-  if (JSON.stringify(currentUrls) !== JSON.stringify(images)) {
-    onChange(currentUrls)
-  }
+  // 空のスロット数を計算
+  const emptySlots = Math.max(0, maxImages - currentImages.length)
+  const canAddMore = currentImages.length < maxImages
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       {/* タイトルと説明 */}
       <div>
         <h3 className="text-lg font-medium text-gray-900 mb-2">{title}</h3>
         {description && (
-          <p className="text-sm text-gray-600 mb-4">{description}</p>
+          <p className="text-sm text-gray-600">{description}</p>
         )}
+        <div className="mt-2 text-sm text-gray-500">
+          現在の画像数: {currentImages.length} / {maxImages}
+        </div>
       </div>
 
-      {/* メッセージ表示 */}
-      {messages.length > 0 && (
-        <div className="space-y-2">
-          {messages.map((message, index) => (
-            <div
-              key={index}
-              className={`p-3 rounded-md text-sm ${
-                message.type === 'success'
-                  ? 'bg-green-50 text-green-700 border border-green-200'
-                  : message.type === 'error'
-                  ? 'bg-red-50 text-red-700 border border-red-200'
-                  : 'bg-blue-50 text-blue-700 border border-blue-200'
-              }`}
-            >
-              {message.text}
+      {/* 既存の画像 */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {currentImages.map((imageUrl, index) => (
+          <div key={index} className="relative">
+            <div className="mb-2 flex justify-between items-center">
+              <span className="text-sm font-medium text-gray-700">
+                画像 {index + 1}
+              </span>
+              <button
+                type="button"
+                onClick={() => handleRemoveImage(index)}
+                className="text-red-600 hover:text-red-800 text-sm font-medium"
+              >
+                削除
+              </button>
             </div>
-          ))}
-        </div>
-      )}
+            <CompressedImageUpload
+              category="salon"
+              folder={folder}
+              onUploadComplete={handleImageUpload(index)}
+              currentImage={imageUrl}
+              acceptedTypes={acceptedTypes}
+              label={`画像 ${index + 1} を変更`}
+              description="画像を変更するにはクリックしてください"
+            />
+          </div>
+        ))}
 
-      {/* 画像一覧 */}
-      {imageItems.length > 0 && (
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
-          {imageItems.map((item, index) => (
-            <div
-              key={item.id}
-              className="relative group bg-gray-100 rounded-lg overflow-hidden aspect-video"
-            >
-              {item.isUploading ? (
-                <div className="absolute inset-0 bg-gray-200 animate-pulse flex items-center justify-center">
-                  <div className="flex items-center space-x-2">
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary-600"></div>
-                    <span className="text-sm text-gray-600">アップロード中...</span>
-                  </div>
-                </div>
-              ) : (
-                <img
-                  src={item.url}
-                  alt={`画像 ${index + 1}`}
-                  className="w-full h-full object-cover"
-                />
-              )}
-              
-              {!item.isUploading && (
-                <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-opacity duration-200">
-                  <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                    <button
-                      onClick={() => removeImage(item.id)}
-                      className="bg-red-600 text-white p-1.5 rounded-full hover:bg-red-700 transition-colors duration-200"
-                      title="削除"
-                    >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                      </svg>
-                    </button>
-                  </div>
-                  
-                  {/* 順序変更ボタン */}
-                  <div className="absolute bottom-2 left-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex space-x-1">
-                    {index > 0 && (
-                      <button
-                        onClick={() => moveImage(index, index - 1)}
-                        className="bg-primary-600 text-white p-1 rounded hover:bg-primary-700 transition-colors duration-200"
-                        title="前に移動"
-                      >
-                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                        </svg>
-                      </button>
-                    )}
-                    {index < imageItems.length - 1 && (
-                      <button
-                        onClick={() => moveImage(index, index + 1)}
-                        className="bg-primary-600 text-white p-1 rounded hover:bg-primary-700 transition-colors duration-200"
-                        title="後に移動"
-                      >
-                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                        </svg>
-                      </button>
-                    )}
-                  </div>
-                </div>
-              )}
-              
-              <div className="absolute bottom-2 right-2 bg-black bg-opacity-70 text-white text-xs px-2 py-1 rounded">
-                {index + 1}
-              </div>
+        {/* 新しい画像を追加するためのスロット */}
+        {canAddMore && Array.from({ length: Math.min(emptySlots, 1) }, (_, index) => (
+          <div key={`new-${index}`}>
+            <div className="mb-2">
+              <span className="text-sm font-medium text-gray-700">
+                新しい画像を追加
+              </span>
             </div>
-          ))}
-        </div>
-      )}
+            <CompressedImageUpload
+              category="salon"
+              folder={folder}
+              onUploadComplete={handleImageUpload(currentImages.length)}
+              acceptedTypes={acceptedTypes}
+              label="画像を追加"
+              description="新しい画像をアップロードしてください"
+            />
+          </div>
+        ))}
+      </div>
 
-      {/* アップロードエリア */}
-      {imageItems.length < maxImages && (
-        <div
-          onDrop={handleDrop}
-          onDragOver={handleDragOver}
-          onDragLeave={handleDragLeave}
-          className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors duration-200 ${
-            dragOver
-              ? 'border-primary-400 bg-primary-50'
-              : 'border-gray-300 hover:border-primary-400'
-          }`}
-        >
-          <div className="space-y-4">
-            <div className="flex justify-center">
-              <svg className="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-              </svg>
-            </div>
-            
-            <div>
-              <p className="text-lg font-medium text-gray-900 mb-2">
-                画像をドラッグ&ドロップ または クリックして選択
+      {/* 情報メッセージ */}
+      {currentImages.length >= maxImages && (
+        <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-md">
+          <div className="flex">
+            <svg className="w-5 h-5 text-yellow-400 mr-2 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+            </svg>
+            <div className="text-sm text-yellow-800">
+              <p className="font-medium">最大画像数に達しました</p>
+              <p className="mt-1">
+                現在{maxImages}枚の画像がアップロードされています。追加で画像をアップロードするには、まず既存の画像を削除してください。
               </p>
-              <p className="text-sm text-gray-500 mb-4">
-                JPEG, PNG, WebP形式対応 / 最大{maxImages}枚 / 5MB以上の画像は自動圧縮されます
-              </p>
-              
-              <label className="inline-block">
-                <input
-                  type="file"
-                  multiple
-                  accept={acceptedTypes.join(',')}
-                  onChange={(e) => e.target.files && handleFileSelect(e.target.files)}
-                  className="hidden"
-                />
-                <span className="bg-primary-600 text-white px-6 py-2 rounded-md hover:bg-primary-700 transition-colors duration-200 cursor-pointer inline-block">
-                  ファイルを選択
-                </span>
-              </label>
             </div>
           </div>
         </div>
       )}
-      
-      {imageItems.length >= maxImages && (
-        <div className="text-center p-4 bg-gray-50 rounded-lg">
-          <p className="text-sm text-gray-600">
-            最大{maxImages}枚の画像が設定済みです。追加するには既存の画像を削除してください。
-          </p>
+
+      {/* 使用方法の説明 */}
+      <div className="p-4 bg-blue-50 border border-blue-200 rounded-md">
+        <div className="flex">
+          <svg className="w-5 h-5 text-blue-400 mr-2 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <div className="text-sm text-blue-800">
+            <p className="font-medium">画像アップロードについて</p>
+            <ul className="mt-1 space-y-1">
+              <li>• 対応形式: {acceptedTypes.map(type => type.split('/')[1].toUpperCase()).join(', ')}</li>
+              <li>• 画像は自動的に圧縮され、最適化されます</li>
+              <li>• ドラッグ&ドロップでもアップロード可能です</li>
+              <li>• 最大{maxImages}枚まで設定可能です</li>
+            </ul>
+          </div>
         </div>
-      )}
+      </div>
     </div>
   )
 }
