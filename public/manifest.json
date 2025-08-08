@@ -66,7 +66,7 @@
       "name": "予約する",
       "short_name": "予約",
       "description": "オンラインで予約",
-      "url": "/booking",
+      "url": "https://beauty.hotpepper.jp/",
       "icons": [
         {
           "src": "/icons/booking-icon-96x96.png",

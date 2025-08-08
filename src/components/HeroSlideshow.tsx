@@ -146,12 +146,12 @@ export default function HeroSlideshow({ salonData }: HeroSlideshowProps) {
       <div className="relative z-10 text-center text-white px-4">
         <div className="max-w-4xl mx-auto">
           {/* サブタイトル */}
-          <p className="text-sm md:text-base font-light tracking-[0.3em] uppercase mb-6 text-white/90">
+          <p className="text-xs sm:text-sm md:text-base font-light tracking-[0.2em] sm:tracking-[0.3em] uppercase mb-4 sm:mb-6 text-white/90">
             Professional Hair Salon
           </p>
           
           {/* メインタイトル */}
-          <h1 className="heading-primary text-white mb-8 leading-tight">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-heading font-light tracking-[0.15em] sm:tracking-[0.2em] text-white mb-6 sm:mb-8 leading-tight">
             {salonData?.heroTitle || 'NAGASE'}
           </h1>
         </div>

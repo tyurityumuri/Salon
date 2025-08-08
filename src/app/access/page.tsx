@@ -61,13 +61,13 @@ export default function AccessPage() {
         <div className="container-custom">
           {/* Header */}
           <div className="text-center mb-20">
-            <p className="text-sm font-medium tracking-[0.3em] uppercase text-primary-600 mb-4">LOCATION & ACCESS</p>
+            {/* <p className="text-sm font-medium tracking-[0.3em] uppercase text-primary-600 mb-4">LOCATION & ACCESS</p> */}
             <h1 className="heading-primary mb-8">
               ACCESS
             </h1>
             <div className="divider mb-8"></div>
             <p className="text-body max-w-3xl mx-auto">
-              東京駅からアクセス抜群の立地にあります。<br className="hidden md:block" />
+              武州長瀬駅からアクセス抜群の立地にあります。<br className="hidden md:block" />
               お気軽にお越しください。
             </p>
           </div>

@@ -11,7 +11,7 @@ const Header = () => {
     { name: 'STYLES', href: '/styles' },
     { name: 'MENU', href: '/menu' },
     { name: 'ACCESS', href: '/access' },
-    { name: 'BOOKING', href: '/booking' },
+
   ]
 
   return (
@@ -40,10 +40,12 @@ const Header = () => {
           {/* Booking CTA - Desktop */}
           <div className="hidden lg:block">
             <Link
-              href="/booking"
-              className="btn-primary"
+              href="https://beauty.hotpepper.jp/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-gradient-to-r from-accent-600 to-accent-700 text-white px-6 py-3 rounded-full font-medium text-sm tracking-wider hover:from-accent-700 hover:to-accent-800 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
             >
-              BOOK NOW
+              WEB予約
             </Link>
           </div>
 
@@ -75,7 +77,7 @@ const Header = () => {
                   </Link>
                 ))}
                 <Link
-                  href="/booking"
+                  href="https://beauty.hotpepper.jp/" target="_blank" rel="noopener noreferrer"
                   className="btn-primary mt-4"
                   onClick={() => setIsMenuOpen(false)}
                 >

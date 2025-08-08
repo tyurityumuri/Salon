@@ -104,7 +104,7 @@ export default function HomeClient() {
         <div className="container-custom">
           <ScrollAnimation animation="animate-slide-up" delay={200}>
             <div className="text-center mb-16">
-              <p className="text-sm font-medium tracking-[0.3em] uppercase text-primary-600 mb-4">PROFESSIONAL TEAM</p>
+              {/* <p className="text-sm font-medium tracking-[0.3em] uppercase text-primary-600 mb-4">STYLISTS</p> */}
               <h2 className="heading-secondary mb-6">
                 OUR STYLISTS
               </h2>
@@ -265,7 +265,7 @@ export default function HomeClient() {
         <div className="container-custom">
           <ScrollAnimation animation="animate-slide-up" delay={200}>
             <div className="text-center mb-16">
-              <p className="text-sm font-medium tracking-[0.3em] uppercase text-primary-600 mb-4">SIGNATURE SERVICES</p>
+              {/* <p className="text-sm font-medium tracking-[0.3em] uppercase text-primary-600 mb-4">POPULAR MENU</p> */}
               <h2 className="heading-secondary mb-6">
                 POPULAR MENU
               </h2>
@@ -311,7 +311,7 @@ export default function HomeClient() {
                     
                     <div className="pt-6 border-t border-primary-100">
                       <Link 
-                        href="/booking"
+                        href="https://beauty.hotpepper.jp/" target="_blank" rel="noopener noreferrer"
                         className="btn-accent w-full text-center"
                       >
                         予約する
@@ -356,7 +356,7 @@ export default function HomeClient() {
       <section className="section-padding bg-secondary-50">
         <div className="container-custom">
           <div className="text-center mb-16">
-            <p className="text-sm font-medium tracking-[0.3em] uppercase text-primary-600 mb-4">LATEST UPDATES</p>
+            {/* <p className="text-sm font-medium tracking-[0.3em] uppercase text-primary-600 mb-4">NEWS & EVENTS</p> */}
             <h2 className="heading-secondary mb-6">
               NEWS & EVENTS
             </h2>

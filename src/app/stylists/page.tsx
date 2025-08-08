@@ -48,9 +48,9 @@ export default function StylistsPage() {
         <div className="container-custom">
           {/* Header */}
           <div className="text-center mb-20">
-            <p className="text-sm font-medium tracking-[0.3em] uppercase text-primary-600 mb-4">PROFESSIONAL TEAM</p>
+            {/* <p className="text-sm font-medium tracking-[0.3em] uppercase text-primary-600 mb-4">PROFESSIONAL TEAM</p> */}
             <h1 className="heading-primary mb-8">
-              OUR STYLISTS
+              STYLISTS
             </h1>
             <div className="divider mb-8"></div>
             <p className="text-body max-w-3xl mx-auto">

@@ -49,9 +49,9 @@ export default function MenuPage() {
         <div className="container-custom">
           {/* Header */}
           <div className="text-center mb-20">
-            <p className="text-sm font-medium tracking-[0.3em] uppercase text-primary-600 mb-4">SERVICE MENU</p>
+            {/* <p className="text-sm font-medium tracking-[0.3em] uppercase text-primary-600 mb-4">SERVICE MENU</p> */}
             <h1 className="heading-primary mb-8">
-              MENU & PRICING
+              MENU & PRICE
             </h1>
             <div className="divider mb-8"></div>
             <p className="text-body max-w-3xl mx-auto">

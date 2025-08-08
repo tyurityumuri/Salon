@@ -62,9 +62,9 @@ export default function StylesPage() {
         <div className="container-custom">
           {/* Header */}
           <div className="text-center mb-16">
-            <p className="text-sm font-medium tracking-[0.3em] uppercase text-primary-600 mb-4">STYLE SHOWCASE</p>
+            {/* <p className="text-sm font-medium tracking-[0.3em] uppercase text-primary-600 mb-4">STYLE SHOWCASE</p> */}
             <h1 className="heading-primary mb-8">
-              STYLE GALLERY
+              STYLE LIST
             </h1>
             <div className="divider mb-8"></div>
             <p className="text-body max-w-3xl mx-auto">
