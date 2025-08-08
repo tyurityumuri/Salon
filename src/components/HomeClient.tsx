@@ -60,7 +60,16 @@ export default function HomeClient() {
 
         if (salonRes.ok) {
           const salonInfo = await salonRes.json()
+          console.log('📄 === salon.json 取得デバッグ ===')
+          console.log('⏰ 取得時刻:', new Date().toLocaleString('ja-JP'))
+          console.log('🌐 APIエンドポイント: /api/salon')
+          console.log('📦 取得データ:', salonInfo)
+          console.log('🖼️ heroImages:', salonInfo.heroImages)
+          console.log('📱 heroImagesMobile:', salonInfo.heroImagesMobile)
+          console.log('=====================')
           setSalonData(salonInfo)
+        } else {
+          console.error('❌ salon.json取得エラー:', salonRes.status, salonRes.statusText)
         }
       } catch (error) {
         console.error('Error fetching data:', error)

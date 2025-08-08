@@ -59,14 +59,23 @@ export class S3DataManager {
 
   // JSONファイルを取得
   async getJsonData<T>(filename: string): Promise<T> {
+    console.log('=== S3DataManager.getJsonData ===')
+    console.log(`[FILE] ${filename}`)
+    console.log(`[SOURCE] ${this.useLocal ? 'LOCAL' : 'S3'}`)
+    
     if (this.useLocal) {
+      console.log('[LOCAL] Loading from local file')
       return this.getLocalJsonData<T>(filename)
     }
 
     try {
+      const s3Key = `data/${filename}`
+      console.log(`[S3 KEY] ${s3Key}`)
+      console.log(`[BUCKET] ${this.bucketName}`)
+      
       const command = new GetObjectCommand({
         Bucket: this.bucketName!,
-        Key: `data/${filename}`,
+        Key: s3Key,
       })
 
       const response = await this.s3Client!.send(command)
@@ -76,11 +85,16 @@ export class S3DataManager {
         throw new Error(`No data received from ${filename}`)
       }
 
-      return JSON.parse(body)
+      const data = JSON.parse(body)
+      console.log('[SUCCESS] Data loaded from S3')
+      console.log(`[SIZE] ${body.length} bytes`)
+      console.log('=====================')
+      
+      return data
     } catch (error) {
-      console.error(`Error getting ${filename} from S3:`, error)
+      console.error(`[ERROR] Failed to get ${filename} from S3:`, error)
       // S3で失敗した場合、ローカルファイルにフォールバック
-      console.log(`Falling back to local file for ${filename}`)
+      console.log(`[FALLBACK] Using local file for ${filename}`)
       return this.getLocalJsonData<T>(filename)
     }
   }

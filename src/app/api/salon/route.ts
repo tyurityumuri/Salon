@@ -3,10 +3,26 @@ import { getS3DataManager } from '@/lib/s3-data-manager'
 
 export async function GET() {
   try {
-    const dataManager = getS3DataManager()
-    const salonData = await dataManager.getJsonData('salon.json')
+    console.log('🔄 === GET /api/salon リクエスト ===')
+    console.log('⏰ リクエスト時刻:', new Date().toLocaleString('ja-JP'))
     
-    return NextResponse.json(salonData)
+    const dataManager = getS3DataManager()
+    const salonData = await dataManager.getJsonData('salon.json') as any
+    
+    console.log('💾 S3から取得したデータ:')
+    console.log('  - name:', salonData.name)
+    console.log('  - heroImages数:', salonData.heroImages?.length || 0)
+    console.log('  - heroImagesMobile数:', salonData.heroImagesMobile?.length || 0)
+    console.log('=====================')
+    
+    // キャッシュを無効化して常に最新データを取得
+    return NextResponse.json(salonData, {
+      headers: {
+        'Cache-Control': 'no-store, no-cache, must-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0',
+      },
+    })
   } catch (error) {
     console.error('Error fetching salon data:', error)
     return NextResponse.json(
