@@ -17,6 +17,7 @@ interface ImageUploadManagerProps {
   title: string
   description?: string
   acceptedTypes?: string[]
+  folder?: string
 }
 
 export default function ImageUploadManager({
@@ -25,7 +26,8 @@ export default function ImageUploadManager({
   maxImages = 3,
   title,
   description,
-  acceptedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
+  acceptedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'],
+  folder = 'general'
 }: ImageUploadManagerProps) {
   const [imageItems, setImageItems] = useState<ImageItem[]>(() => 
     images.map((url, index) => ({ id: `existing-${index}`, url }))
@@ -64,10 +66,10 @@ export default function ImageUploadManager({
     }
   }, [addMessage])
 
-  const uploadImage = async (file: File): Promise<string> => {
+  const uploadImage = useCallback(async (file: File): Promise<string> => {
     const formData = new FormData()
     formData.append('file', file)
-    formData.append('folder', 'hero')
+    formData.append('folder', folder)
 
     const response = await fetch('/api/upload', {
       method: 'POST',
@@ -81,7 +83,7 @@ export default function ImageUploadManager({
 
     const data = await response.json()
     return data.url
-  }
+  }, [folder])
 
   const handleFileSelect = useCallback(async (files: FileList | File[]) => {
     const fileArray = Array.from(files)
@@ -133,7 +135,7 @@ export default function ImageUploadManager({
         setImageItems(prev => prev.filter(item => item.id !== tempId))
       }
     }
-  }, [imageItems.length, maxImages, acceptedTypes, addMessage, compressImage])
+  }, [imageItems.length, maxImages, acceptedTypes, addMessage, compressImage, uploadImage])
 
   const handleDrop = useCallback((e: React.DragEvent) => {
     e.preventDefault()

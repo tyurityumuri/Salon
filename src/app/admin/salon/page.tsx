@@ -61,14 +61,21 @@ export default function AdminSalonPage() {
     setIsSaving(true)
     
     try {
-      // 実際の実装では、ここでAPIを呼び出してJSONファイルを更新
-      console.log('更新されたサロン情報:', salonInfo)
-      
-      // 模擬的な保存処理
-      await new Promise(resolve => setTimeout(resolve, 1000))
-      
-      alert('サロン情報が更新されました。\n※実際の実装では自動でJSONファイルが更新されます。')
+      const response = await fetch('/api/salon', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(salonInfo)
+      })
+
+      if (!response.ok) {
+        throw new Error('保存に失敗しました')
+      }
+
+      alert('サロン情報が更新されました。')
     } catch (error) {
+      console.error('Error saving salon info:', error)
       alert('保存中にエラーが発生しました。')
     } finally {
       setIsSaving(false)
@@ -383,6 +390,7 @@ export default function AdminSalonPage() {
                       maxImages={3}
                       title=""
                       description="デスクトップ・タブレットで表示される画像（推奨サイズ: 1920x1080px）"
+                      folder="hero"
                     />
                   </div>
 
@@ -402,6 +410,7 @@ export default function AdminSalonPage() {
                       maxImages={3}
                       title=""
                       description="スマートフォンで表示される画像（推奨サイズ: 768x1024px）"
+                      folder="hero"
                     />
                   </div>
                 </div>
