@@ -35,8 +35,30 @@ export async function POST(request: NextRequest) {
     // S3アップロード用のキーを生成
     const timestamp = Date.now()
     const randomString = Math.random().toString(36).substring(2, 8)
-    const extension = file.name.split('.').pop() || 'jpg'
+    
+    // ファイル名とMIMEタイプから拡張子を決定
+    let extension = file.name.split('.').pop()?.toLowerCase() || ''
+    
+    // MIMEタイプから拡張子を推定（ファイル名が不正な場合）
+    if (!extension || extension === 'blob') {
+      const mimeToExt: { [key: string]: string } = {
+        'image/jpeg': 'jpg',
+        'image/jpg': 'jpg', 
+        'image/png': 'png',
+        'image/webp': 'webp',
+        'image/gif': 'gif'
+      }
+      extension = mimeToExt[file.type] || 'jpg'
+    }
+    
     const imageKey = `images/${folder}/${timestamp}-${randomString}.${extension}`
+    
+    console.log('Upload file details:', {
+      fileName: file.name,
+      fileType: file.type,
+      detectedExtension: extension,
+      imageKey
+    })
     
     // ファイルをBufferに変換
     const buffer = Buffer.from(await file.arrayBuffer())

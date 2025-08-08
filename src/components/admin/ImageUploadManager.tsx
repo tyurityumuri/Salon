@@ -44,26 +44,40 @@ export default function ImageUploadManager({
   }, [])
 
   const compressImage = useCallback(async (file: File): Promise<File> => {
+    // 元のファイル情報を保存
+    const originalName = file.name
+    const originalType = file.type
+    const fileExtension = originalName.split('.').pop()?.toLowerCase() || 'jpg'
+    
     const options = {
       maxSizeMB: 5,
       maxWidthOrHeight: 1920,
       useWebWorker: false, // CSPエラー回避のためWeb Workerを無効化
-      fileType: file.type
+      fileType: originalType, // 元のファイルタイプを保持
+      initialQuality: 0.8 // 品質を調整
     }
 
     try {
       const compressedFile = await imageCompression(file, options)
       
-      // 元のファイル名を保持するために新しいFileオブジェクトを作成
-      const renamedFile = new File([compressedFile], file.name, {
-        type: compressedFile.type,
+      // 元のファイル情報を保持して新しいFileオブジェクトを作成
+      const renamedFile = new File([compressedFile], originalName, {
+        type: originalType, // 元のタイプを使用
         lastModified: Date.now()
       })
       
       // 5MB以上だった場合の通知
       if (file.size > 5 * 1024 * 1024) {
-        addMessage('info', '画像ファイルを圧縮して5MB以下に調整しました')
+        addMessage('info', `画像ファイルを圧縮して5MB以下に調整しました (${fileExtension.toUpperCase()})`)
       }
+      
+      console.log('Compressed file details:', {
+        originalName,
+        originalType,
+        fileExtension,
+        compressedSize: renamedFile.size,
+        compressedType: renamedFile.type
+      })
       
       return renamedFile
     } catch (error) {
