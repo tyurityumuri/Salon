@@ -390,7 +390,7 @@ export default function AdminSalonPage() {
                       maxImages={3}
                       title=""
                       description="デスクトップ・タブレットで表示される画像（推奨サイズ: 1920x1080px）"
-                      folder="hero"
+                      folder="hero/web"
                     />
                   </div>
 
@@ -410,7 +410,7 @@ export default function AdminSalonPage() {
                       maxImages={3}
                       title=""
                       description="スマートフォンで表示される画像（推奨サイズ: 768x1024px）"
-                      folder="hero"
+                      folder="hero/mobile"
                     />
                   </div>
                 </div>
