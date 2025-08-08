@@ -54,12 +54,18 @@ export default function ImageUploadManager({
     try {
       const compressedFile = await imageCompression(file, options)
       
+      // 元のファイル名を保持するために新しいFileオブジェクトを作成
+      const renamedFile = new File([compressedFile], file.name, {
+        type: compressedFile.type,
+        lastModified: Date.now()
+      })
+      
       // 5MB以上だった場合の通知
       if (file.size > 5 * 1024 * 1024) {
         addMessage('info', '画像ファイルを圧縮して5MB以下に調整しました')
       }
       
-      return compressedFile
+      return renamedFile
     } catch (error) {
       console.error('Image compression failed:', error)
       throw new Error('画像の圧縮に失敗しました')

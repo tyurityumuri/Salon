@@ -33,12 +33,16 @@ export default function HeroSlideshow({ salonData }: HeroSlideshowProps) {
   // デバッグログ
   useEffect(() => {
     if (isClient) {
-      console.log('HeroSlideshow Debug:')
-      console.log('PC Images:', pcImages)
-      console.log('Mobile Images:', mobileImages)
-      console.log('Has Mobile Images:', hasMobileImages)
+      console.log('🖼️ HeroSlideshow Debug:')
+      console.log('📱 Mobile Detection: CSS media query based')
+      console.log('💻 PC Images:', pcImages)
+      console.log('📱 Mobile Images:', mobileImages)
+      console.log('✅ Has Mobile Images:', hasMobileImages)
+      console.log('🔄 Current PC Slide:', currentPCSlide)
+      console.log('🔄 Current Mobile Slide:', currentMobileSlide)
+      console.log('🎯 Using Images for Mobile:', hasMobileImages ? mobileImages : pcImages)
     }
-  }, [isClient, pcImages, mobileImages, hasMobileImages])
+  }, [isClient, pcImages, mobileImages, hasMobileImages, currentPCSlide, currentMobileSlide])
 
   // PC用画像のスライドショー
   useEffect(() => {
