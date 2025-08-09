@@ -1,4 +1,4 @@
-const CACHE_NAME = 'nagase-salon-v1'
+const CACHE_NAME = 'nagase-salon-v2'
 const STATIC_CACHE_URLS = [
   '/',
   '/stylists',
@@ -57,6 +57,41 @@ self.addEventListener('fetch', event => {
 
   // Skip external requests
   if (!event.request.url.startsWith(self.location.origin)) {
+    return
+  }
+
+  const url = new URL(event.request.url)
+  
+  // Skip API requests - always fetch fresh data
+  if (url.pathname.startsWith('/api/')) {
+    return
+  }
+  
+  // Skip admin panel - always fetch fresh data
+  if (url.pathname.startsWith('/admin')) {
+    return
+  }
+  
+  // Skip S3 images - let browser handle caching
+  if (url.hostname.includes('amazonaws.com')) {
+    return
+  }
+
+  // Only cache static assets and pages
+  const shouldCache = 
+    url.pathname === '/' ||
+    url.pathname.startsWith('/stylists') ||
+    url.pathname.startsWith('/styles') ||
+    url.pathname.startsWith('/menu') ||
+    url.pathname.startsWith('/access') ||
+    url.pathname.startsWith('/booking') ||
+    url.pathname.endsWith('.js') ||
+    url.pathname.endsWith('.css') ||
+    url.pathname.endsWith('.json') ||
+    url.pathname.startsWith('/images/') ||
+    url.pathname.startsWith('/icons/')
+
+  if (!shouldCache) {
     return
   }
 
