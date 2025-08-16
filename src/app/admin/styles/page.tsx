@@ -6,12 +6,15 @@ import Link from 'next/link'
 
 interface StyleItem {
   id: string
-  src: string
+  url: string
   alt: string
   category: string
   tags: string[]
-  stylistName: string
-  height: number
+  stylistId: string
+  height?: number
+  frontImage?: string
+  sideImage?: string
+  backImage?: string
 }
 
 export default function AdminStylesPage() {
@@ -56,7 +59,7 @@ export default function AdminStylesPage() {
     const matchesCategory = selectedCategory === 'all' || style.category === selectedCategory
     const matchesSearch = style.alt.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          style.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase())) ||
-                         style.stylistName.toLowerCase().includes(searchTerm.toLowerCase())
+                         style.stylistId.toLowerCase().includes(searchTerm.toLowerCase())
     return matchesCategory && matchesSearch
   })
 
@@ -150,9 +153,9 @@ export default function AdminStylesPage() {
                   {filteredStyles.map((style) => (
                     <div key={style.id} className="border border-gray-200 rounded-lg overflow-hidden hover:border-ocean-blue-300 transition-colors">
                       <div className="relative aspect-square bg-gray-200 overflow-hidden">
-                        {style.src ? (
+                        {(style.frontImage || style.url) ? (
                           <img
-                            src={style.src}
+                            src={style.frontImage || style.url}
                             alt={style.alt}
                             className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                             onError={(e) => {
@@ -194,7 +197,7 @@ export default function AdminStylesPage() {
                         </h3>
                         
                         <p className="text-sm text-gray-600 mb-3">
-                          スタイリスト: {style.stylistName}
+                          スタイリスト: {style.stylistId}
                         </p>
                         
                         <div className="flex flex-wrap gap-1 mb-3">
@@ -214,7 +217,7 @@ export default function AdminStylesPage() {
                         </div>
                         
                         <div className="text-xs text-gray-500 mb-3 break-all">
-                          {style.src}
+                          {style.frontImage || style.url}
                         </div>
                         
                         <div className="flex space-x-2">
